@@ -164,6 +164,12 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+
+        Tymon\JWTAuth\Providers\JWTAuthServiceProvider::class,
+
+
+        Dingo\Api\Provider\LaravelServiceProvider::class
+
     ],
 
     /*
@@ -210,6 +216,8 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'Twig' => TwigBridge\Facade\Twig::class,
+
+        'JWTAuth' => 'Tymon\JWTAuth\Facades\JWTAuth',
 
     ],
 

@@ -1,5 +1,7 @@
 <?php
-
+/**
+ * @var Dingo\Api\Routing\Router $api
+ */
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -9,17 +11,17 @@
 | It's a breeze. Simply tell Laravel the URIs it should respond to
 | and give it the controller to call when that URI is requested.
 |
+|
 */
 
-Route::get('/', function () {
-    $hello = 'Hi Mark!';
-    $items = [[
-            'name' => 'Anton',
-            'count' => 1
-        ], [
-            'name' => 'Maria',
-            'count' => 2
-        ]
-    ];
-    return view('hello', compact('items', 'hello'));
+
+$api->post('/users', 'UsersController@store');
+$api->post('/users/{user_id}/confirmations', 'ConfirmationsController@store');
+
+$api->post('/tokens', 'TokensController@store');
+$api->put('/tokens', 'TokensController@update');
+
+
+$api->group(['middleware' => 'api.auth'], function ($api) {
+
 });

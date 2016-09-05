@@ -4,6 +4,18 @@ namespace App;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
+/**
+ * Class User
+ * @package App
+ *
+ * @property int $id
+ * @property string $name
+ * @property string $email
+ * @property int $company_id
+ *
+ * @property Company $company
+ *
+ */
 class User extends Authenticatable
 {
     /**
@@ -23,4 +35,15 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function company()
+    {
+        return $this->belongsTo(Company::class);
+    }
+
+
 }

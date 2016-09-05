@@ -1,0 +1,39 @@
+
+
+
+
+Регистрация пользователя
+
+POST /users - create user
+Input:
+email
+name
+company_title
+password
+password_confirmation
+
+Output:
+object - user or error
+
+
+POST /users/:id/confirmations - confirm user
+Input:
+confirmation_code
+Output:
+success or error
+
+
+Вход
+
+POST /Token/Create
+Input:
+email
+password
+
+Output:
+success or error
+
+
+GET Requests
+Output:
+array or error

@@ -2,11 +2,16 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Http\Requests\UserCreateRequest;
+use App\Services\UserService;
 use App\User;
+use Illuminate\Http\Request;
 use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
+use Session;
+
 
 class AuthController extends Controller
 {
@@ -30,6 +35,9 @@ class AuthController extends Controller
      */
     protected $redirectTo = '/';
 
+    private $_userService;
+
+
     /**
      * Create a new authentication controller instance.
      *
@@ -37,36 +45,44 @@ class AuthController extends Controller
      */
     public function __construct()
     {
+        $this->_userService = new UserService();
         $this->middleware($this->guestMiddleware(), ['except' => 'logout']);
     }
 
-    /**
-     * Get a validator for an incoming registration request.
-     *
-     * @param  array  $data
-     * @return \Illuminate\Contracts\Validation\Validator
-     */
-    protected function validator(array $data)
+
+    public function register(UserCreateRequest $request)
     {
-        return Validator::make($data, [
-            'name' => 'required|max:255',
-            'email' => 'required|email|max:255|unique:users',
-            'password' => 'required|min:6|confirmed',
-        ]);
+        $this->_userService->createUser($request);
+
+        Session::flash('success', 'Пользователь создан. Вам отправлено письмо с подтверждением.');
+        return redirect($this->redirectTo);
+
     }
 
-    /**
-     * Create a new user instance after a valid registration.
-     *
-     * @param  array  $data
-     * @return User
-     */
-    protected function create(array $data)
+
+    public function confirm($confirmation_code)
     {
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => bcrypt($data['password']),
-        ]);
+        if (!$confirmation_code) {
+            abort('404');
+        }
+        $user = $this->_userService->confirmUser($confirmation_code);
+        \Auth::login($user);
+
+        return redirect($this->redirectTo);
     }
+
+
+
+    /**
+     * @param Request $request
+     * @return array
+     */
+    protected function getCredentials(Request $request)
+    {
+        $attrs = $request->only($this->loginUsername(), 'password');
+        $attrs['confirmed'] = true;
+        return $attrs;
+    }
+
+
 }

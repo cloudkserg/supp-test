@@ -52,9 +52,15 @@ class RouteServiceProvider extends ServiceProvider
      */
     protected function mapWebRoutes(Router $router)
     {
-        $router->group([
-            'namespace' => $this->namespace, 'middleware' => 'web',
-        ], function ($router) {
+        $api = app('Dingo\Api\Routing\Router');
+        /**
+         * @var \Dingo\Api\Routing\Router $api
+         */
+        $api->group([
+            'namespace' => $this->namespace,
+            'version' => 'v1'
+
+        ], function ($api) {
             require app_path('Http/routes.php');
         });
     }
