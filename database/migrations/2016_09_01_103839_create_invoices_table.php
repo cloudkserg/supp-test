@@ -15,6 +15,7 @@ class CreateInvoicesTable extends Migration
         Schema::create('invoices', function (Blueprint $table) {
             $table->increments('id');
             $table->string('status');
+            $table->string('filename')->nullable();
             $table->integer('response_item_id')->unsigned();
             $table->foreign('response_item_id')->references('id')->on('response_items')->onDelete('cascade');
             $table->timestamps();

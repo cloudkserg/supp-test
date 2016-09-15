@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Request;
+namespace App\Demand;
 
 use App\Company;
 use App\Type\Region;
@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 
 /**
- * Class Request
+ * Class Demand
  *
  * @property int $id
  * @property string $title
@@ -19,23 +19,26 @@ use Carbon\Carbon;
  * @property string[] addition_emails
  * @property string addition_emails_raw
  * @property int $company_id
+ * @property string $status
  *
  * @property Company $company
  * @property Region[] $regions
  * @property Sphere[] $spheres
+ * @property DemandItem[] $demandItems
  *
  *
- * @package App\Request
+ * @package App\Demand
  */
-class Request extends Model
+class Demand extends Model
 {
+
     protected $dates = [
         'delivery_date'
     ];
 
     protected $fillable = [
         'title', 'desc',
-        'address', 'delivery_date',
+        'address',
         'addition_emails'
     ];
 
@@ -76,8 +79,16 @@ class Request extends Model
     /**
      * @param array $emails
      */
-    public function setAdditionEmailsAttributes(array $emails)
+    public function setAdditionEmailsAttribute(array $emails)
     {
         $this->addition_emails_raw = serialize($emails);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function demandItems()
+    {
+        return $this->hasMany(DemandItem::class);
     }
 }

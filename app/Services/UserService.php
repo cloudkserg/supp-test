@@ -15,6 +15,8 @@ use App\Events\RegisterUser;
 
 class UserService
 {
+
+    const CONFIRMATION_LENGTH = 30;
     /**
      * @var CompanyService
      */
@@ -44,7 +46,7 @@ class UserService
             $user->email = $request->email;
             $user->password = $this->encryptPassword($request->password);
             $user->company_id = $company->id;
-            $user->confirmation_code = \str_random(30);
+            $user->confirmation_code = \str_random(self::CONFIRMATION_LENGTH);
             $user->save();
 
         } catch(\Exception $e) {
@@ -61,7 +63,7 @@ class UserService
      * @param $password
      * @return string
      */
-    private function encryptPassword($password)
+    public function encryptPassword($password)
     {
         return bcrypt($password);
     }

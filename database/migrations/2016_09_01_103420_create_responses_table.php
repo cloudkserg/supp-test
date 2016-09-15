@@ -18,8 +18,8 @@ class CreateResponsesTable extends Migration
             $table->integer('company_id')->unsigned();
             $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade');
 
-            $table->integer('request_id')->unsigned();
-            $table->foreign('request_id')->references('id')->on('requests')->onDelete('cascade');
+            $table->integer('demand_id')->unsigned();
+            $table->foreign('demand_id')->references('id')->on('demands')->onDelete('cascade');
 
             $table->integer('delivery_type_id')->unsigned();
 

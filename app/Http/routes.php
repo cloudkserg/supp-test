@@ -23,5 +23,9 @@ $api->put('/tokens', 'TokensController@update');
 
 
 $api->group(['middleware' => 'api.auth'], function ($api) {
+    $api->get('/tokens/test', 'TokensController@test');
+
+    $api->get('/demands', 'DemandsController@indexActive');
+    $api->post('/demands', 'DemandsController@store');
 
 });

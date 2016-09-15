@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Request;
+namespace App\Demand;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $id
  * @property string $status
  * @property int $response_item_id
+ * @property string $file
  *
  * @property ResponseItem $responseItem
  */
@@ -22,5 +23,11 @@ class Invoice extends Model
     public function responseItem()
     {
         return $this->belongsTo(ResponseItem::class);
+    }
+
+
+    public function getFile()
+    {
+        return 'string';
     }
 }

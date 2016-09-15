@@ -9,9 +9,21 @@
 namespace App\Type;
 
 
-class ResponseStatus
+class ResponseStatus extends ConstType
 {
-    const CREATED = 'created';
+    const ACTIVE = 'active';
     const ARCHIVED = 'archived';
+
+    /**
+     * @return array
+     */
+    public function getTitles()
+    {
+        return [
+            self::ACTIVE => 'Создан',
+            self::ARCHIVED => 'Архив'
+        ];
+    }
+
 
 }

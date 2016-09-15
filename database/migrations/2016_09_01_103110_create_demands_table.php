@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateRequestsTable extends Migration
+class CreateDemandsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,36 +12,37 @@ class CreateRequestsTable extends Migration
      */
     public function up()
     {
-        Schema::create('requests', function (Blueprint $table) {
+        Schema::create('demands', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('title');
-            $table->text('desc');
-            $table->text('address');
-            $table->date('delivery_date');
+            $table->string('title')->nullable();
+            $table->text('desc')->nullable();
+            $table->text('address')->nullable();
+            $table->date('delivery_date')->nullable();
+            $table->string('status');
             $table->integer('company_id')->unsigned();
             $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade');
-            $table->text('addition_emails_raw');
+            $table->text('addition_emails_raw')->nullable();
             $table->timestamps();
         });
 
-        Schema::create('request_regions', function (Blueprint $table) {
+        Schema::create('demand_regions', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('region_id')->unsigned();
             $table->foreign('region_id')->references('id')->on('regions')->onDelete('cascade');
 
-            $table->integer('request_id')->unsigned();
-            $table->foreign('request_id')->references('id')->on('requests')->onDelete('cascade');
+            $table->integer('demand_id')->unsigned();
+            $table->foreign('demand_id')->references('id')->on('demands')->onDelete('cascade');
 
             $table->timestamps();
         });
 
-        Schema::create('request_spheres', function (Blueprint $table) {
+        Schema::create('demand_spheres', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('sphere_id')->unsigned();
             $table->foreign('sphere_id')->references('id')->on('spheres')->onDelete('cascade');
 
-            $table->integer('request_id')->unsigned();
-            $table->foreign('request_id')->references('id')->on('requests')->onDelete('cascade');
+            $table->integer('demand_id')->unsigned();
+            $table->foreign('demand_id')->references('id')->on('demands')->onDelete('cascade');
 
             $table->timestamps();
         });
@@ -56,8 +57,8 @@ class CreateRequestsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('request_spheres');
-        Schema::drop('request_regions');
-        Schema::drop('requests');
+        Schema::drop('demand_spheres');
+        Schema::drop('demand_regions');
+        Schema::drop('demands');
     }
 }

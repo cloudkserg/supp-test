@@ -14,10 +14,19 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @property Sphere[] $spheres
  * @property Region[] $regions
+ * @property User[] $users
  */
 class Company extends Model
 {
 
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function users()
+    {
+        return $this->hasMany(User::class);
+    }
 
 
 

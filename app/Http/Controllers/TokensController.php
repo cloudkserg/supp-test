@@ -29,7 +29,7 @@ class TokensController extends Controller
         $token = $service->createToken($request->email, $request->password);
 
         // all good so return the token
-        return $this->response->array(compact('token'));
+        return $this->response->created(null, compact('token'));
     }
 
     public function update(Request $request)
@@ -47,6 +47,11 @@ class TokensController extends Controller
             return $this->response->errorForbidden('Invalid token provided');
         }
 
-        return $this->response->array(compact('token'));
+        return $this->response->accepted(null, compact('token'));
+    }
+
+    public function test()
+    {
+        return $this->response->noContent();
     }
 }

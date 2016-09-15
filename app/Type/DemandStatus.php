@@ -9,10 +9,10 @@
 namespace App\Type;
 
 
-class InvoiceStatus extends ConstType
+class DemandStatus extends ConstType
 {
-    const REQUESTED = 'requested';
-    const RESPONSED = 'responsed';
+    const ACTIVE = 'active';
+    const ARCHIVED = 'archived';
 
     /**
      * @return array
@@ -20,8 +20,8 @@ class InvoiceStatus extends ConstType
     public function getTitles()
     {
         return [
-            self::REQUESTED => 'Запрошен',
-            self::RESPONSED => 'Получен счет'
+            self::ACTIVE => 'Создан',
+            self::ARCHIVED => 'Архив'
         ];
     }
 

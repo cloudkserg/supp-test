@@ -18,8 +18,8 @@ class CreateResponseItemsTable extends Migration
             $table->integer('response_id')->unsigned();
             $table->foreign('response_id')->references('id')->on('responses')->onDelete('cascade');
 
-            $table->integer('request_id')->unsigned();
-            $table->foreign('request_id')->references('id')->on('requests')->onDelete('cascade');
+            $table->integer('demand_item_id')->unsigned();
+            $table->foreign('demand_item_id')->references('id')->on('demand_items')->onDelete('cascade');
 
             $table->integer('price_raw');
 

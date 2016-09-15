@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateRequestItemsTable extends Migration
+class CreateDemandItemsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,16 +12,17 @@ class CreateRequestItemsTable extends Migration
      */
     public function up()
     {
-        Schema::create('request_items', function (Blueprint $table) {
+        Schema::create('demand_items', function (Blueprint $table) {
             $table->increments('id');
             $table->string('title');
 
             $table->float('count');
             $table->integer('quantity_id')->unsigned();
 
-            $table->integer('request_id')->unsigned();
-            $table->foreign('request_id')->references('id')->on('requests')->onDelete('cascade');
+            $table->integer('demand_id')->unsigned();
+            $table->foreign('demand_id')->references('id')->on('demands')->onDelete('cascade');
 
+            $table->integer('response_item_id')->unsigned()->nullable();
 
 
             $table->string('status');
@@ -37,6 +38,6 @@ class CreateRequestItemsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('request_items');
+        Schema::drop('demand_items');
     }
 }

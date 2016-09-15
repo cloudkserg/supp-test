@@ -22,7 +22,7 @@ class TokenService
     public function createToken($email, $password)
     {
         try {
-            if (!$token = JWTAuth::attempt(array('email' => $email, 'password' => $password))) {
+            if (!$token = JWTAuth::attempt(array('email' => $email, 'password' => $password, 'confirmed' => true))) {
                 throw new UnauthorizedHttpException("Email address / password do not match");
             }
         } catch (JWTException $e) {

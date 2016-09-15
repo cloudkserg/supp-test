@@ -12,6 +12,9 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @property string $name
  * @property string $email
  * @property int $company_id
+ * @property boolean $confirmed
+ * @property string $confirmation_code
+ * @property string $remember_token
  *
  * @property Company $company
  *

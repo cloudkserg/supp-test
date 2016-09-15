@@ -17,11 +17,12 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         //add json api
-        $this->app['Dingo\Api\Transformer\Factory']->setAdapter(function ($app) {
-            $fractal = new Manager();
-            $fractal->setSerializer(new JsonApiSerializer());
-            return new Fractal($fractal);
-        });
+//        $this->app['Dingo\Api\Transformer\Factory']->setAdapter(function ($app) {
+//            $fractal = new Manager();
+//            $fractal->setSerializer(new JsonApiSerializer());
+//            return new Fractal($fractal);
+//        });
+
     }
 
     /**

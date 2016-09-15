@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Request;
+namespace App\Demand;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -10,12 +10,12 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @property int $id
  * @property int $response_id
- * @property int $request_id
+ * @property int $demand_item_id
  * @property int $price_raw
  * @property float $price
  *
  * @property Response $response
- * @property Request $request
+ * @property DemandItem $demandItem
  *
  */
 class ResponseItem extends Model
@@ -32,9 +32,9 @@ class ResponseItem extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function request()
+    public function demandItem()
     {
-        return $this->belongsTo(\Request::class);
+        return $this->belongsTo(DemandItem::class);
     }
 
 
