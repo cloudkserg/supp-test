@@ -28,4 +28,8 @@ $api->group(['middleware' => 'api.auth'], function ($api) {
     $api->get('/demands', 'DemandsController@indexActive');
     $api->post('/demands', 'DemandsController@store');
 
+    $api->get('/companies/search', 'CompaniesController@search');
+
+
+
 });

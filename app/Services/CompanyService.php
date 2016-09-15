@@ -9,9 +9,18 @@
 namespace App\Services;
 use App\Company;
 use App\Http\Requests\User\CreateUserRequest;
+use App\Repository\CompanyRepository;
 
 class CompanyService
 {
+
+    private $repo;
+
+    function __construct()
+    {
+        $this->repo = new CompanyRepository();
+    }
+
 
     /**
      * @param CreateUserRequest $request
@@ -23,6 +32,11 @@ class CompanyService
         $company->title = $request->company_title;
         $company->save();
         return $company;
+    }
+
+    public function countSearchItems(array $spheres, array $regions)
+    {
+        return $this->repo->countBySpheresAndRegions($spheres, $regions);
     }
 
 }

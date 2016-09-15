@@ -35,7 +35,7 @@ abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
     protected function setAuthToken()
     {
         $this->createBeforeCompany();
-        $this->company = $this->createCompany();
+        $this->company = factory(\App\Company::class)->create();
         $userService = new \App\Services\UserService();
         $this->user = factory(\App\User::class)->create([
             'password' => $userService->encryptPassword(self::PASSWORD)
@@ -49,17 +49,10 @@ abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
 
     }
 
-    protected function createCompany()
+    protected function attachCompanyToSphereAndRegion(\App\Company $company, $spheres, $regions)
     {
-        $faker = Faker\Factory::create();
-        $company = factory(\App\Company::class)->create();
-        $company->spheres()->attach($faker->randomElements(
-            \App\Type\Sphere::pluck('id')->toArray()
-        ));
-        $company->regions()->attach($faker->randomElements(
-            \App\Type\Region::pluck('id')->toArray()
-        ));
-        return $company;
+        $company->spheres()->attach($spheres);
+        $company->regions()->attach($regions);
     }
 
     protected function createBeforeCompany()
