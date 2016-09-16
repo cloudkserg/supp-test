@@ -49,6 +49,12 @@ abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
 
     }
 
+    protected function attachDemandToSphereAndRegion(\App\Demand\Demand $demand, $spheres, $regions)
+    {
+        $demand->spheres()->attach($spheres);
+        $demand->regions()->attach($regions);
+    }
+
     protected function attachCompanyToSphereAndRegion(\App\Company $company, $spheres, $regions)
     {
         $company->spheres()->attach($spheres);
@@ -72,14 +78,45 @@ abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
 
     }
 
-    protected function createDemandWithItems($count, $countItems, $data = [], $demandItemData = [])
+    protected function createResponseWithItems($countItems, $data = [], $ItemData = [])
     {
-        for ($i=0; $i<$count; $i++) {
-            $demand = factory(\App\Demand\Demand::class)->create($data);
-            for($j=0; $j<$countItems;$j++) {
-                $demand->demandItems()->save(factory(\App\Demand\DemandItem::class)->make($demandItemData));
-            }
+
+        $item = factory(\App\Demand\Response::class)->create($data);
+        for($j=0; $j<$countItems;$j++) {
+            $item->responseItems()->save(factory(\App\Demand\ResponseItem::class)->make($ItemData));
         }
+
+
+
+        return $item;
+    }
+
+    protected function createDemandWithItems($countItems, $data = [], $demandItemData = [])
+    {
+        if (isset($data['spheres'])) {
+            $spheres = $data['spheres'];
+            unset($data['spheres']);
+        }
+        if (isset($data['regions'])) {
+            $regions = $data['regions'];
+            unset($data['regions']);
+        }
+
+
+        $demand = factory(\App\Demand\Demand::class)->create($data);
+        for($j=0; $j<$countItems;$j++) {
+            $demand->demandItems()->save(factory(\App\Demand\DemandItem::class)->make($demandItemData));
+        }
+
+        if (isset($spheres)) {
+            $demand->spheres()->attach($spheres);
+        }
+        if (isset($regions)) {
+            $demand->regions()->attach($regions);
+        }
+
+
+        return $demand;
     }
 
 }

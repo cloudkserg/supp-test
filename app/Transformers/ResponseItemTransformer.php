@@ -15,9 +15,6 @@ use App\Demand\ResponseItem;
 class ResponseItemTransformer extends TransformerAbstract
 {
 
-    protected $avalaiableIncludes = [
-        'requestItem'
-    ];
 
     protected $defaultIncludes = [
         'invoice'
@@ -28,18 +25,27 @@ class ResponseItemTransformer extends TransformerAbstract
     {
         return [
             'id' => (int)$item->id,
-            'price' => $item->price
+            'price' => $item->price,
+            'response_id' => (int)$item->response_id
         ];
     }
 
     public function includeInvoice(ResponseItem $item)
     {
+        if (!isset($item->invoice)) {
+            return null;
+        }
         return $this->item($item->invoice, new InvoiceTransformer());
     }
 
     public function includeDemandItem(ResponseItem $item)
     {
         return $this->collection($item->demandItem, new DemandItemTransformer());
+    }
+
+    public function addDemandItem()
+    {
+        $this->defaultIncludes[] = 'demandItem';
     }
 
 

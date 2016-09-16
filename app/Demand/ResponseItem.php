@@ -26,7 +26,7 @@ class ResponseItem extends Model
      */
     public function response()
     {
-        return $this->belongsTo(\Response::class);
+        return $this->belongsTo(Response::class);
     }
 
     /**

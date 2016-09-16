@@ -20,6 +20,21 @@ class CompaniesController extends Controller
      */
     private $_companyService;
 
+    /**
+     * @return User
+     */
+    private function getUser()
+    {
+        return $this->auth->user();
+    }
+
+    /**
+     * @return Company
+     */
+    private function getCompany()
+    {
+        return $this->getUser()->company;
+    }
 
 
 
@@ -39,7 +54,9 @@ class CompaniesController extends Controller
      */
     public function search(SearchCompanyRequest $request)
     {
-        $count = $this->_companyService->countSearchItems($request->spheres, $request->regions);
+        $count = $this->_companyService->countSearchItems(
+            $this->getCompany()->id, $request->spheres, $request->regions
+        );
         return compact('count');
     }
 

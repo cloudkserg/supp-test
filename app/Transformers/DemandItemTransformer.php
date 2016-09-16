@@ -14,13 +14,8 @@ use App\Demand\DemandItem;
 
 class DemandItemTransformer extends TransformerAbstract
 {
-    protected $defaultIncludes = [
-        'selectedResponseItem'
-    ];
+    protected $defaultIncludes = [];
 
-    protected $availableIncludes = [
-        'responseItems'
-    ];
 
     public function transform(DemandItem $item)
     {
@@ -43,6 +38,18 @@ class DemandItemTransformer extends TransformerAbstract
     public function includeResponseItems(DemandItem $item)
     {
         return $this->collection($item->responseItems, new ResponseItemTransformer());
+    }
+
+    public function addResponseItems()
+    {
+        $this->defaultIncludes[] = 'responseItems';
+        return $this;
+    }
+
+    public function addSelectedResponseItem()
+    {
+        $this->defaultIncludes[] = 'selectedResponseItem';
+        return $this;
     }
 
 }

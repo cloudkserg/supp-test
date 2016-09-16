@@ -16,12 +16,10 @@ class ResponseTransformer extends TransformerAbstract
 {
 
     protected $defaultIncludes = [
-        'responseItems', 'company'
+        'company'
     ];
 
-    protected $availableIncludes = [
-        'request'
-    ];
+
 
     public function transform(Response $response)
     {
@@ -45,6 +43,16 @@ class ResponseTransformer extends TransformerAbstract
     public function includeResponseItems(Response $response)
     {
         return $this->collection($response->responseItems, new ResponseItemTransformer());
+    }
+
+    public function addDemand()
+    {
+        $this->defaultIncludes[] = 'demand';
+    }
+
+    public function addResponseItems()
+    {
+        $this->defaultIncludes[] = 'responseItems';
     }
 
 

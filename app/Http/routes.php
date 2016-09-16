@@ -26,9 +26,13 @@ $api->group(['middleware' => 'api.auth'], function ($api) {
     $api->get('/tokens/test', 'TokensController@test');
 
     $api->get('/demands', 'DemandsController@indexActive');
+    $api->get('/demands/input', 'DemandsController@indexInput');
     $api->post('/demands', 'DemandsController@store');
 
+
+
     $api->get('/companies/search', 'CompaniesController@search');
+
 
 
 

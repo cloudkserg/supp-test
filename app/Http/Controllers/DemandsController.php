@@ -11,6 +11,8 @@ use App\Company;
 use App\Http\Requests;
 use App\Transformers\DemandTransformer;
 use App\Http\Requests\CreateDemandRequest;
+use Illuminate\Http\Request;
+use League\Fractal\Resource\Collection;
 
 
 class DemandsController extends Controller
@@ -61,12 +63,30 @@ class DemandsController extends Controller
      */
     public function indexActive()
     {
-        return $this->response->collection(
-            $this->_demandService->getActiveItems(
-                $this->getCompany()->id
-            ),
-            DemandTransformer::class
-        );
+        $transformer = (new DemandTransformer())
+            ->addResponses();
+        $transformer->getDemandItemTransformer()
+            ->addSelectedResponseItem()
+            ->addResponseItems();
+
+        $items = $this->_demandService->getActiveItems($this->getCompany());
+        return $this->response->collection($items, $transformer);
+
+    }
+
+    public function indexInput()
+    {
+        $transformer = (new DemandTransformer())
+            ->addResponses()
+            ->addCompany();
+        $transformer->getDemandItemTransformer()
+            ->addSelectedResponseItem()
+            ->addResponseItems();
+
+        $items = $this->_demandService->getInputItems($this->getCompany());
+        $this->_demandService->loadOnlyMyResponses($this->getCompany(), $items);
+
+        return $this->response->collection($items, $transformer);
     }
 
     public function store(CreateDemandRequest $createRequest)

@@ -2,6 +2,7 @@
 
 namespace App\Demand;
 
+use App\Collections\DemandCollection;
 use App\Company;
 use App\Type\Region;
 use App\Type\Sphere;
@@ -25,6 +26,7 @@ use Carbon\Carbon;
  * @property Region[] $regions
  * @property Sphere[] $spheres
  * @property DemandItem[] $demandItems
+ * @property Response[] $responses
  *
  *
  * @package App\Demand
@@ -56,7 +58,7 @@ class Demand extends Model
      */
     public function regions()
     {
-        return $this->belongsToMany(Region::class, 'request_regions');
+        return $this->belongsToMany(Region::class, 'demand_regions');
     }
 
     /**
@@ -64,8 +66,17 @@ class Demand extends Model
      */
     public function spheres()
     {
-        return $this->belongsToMany(Sphere::class, 'request_spheres');
+        return $this->belongsToMany(Sphere::class, 'demand_spheres');
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function responses()
+    {
+        return $this->hasMany(Response::class);
+    }
+
 
     /**
      * @param $value
@@ -91,4 +102,7 @@ class Demand extends Model
     {
         return $this->hasMany(DemandItem::class);
     }
+
+
+
 }

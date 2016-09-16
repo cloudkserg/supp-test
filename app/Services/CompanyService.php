@@ -34,9 +34,9 @@ class CompanyService
         return $company;
     }
 
-    public function countSearchItems(array $spheres, array $regions)
+    public function countSearchItems($companyId, array $spheres, array $regions)
     {
-        return $this->repo->countBySpheresAndRegions($spheres, $regions);
+        return $this->repo->countBySpheresAndRegionsWithoutMe($companyId, $spheres, $regions);
     }
 
 }

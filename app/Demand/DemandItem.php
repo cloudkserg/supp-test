@@ -4,7 +4,6 @@ namespace App\Demand;
 
 use App\Type\Quantity;
 use Illuminate\Database\Eloquent\Model;
-use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class RequestItem
@@ -37,7 +36,7 @@ class DemandItem extends Model
      */
     public function selectedResponseItem()
     {
-        return $this->belongsTo(ResponseItem::class);
+        return $this->belongsTo(ResponseItem::class, 'response_item_id');
     }
 
     /**
@@ -63,6 +62,5 @@ class DemandItem extends Model
     {
         return $this->hasMany(ResponseItem::class);
     }
-
 
 }

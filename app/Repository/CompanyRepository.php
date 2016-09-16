@@ -16,18 +16,19 @@ class CompanyRepository
 {
 
     /**
+     * @param int $companyId
      * @param array $spheres
      * @param array $regions
      * @return mixed
      */
-    public function countBySpheresAndRegions(array $spheres, array $regions)
+    public function countBySpheresAndRegionsWithoutMe($companyId, array $spheres, array $regions)
     {
 
         return  Company::whereHas('spheres', function ($q) use ($spheres) {
                     $q->whereIn('spheres.id', $spheres);
                 })->whereHas('regions', function ($q) use ($regions) {
                     $q->whereIn('regions.id', $regions);
-                })
+                })->where('companies.id', '!=', $companyId)
             ->count();
 
 

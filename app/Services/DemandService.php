@@ -9,7 +9,11 @@
 namespace App\Services;
 
 
+use Illuminate\Database\Eloquent\Collection;
+use App\Queries\DemandQuery;
+use App\Company;
 use App\Http\Requests\CreateDemandRequest;
+use App\Queries\DemandRelationLoader;
 use App\Repository\DemandRepository;
 use App\Type\DemandStatus;
 use App\Demand\Demand;
@@ -32,12 +36,42 @@ class DemandService
 
 
     /**
-     * @param $companyId
-     * @return Demand[]
+     * @param Company $company
+     * @return Collection
      */
-    public function getActiveItems($companyId)
+    public function getActiveItems(Company $company)
     {
-        return $this->_repo->findActiveByCompany($companyId);
+        return $this->_repo->findActiveByCompany($company->id);
+    }
+
+    /**
+     * @param Company $company
+     * @return Collection
+     */
+    public function getInputItems(Company $company)
+    {
+        return $this->_repo->findActiveBySpheresAndRegions(
+                $company->spheres->pluck('id')->toArray(),
+                $company->regions->pluck('id')->toArray(),
+                (new DemandQuery())->withoutCompanyItems($company->id)
+                    ->getBuilder()
+            );
+    }
+
+    /**
+     * @param Company $company
+     * @param Collection $demands
+     * @return Collection
+     */
+    public function loadOnlyMyResponses(Company $company, Collection $demands)
+    {
+        $loader = new DemandRelationLoader();
+        $loader->loadSelectedResponseItemForCompany($company->id)
+            ->loadResponsesForCompany($company->id)
+            ->loadResponseItemsForCompany($company->id);
+        $loader->applyLoad($demands);
+
+        return $demands;
     }
 
     public function addItem($companyId, CreateDemandRequest $createRequest)
@@ -50,5 +84,6 @@ class DemandService
         $item->save();
         return $item;
     }
+
 
 }
