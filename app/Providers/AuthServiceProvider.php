@@ -2,6 +2,14 @@
 
 namespace App\Providers;
 
+use App\Demand\Demand;
+use App\Demand\DemandItem;
+use App\Demand\Response;
+use App\Demand\ResponseItem;
+use App\Policies\DemandPolicy;
+use App\Policies\DemandItemPolicy;
+use App\Policies\ResponsePolicy;
+use App\Policies\ResponseItemPolicy;
 use Illuminate\Contracts\Auth\Access\Gate as GateContract;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
@@ -13,7 +21,10 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        'App\Model' => 'App\Policies\ModelPolicy',
+        Demand::class => DemandPolicy::class,
+        DemandItem::class => DemandItemPolicy::class,
+        Response::class => ResponsePolicy::class,
+        ResponseItem::class => ResponseItemPolicy::class
     ];
 
     /**

@@ -11,7 +11,9 @@ namespace App\Type;
 
 class ResponseStatus extends ConstType
 {
+    const DRAFT = 'draft';
     const ACTIVE = 'active';
+    const CANCEL = 'cancel';
     const ARCHIVED = 'archived';
 
     /**
@@ -20,7 +22,9 @@ class ResponseStatus extends ConstType
     public function getTitles()
     {
         return [
+            self::DRAFT => 'Ожидает ответа',
             self::ACTIVE => 'Создан',
+            self::CANCEL => 'Отклонен',
             self::ARCHIVED => 'Архив'
         ];
     }

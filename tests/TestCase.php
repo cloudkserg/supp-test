@@ -72,12 +72,6 @@ abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
         factory(\App\Type\Quantity::class, 2)->create();
     }
 
-    protected function createBeforeResponse()
-    {
-        factory(\App\Type\DeliveryType::class, 2)->create();
-
-    }
-
     protected function createResponseWithItems($countItems, $data = [], $ItemData = [])
     {
 

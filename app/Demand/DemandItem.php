@@ -3,6 +3,7 @@
 namespace App\Demand;
 
 use App\Type\Quantity;
+use App\Type\ResponseItemStatus;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -14,11 +15,10 @@ use Illuminate\Database\Eloquent\Model;
  * @property float $count
  * @property int $quantity_id
  * @property int $demand_id
- * @property string $status
  * @property int|null $response_item_id
  *
  * @property Quantity $quantity
- * @property Demand $request
+ * @property Demand $demand
  * @property ResponseItem[] $responseItems
  * @property ResponseItem $selectedResponseItem
  */
@@ -32,11 +32,11 @@ class DemandItem extends Model
 
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function selectedResponseItem()
     {
-        return $this->belongsTo(ResponseItem::class, 'response_item_id');
+        return $this->belongsTo(ResponseItem::class);
     }
 
     /**

@@ -25,8 +25,6 @@ class CreateDemandItemsTable extends Migration
             $table->integer('response_item_id')->unsigned()->nullable();
 
 
-            $table->string('status');
-
             $table->timestamps();
         });
     }

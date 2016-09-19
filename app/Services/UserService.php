@@ -20,14 +20,14 @@ class UserService
     /**
      * @var CompanyService
      */
-    private $_companyService;
+    private $companyService;
 
     /**
      *
      */
     public function __construct()
     {
-        $this->_companyService = new CompanyService();
+        $this->companyService = new CompanyService();
     }
 
     /**
@@ -39,7 +39,7 @@ class UserService
     {
         \DB::beginTransaction();
         try {
-            $company = $this->_companyService->createCompany($request);
+            $company = $this->companyService->createCompany($request);
 
             $user = new User();
             $user->name = $request->name;

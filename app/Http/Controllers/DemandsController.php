@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\CreateDraftResponseForDemandJob;
+use App\Jobs\CreateDraftResponseJob;
 use App\Services\DemandItemService;
 use App\Services\DemandService;
 use Dingo\Api\Routing\Helpers;
@@ -11,8 +13,8 @@ use App\Company;
 use App\Http\Requests;
 use App\Transformers\DemandTransformer;
 use App\Http\Requests\CreateDemandRequest;
-use Illuminate\Http\Request;
-use League\Fractal\Resource\Collection;
+use App\Http\Requests\IndexDemandsRequest;
+use App\Http\Requests\UpdateDemandRequest;
 
 
 class DemandsController extends Controller
@@ -23,12 +25,12 @@ class DemandsController extends Controller
     /**
      * @var DemandService
      */
-    private $_demandService;
+    private $demandService;
 
     /**
      * @var DemandItemService
      */
-    private $_demandItemService;
+    private $demandItemService;
 
 
     /**
@@ -36,8 +38,8 @@ class DemandsController extends Controller
      */
     function __construct()
     {
-        $this->_demandService = new DemandService();
-        $this->_demandItemService = new DemandItemService();
+        $this->demandService = new DemandService();
+        $this->demandItemService = new DemandItemService();
     }
 
     /**
@@ -59,41 +61,36 @@ class DemandsController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param IndexDemandsRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function indexActive()
+    public function index(IndexDemandsRequest $request)
     {
-        $transformer = (new DemandTransformer())
-            ->addResponses();
-        $transformer->getDemandItemTransformer()
-            ->addSelectedResponseItem()
-            ->addResponseItems();
+        $items = $this->demandService->getItemsByCompanyAndStatus(
+            $this->getCompany(), $request->status
+        );
+        return $this->response->collection(
+            $items,
+            (new DemandTransformer())->addResponses()
+        );
 
-        $items = $this->_demandService->getActiveItems($this->getCompany());
-        return $this->response->collection($items, $transformer);
-
-    }
-
-    public function indexInput()
-    {
-        $transformer = (new DemandTransformer())
-            ->addResponses()
-            ->addCompany();
-        $transformer->getDemandItemTransformer()
-            ->addSelectedResponseItem()
-            ->addResponseItems();
-
-        $items = $this->_demandService->getInputItems($this->getCompany());
-        $this->_demandService->loadOnlyMyResponses($this->getCompany(), $items);
-
-        return $this->response->collection($items, $transformer);
     }
 
     public function store(CreateDemandRequest $createRequest)
     {
-        $demand = $this->_demandService->addItem($this->getCompany()->id, $createRequest);
-        $this->_demandItemService->addItems($demand, $createRequest);
+        $demand = $this->demandService->addItem($this->getCompany()->id, $createRequest);
+        $this->demandItemService->addItems($demand, $createRequest);
+
+        dispatch(new CreateDraftResponseForDemandJob($demand));
         return $this->response->created('/demands/' . $demand->id);
     }
 
+
+    public function update(UpdateDemandRequest $request)
+    {
+        //updateStatus
+        $this->demandService->changeItemStatus($request->getDemand(), $request->status);
+        return $this->response->accepted();
+
+    }
 }

@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use App\Jobs\CreateDraftResponseForCompanyJob;
 
 class UsersTest extends TestCase
 {
@@ -9,6 +10,7 @@ class UsersTest extends TestCase
 
     public function testCreate()
     {
+        $this->expectsJobs(CreateDraftResponseForCompanyJob::class);
         $this->post('/api/users', [
                 'email' => 'abba@mail.ru',
                 'password' => '123456',
@@ -18,6 +20,7 @@ class UsersTest extends TestCase
             ])
             ->seeStatusCode(201)
             ->seeHeader('location', '/users/1');
+
     }
 
     public function testErrorValidationPassword()

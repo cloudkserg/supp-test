@@ -32,7 +32,9 @@ class SearchCompanyRequest extends ApiRequest
     {
         return [
             'regions' => 'array|required',
-            'spheres' => 'array|required'
+            'reqions.*' => 'int',
+            'spheres' => 'array|required',
+            'spheres.*' => 'int'
         ];
     }
 

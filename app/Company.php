@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Demand\Response;
 use App\Type\Region;
 use App\Type\Sphere;
 use Illuminate\Database\Eloquent\Model;
@@ -15,6 +16,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property Sphere[] $spheres
  * @property Region[] $regions
  * @property User[] $users
+ * @property Response[] $responses
  */
 class Company extends Model
 {
@@ -46,5 +48,14 @@ class Company extends Model
     public function regions()
     {
         return $this->belongsToMany(Region::class, 'company_regions');
+    }
+
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function responses()
+    {
+        return $this->hasMany(Response::class);
     }
 }

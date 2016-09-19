@@ -22,6 +22,11 @@ class DemandsTest extends TestCase
     }
 
 
+    public function testCreateAuth()
+    {
+        $this->post('/api/demands')
+            ->seeStatusCode(401);
+    }
 
     public function testCreate()
     {
@@ -51,6 +56,7 @@ class DemandsTest extends TestCase
             ]
         ];
 
+        $this->expectsJobs(\App\Jobs\CreateDraftResponseForDemandJob::class);
         $this->post('/api/demands?token=' . $this->token, $data)
             ->seeStatusCode(201)
             ->seeHeader('location', '/demands/1');
@@ -76,281 +82,78 @@ class DemandsTest extends TestCase
             ->seeStatusCode(422);
     }
 
-    public function testCreateAuth()
+
+    public function testUpdateArchived()
     {
-        $this->post('/api/demands')
-            ->seeStatusCode(401);
-    }
+        $demand = $this->createDemandWithItems(1, [
+            'company_id' => $this->company->id,
+            'status' => \App\Type\DemandStatus::ACTIVE
+        ]);
 
-    public function testIndexActiveAuth()
-    {
-        $this->get('/api/demands')
-            ->seeStatusCode(401);
-    }
-
-    private function getJsonStructure()
-    {
-        return [
-            'data' => [
-                '*' => [
-                    'id',
-                    'title',
-                    'demandItems' => [
-                        'data' => [
-                            '*' => [
-                                'id',
-                                'status',
-                                'quantityTitle',
-                                'count',
-                                'title',
-                                'responseItems' => [
-                                    'data' => [
-
-                                    ]
-                                ]
-                            ]
-                        ]
-                    ],
-                    'responses' => [
-                        'data' => [
-
-                        ]
-                    ]
-                ]
-            ]
+        $data = [
+            'demand_id' => $demand->id,
+            'status' => \App\Type\DemandStatus::ARCHIVED
         ];
+        $r = $this->patch('/api/demands?token=' . $this->token, $data);
+            $r->seeStatusCode(202);
+
+        $this->assertEquals(\App\Type\DemandStatus::ARCHIVED, Demand::find($demand->id)->status);
     }
 
-    private function getJsonStructureWithCompany()
+    public function testUpdateActive()
     {
-        $arr = $this->getJsonStructure();
-        $arr['data']['*']['company'] = [
-            'data' => [
-                'id',
-                'title'
-            ]
+        $demand = $this->createDemandWithItems(1, [
+            'company_id' => $this->company->id,
+            'status' => \App\Type\DemandStatus::ARCHIVED
+        ]);
+
+        $data = [
+            'demand_id' => $demand->id,
+            'status' => \App\Type\DemandStatus::ACTIVE
         ];
-        return $arr;
+        $r = $this->patch('/api/demands?token=' . $this->token, $data);
+        $r->seeStatusCode(202);
+
+        $this->assertEquals(\App\Type\DemandStatus::ACTIVE, Demand::find($demand->id)->status);
     }
 
-    public function testIndexActive()
+    public function testUpdateSame()
     {
-        //create my own active demands
-        $this->createBeforeDemand();
-        $this->createDemandWithItems(1, [
-            'status' => \App\Type\DemandStatus::ACTIVE,
-            'company_id' => $this->company->id
-        ]);
-        $this->createDemandWithItems(1, [
-            'status' => \App\Type\DemandStatus::ACTIVE,
-            'company_id' => $this->company->id
-        ]);
-        $this->createDemandWithItems(2, [
-            'status' => \App\Type\DemandStatus::ACTIVE,
-            'company_id' => $this->company->id
+        $demand = $this->createDemandWithItems(1, [
+            'company_id' => $this->company->id,
+            'status' => \App\Type\DemandStatus::ACTIVE
         ]);
 
-        $this->createDemandWithItems(1, [
-            'status' => \App\Type\DemandStatus::ARCHIVED,
-            'company_id' => $this->company->id
-        ]);
+        $data = [
+            'demand_id' => $demand->id,
+            'status' => \App\Type\DemandStatus::ACTIVE
+        ];
+        $r = $this->patch('/api/demands?token=' . $this->token, $data);
+        $r->seeStatusCode(202);
+
+        $this->assertEquals(\App\Type\DemandStatus::ACTIVE, Demand::find($demand->id)->status);
+    }
+
+    public function testNotRightUpdate()
+    {
         $company = factory(\App\Company::class)->create();
-        $this->createDemandWithItems(1, [
-            'status' => \App\Type\DemandStatus::ACTIVE,
-            'company_id' => $company->id
-        ]);
-
-        $r = $this->get('/api/demands?token=' . $this->token);
-            $r->seeStatusCode('200');
-        $data = json_decode($r->response->content())->data;
-        $this->assertCount(3, $data);
-        $this->assertCount(1, $data[0]->demandItems->data);
-        $this->assertCount(2, $data[2]->demandItems->data);
-        $r
-            ->seeJsonStructure($this->getJsonStructure());
-
-
-    }
-
-    public function testIndexActiveWithResponse()
-    {
-        //create my own active demands
-        $this->createBeforeDemand();
         $demand = $this->createDemandWithItems(1, [
-            'status' => \App\Type\DemandStatus::ACTIVE,
-            'company_id' => $this->company->id
+            'company_id' => $company->id,
+            'status' => \App\Type\DemandStatus::ACTIVE
         ]);
 
-        $this->createBeforeResponse();
-        $demand->responses()->save(factory(\App\Demand\Response::class)->make());
-        $demand->responses()->save(factory(\App\Demand\Response::class)->make());
+        $data = [
+            'demand_id' => $demand->id,
+            'status' => \App\Type\DemandStatus::ARCHIVED
+        ];
+        $r = $this->patch('/api/demands?token=' . $this->token, $data);
+        $r->seeStatusCode(403);
 
-
-        $r = $this->get('/api/demands?token=' . $this->token)
-            ->seeStatusCode('200');
-        $data = json_decode($r->response->content())->data;
-        $this->assertCount(1, $data);
-        $this->assertCount(1, $data[0]->demandItems->data);
-        $this->assertCount(2, $data[0]->responses->data);
+        $this->assertEquals(\App\Type\DemandStatus::ACTIVE, Demand::find($demand->id)->status);
     }
 
 
-    public function testIndexInput()
-    {
-        //create my own active demands
-        $this->createBeforeDemand();
-
-        //connectToSpheresAndRegions
-        $this->attachCompanyToSphereAndRegion($this->company, $this->spheres[0], $this->regions[0]);
-
-        //demand with spheres and regions
-        $anotherCompany = factory(\App\Company::class)->create();
-        $demand = $this->createDemandWithItems(1, [
-            'status' => \App\Type\DemandStatus::ACTIVE,
-            'company_id' => $anotherCompany->id,
-            'spheres' => [$this->spheres[0], $this->spheres[1]],
-            'regions' => [$this->regions[0], $this->regions[1]]
-        ]);
-
-        //demand with another spheres and regions
-        $this->createDemandWithItems(1, [
-            'status' => \App\Type\DemandStatus::ACTIVE,
-            'company_id' => $anotherCompany->id,
-            'spheres' => [$this->spheres[2], $this->spheres[1]],
-            'regions' => [$this->regions[2], $this->regions[1]]
-        ]);
-
-        //own demand with another spheres and regions
-        $this->createDemandWithItems(1, [
-            'status' => \App\Type\DemandStatus::ACTIVE,
-            'company_id' => $this->company->id,
-            'spheres' => [$this->spheres[0]],
-            'regions' => [$this->regions[0]]
-        ]);
-
-        //archive demand with another spheres and regions
-        $this->createDemandWithItems(1, [
-            'status' => \App\Type\DemandStatus::ARCHIVED,
-            'company_id' => $anotherCompany->id,
-            'spheres' => [$this->spheres[0]],
-            'regions' => [$this->regions[0]]
-        ]);
 
 
-
-        $r = $this->get('/api/demands/input?token=' . $this->token);
-            $r->seeStatusCode('200');
-        $data = json_decode($r->response->content())->data;
-        $this->assertCount(1, $data);
-        $this->assertEquals($demand->id, $data[0]->id);
-        $this->assertCount(1, $data[0]->demandItems->data);
-        $this->assertCount(0, $data[0]->responses->data);
-        $r
-            ->seeJsonStructure($this->getJsonStructureWithCompany());
-
-
-    }
-
-    public function testIndexInputWithResponse()
-    {
-        //create my own active demands
-        $this->createBeforeDemand();
-
-        //connectToSpheresAndRegions
-        $this->attachCompanyToSphereAndRegion($this->company, $this->spheres[0], $this->regions[0]);
-
-        //demand with spheres and regions
-        $anotherCompany = factory(\App\Company::class)->create();
-        $demand = $this->createDemandWithItems(1, [
-            'status' => \App\Type\DemandStatus::ACTIVE,
-            'company_id' => $anotherCompany->id,
-            'spheres' => [$this->spheres[0]],
-            'regions' => [$this->regions[0]]
-        ]);
-
-        $this->createBeforeResponse();
-        //own response
-        $response = $this->createResponseWithItems(1, [
-                'company_id' => $this->company->id,
-                'demand_id' => $demand->id
-            ],[
-                'demand_item_id' => $demand->demandItems[0]->id
-        ]);
-
-        //another response
-        $anotherResponse = $this->createResponseWithItems(1, [
-            'company_id' => $anotherCompany->id,
-            'demand_id' => $demand->id
-        ],[
-            'demand_item_id' => $demand->demandItems[0]->id
-        ]);
-
-        //another selectedResponseItem
-        $demand->demandItems[0]->selectedResponseItem()->associate($anotherResponse);
-        $demand->demandItems[0]->update();
-
-
-        $r = $this->get('/api/demands/input?token=' . $this->token);
-        $r->seeStatusCode('200');
-        $data = json_decode($r->response->content())->data;
-        $demandItem = $data[0]->demandItems->data[0];
-
-        //is my response
-        $this->assertCount(1, $data);
-        $this->assertCount(1, $data[0]->responses->data);
-        $this->assertEquals($response->id, $data[0]->responses->data[0]->id);
-
-        //is my responseItems
-        $responseItems = $demandItem->responseItems->data;
-        $this->assertCount(1, $responseItems);
-        $this->assertEquals($response->responseItems[0]->id, $responseItems[0]->id);
-
-        //not show another selectedResponseItem
-        $this->assertTrue(!isset($demandItem->selectedResponseItem));
-
-    }
-
-
-    public function testIndexInputWithOwnSelectedResponse()
-    {
-        //create my own active demands
-        $this->createBeforeDemand();
-
-        //connectToSpheresAndRegions
-        $this->attachCompanyToSphereAndRegion($this->company, $this->spheres[0], $this->regions[0]);
-
-        //demand with spheres and regions
-        $anotherCompany = factory(\App\Company::class)->create();
-        $demand = $this->createDemandWithItems(1, [
-            'status' => \App\Type\DemandStatus::ACTIVE,
-            'company_id' => $anotherCompany->id,
-            'spheres' => [$this->spheres[0]],
-            'regions' => [$this->regions[0]]
-        ]);
-
-        $this->createBeforeResponse();
-        //own response
-        $response = $this->createResponseWithItems(1, [
-            'company_id' => $this->company->id,
-            'demand_id' => $demand->id
-        ],[
-            'demand_item_id' => $demand->demandItems[0]->id
-        ]);
-
-
-        //another selectedResponseItem
-        $demand->demandItems[0]->selectedResponseItem()->associate($response);
-        $demand->demandItems[0]->update();
-
-
-        $r = $this->get('/api/demands/input?token=' . $this->token);
-        $r->seeStatusCode('200');
-        $data = json_decode($r->response->content())->data;
-        $demandItem = $data[0]->demandItems->data[0];
-
-         //not show another selectedResponseItem
-        $this->assertTrue(isset($demandItem->selectedResponseItem));
-
-    }
 
 }

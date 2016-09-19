@@ -14,26 +14,17 @@ use League\Fractal\TransformerAbstract;
 
 class DemandTransformer extends TransformerAbstract
 {
-    /**
-     * @var DemandItemTransformer
-     */
-    private $_demandItemTransformer;
-
-    function __construct()
-    {
-        $this->_demandItemTransformer = new DemandItemTransformer();
-    }
-
 
     protected $defaultIncludes = [
-        'demandItems'
+        'demandItems', 'company'
     ];
 
     public function transform(Demand $demand)
     {
         return [
             'id' => (int)$demand->id,
-            'title' => $demand->title
+            'title' => $demand->title,
+            'status' => $demand->status
         ];
     }
 
@@ -44,18 +35,12 @@ class DemandTransformer extends TransformerAbstract
 
     public function includeDemandItems(Demand $demand)
     {
-        return $this->collection($demand->demandItems, $this->_demandItemTransformer);
+        return $this->collection($demand->demandItems, new DemandItemTransformer());
     }
 
     public function includeResponses(Demand $demand)
     {
         return $this->collection($demand->responses, new ResponseTransformer());
-    }
-
-    public function addCompany()
-    {
-        $this->defaultIncludes[] = 'company';
-        return $this;
     }
 
 
@@ -68,14 +53,6 @@ class DemandTransformer extends TransformerAbstract
         return $this;
     }
 
-
-    /**
-     * @return DemandItemTransformer
-     */
-    public function getDemandItemTransformer()
-    {
-        return $this->_demandItemTransformer;
-    }
 
 
 

@@ -10,28 +10,28 @@ namespace App\Repository;
 
 
 use App\Company;
-use Illuminate\Database\Query\Builder;
+use Illuminate\Database\Eloquent\Builder;
 
 class CompanyRepository
 {
 
+
     /**
-     * @param int $companyId
-     * @param array $spheres
-     * @param array $regions
-     * @return mixed
+     * @param Builder $builder
+     * @return int
      */
-    public function countBySpheresAndRegionsWithoutMe($companyId, array $spheres, array $regions)
+    public function count(Builder $builder)
     {
+        return $builder->count();
+    }
 
-        return  Company::whereHas('spheres', function ($q) use ($spheres) {
-                    $q->whereIn('spheres.id', $spheres);
-                })->whereHas('regions', function ($q) use ($regions) {
-                    $q->whereIn('regions.id', $regions);
-                })->where('companies.id', '!=', $companyId)
-            ->count();
-
-
+    /**
+     * @param Builder $builder
+     * @return \Illuminate\Database\Eloquent\Collection|static[]
+     */
+    public function findAll(Builder $builder)
+    {
+        return $builder->get();
     }
 
 }

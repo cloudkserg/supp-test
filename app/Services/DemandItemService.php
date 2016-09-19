@@ -24,8 +24,29 @@ class DemandItemService
     {
         foreach ($createRequest->demandItems as $demandItemData) {
             $demandItem = new DemandItem($demandItemData);
-            $demandItem->status = DemandItemStatus::ACTIVE;
             $demand->demandItems()->save($demandItem);
         }
     }
+
+    /**
+     * @param $id
+     * @return DemandItem
+     */
+    public function findItem($id)
+    {
+        return DemandItem::findOrFail($id);
+    }
+
+
+    /**
+     * @param DemandItem $item
+     * @param $responseItemId
+     * @internal param $status
+     */
+    public function selectResponseItem(DemandItem $item, $responseItemId)
+    {
+        $item->response_item_id = $responseItemId;
+        $item->save();
+    }
+
 }

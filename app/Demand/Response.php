@@ -13,17 +13,22 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $id
  * @property int $company_id
  * @property int $demand_id
- * @property int delivery_type_id
+ * @property string delivery_type
  * @property string $status
+ * @property \Carbon\Carbon updated_at
  *
  * @property Company $company
  * @property Demand $request
- * @property DeliveryType $deliveryType
  * @property ResponseItem[] $responseItems
  *
  */
 class Response extends Model
 {
+
+    protected $fillable = [
+        'delivery_type', 'status'
+    ];
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -46,13 +51,5 @@ class Response extends Model
     public function responseItems()
     {
         return $this->hasMany(ResponseItem::class);
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function deliveryType()
-    {
-        return $this->belongsTo(DeliveryType::class);
     }
 }

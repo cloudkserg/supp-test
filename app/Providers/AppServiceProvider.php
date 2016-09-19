@@ -20,7 +20,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app['Dingo\Api\Transformer\Factory']->setAdapter(function ($app) {
             $fractal = new Manager();
             //$fractal->setSerializer(new JsonApiSerializer());
-            return new Fractal($fractal, null, null, false);
+            return new Fractal($fractal, 'include', ',', false);
         });
 
     }

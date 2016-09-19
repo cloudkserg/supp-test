@@ -15,16 +15,22 @@ use Illuminate\Database\Eloquent\Builder;
 class DemandRepository
 {
     /**
-     * @param $companyId
-     * @return Demand[]
+     * @param Builder $builder
+     * @return Collection|static[]
      */
-    public function findActiveByCompany($companyId)
+    public function findAll(Builder $builder)
     {
-        return Demand::whereCompanyId($companyId)
-            ->whereStatus(DemandStatus::ACTIVE)
-            ->get();
+        return $builder->orderBy('id DESC')->get();
     }
 
+    /**
+     * @param int $demandId
+     * @return Demand
+     */
+    public function findById($demandId)
+    {
+        return Demand::whereId($demandId)->first();
+    }
 
 
 

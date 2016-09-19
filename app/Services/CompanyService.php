@@ -8,8 +8,11 @@
 
 namespace App\Services;
 use App\Company;
+use App\Demand\Demand;
 use App\Http\Requests\User\CreateUserRequest;
+use App\Queries\CompanyQuery;
 use App\Repository\CompanyRepository;
+use App\Type\Quantity;
 
 class CompanyService
 {
@@ -34,9 +37,25 @@ class CompanyService
         return $company;
     }
 
-    public function countSearchItems($companyId, array $spheres, array $regions)
+    public function countAvailableCompanies(Company $company, array $spheres, array $regions)
     {
-        return $this->repo->countBySpheresAndRegionsWithoutMe($companyId, $spheres, $regions);
+        $query = new CompanyQuery();
+        $query->forNotCompany($company->id)
+            ->forRegion($regions)
+            ->forSphere($spheres);
+
+        return $this->repo->count($query->getBuilder());
+    }
+
+    public function findAvailableResponseCompanies(Demand $demand)
+    {
+        $query = new CompanyQuery();
+        $query->forNotCompany($demand->company_id)
+            ->forRegion($demand->regions->pluck('id')->toArray())
+            ->forSphere($demand->spheres->pluck('id')->toArray())
+            ->hasNotResponses($demand->id);
+
+        return $this->repo->findAll($query->getBuilder());
     }
 
 }

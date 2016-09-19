@@ -21,6 +21,10 @@ use Illuminate\Database\Eloquent\Model;
 class ResponseItem extends Model
 {
 
+    protected $fillable = [
+        'price'
+    ];
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -41,7 +45,7 @@ class ResponseItem extends Model
     /**
      * @param $value
      */
-    public function setPrice($value)
+    public function setPriceAttribute($value)
     {
         $this->price_raw = $value*100;
     }
@@ -49,8 +53,16 @@ class ResponseItem extends Model
     /**
      * @return float
      */
-    public function getPrice()
+    public function getPriceAttribute()
     {
         return $this->price_raw/100;
+    }
+
+    /**
+     * @return float
+     */
+    public function getTotalPrice()
+    {
+        return round($this->getPrice() * $this->demandItem->count, 2);
     }
 }

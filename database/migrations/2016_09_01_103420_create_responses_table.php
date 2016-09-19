@@ -21,7 +21,7 @@ class CreateResponsesTable extends Migration
             $table->integer('demand_id')->unsigned();
             $table->foreign('demand_id')->references('id')->on('demands')->onDelete('cascade');
 
-            $table->integer('delivery_type_id')->unsigned();
+            $table->string('delivery_type')->nullable();
 
             $table->string('status');
             $table->timestamps();

@@ -18,7 +18,7 @@ class CompaniesController extends Controller
     /**
      * @var CompanyService
      */
-    private $_companyService;
+    private $companyService;
 
     /**
      * @return User
@@ -43,7 +43,7 @@ class CompaniesController extends Controller
      */
     function __construct()
     {
-        $this->_companyService = new CompanyService();
+        $this->companyService = new CompanyService();
     }
 
     /**
@@ -54,8 +54,8 @@ class CompaniesController extends Controller
      */
     public function search(SearchCompanyRequest $request)
     {
-        $count = $this->_companyService->countSearchItems(
-            $this->getCompany()->id, $request->spheres, $request->regions
+        $count = $this->companyService->countAvailableCompanies(
+            $this->getCompany(), $request->spheres, $request->regions
         );
         return compact('count');
     }

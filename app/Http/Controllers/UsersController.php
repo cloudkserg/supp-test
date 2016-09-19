@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\CreateDraftResponseForCompanyJob;
 use App\Services\UserService;
 use App\Http\Requests\User\CreateUserRequest;
 
-use App\Transformers\UserTransformer;
 use Dingo\Api\Routing\Helpers;
 
 /**
@@ -18,7 +18,7 @@ class UsersController extends Controller
     /**
      * @var UserService
      */
-    private $_userService;
+    private $userService;
 
 
     /**
@@ -26,7 +26,7 @@ class UsersController extends Controller
      */
     public function __construct()
     {
-        $this->_userService = new UserService();
+        $this->userService = new UserService();
     }
 
 
@@ -39,7 +39,8 @@ class UsersController extends Controller
 	 */
     public function store(CreateUserRequest $request)
     {
-        $user = $this->_userService->createUser($request);
+        $user = $this->userService->createUser($request);
+        dispatch(new CreateDraftResponseForCompanyJob($user->company));
         return $this->response->created('/users/' . $user->id);
     }
 

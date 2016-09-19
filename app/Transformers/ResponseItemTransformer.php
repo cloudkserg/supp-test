@@ -26,7 +26,8 @@ class ResponseItemTransformer extends TransformerAbstract
         return [
             'id' => (int)$item->id,
             'price' => $item->price,
-            'response_id' => (int)$item->response_id
+            'status' => $item->status,
+            'demand_item_id' => (int)$item->demand_item_id
         ];
     }
 
@@ -36,16 +37,6 @@ class ResponseItemTransformer extends TransformerAbstract
             return null;
         }
         return $this->item($item->invoice, new InvoiceTransformer());
-    }
-
-    public function includeDemandItem(ResponseItem $item)
-    {
-        return $this->collection($item->demandItem, new DemandItemTransformer());
-    }
-
-    public function addDemandItem()
-    {
-        $this->defaultIncludes[] = 'demandItem';
     }
 
 

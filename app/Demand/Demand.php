@@ -21,12 +21,13 @@ use Carbon\Carbon;
  * @property string addition_emails_raw
  * @property int $company_id
  * @property string $status
+ * @property \Carbon\Carbon updated_at
  *
  * @property Company $company
  * @property Region[] $regions
  * @property Sphere[] $spheres
  * @property DemandItem[] $demandItems
- * @property Response[] $responses
+ * @property \Illuminate\Database\Eloquent\Collection|Response[] $responses
  *
  *
  * @package App\Demand
@@ -102,6 +103,8 @@ class Demand extends Model
     {
         return $this->hasMany(DemandItem::class);
     }
+
+
 
 
 

@@ -25,15 +25,36 @@ $api->put('/tokens', 'TokensController@update');
 $api->group(['middleware' => 'api.auth'], function ($api) {
     $api->get('/tokens/test', 'TokensController@test');
 
-    $api->get('/demands', 'DemandsController@indexActive');
-    $api->get('/demands/input', 'DemandsController@indexInput');
+    // + filter status=archive,active, without
+    $api->get('/demands', 'DemandsController@index');
     $api->post('/demands', 'DemandsController@store');
+    //status=archive,active, without
+    $api->patch('/demands', 'DemandsController@update');
 
+    // status=draft, archive, active, without
+    $api->get('/responses', 'ResponsesController@index');
 
+    // status=archive, active responseItems + data
+    $api->patch('/responses', 'ResponsesController@update');
 
+    // price
+    $api->patch('/responseItems/{id}', 'ResponseItemsController@update');
+    $api->delete('/responseItems/{id}', 'ResponseItemsController@delete');
+
+    // response_item_id
+    $api->patch('/demandItems/{id}', 'DemandItemsController@update');
+
+    //:todo
+    $api->post('/invoices', 'InvoicesController@store');
+    //:todo + file
+    $api->patch('/invoices/{id}', 'InvoicesController@update');
+    //:todo
+    $api->delete('/invoices/{id}', 'InvoicesController@delete');
+
+    //:todo demands, responses
+    $api->get('/updates', 'UpdatesController@index');
+
+    // spheres, regions
     $api->get('/companies/search', 'CompaniesController@search');
-
-
-
 
 });

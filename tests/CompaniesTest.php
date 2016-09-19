@@ -42,8 +42,8 @@ class CompaniesTest extends TestCase
             'spheres' => [$spheres[3]->id, $spheres[2]->id],
             'regions' => [$regions[0]->id]
         ]);
-        $r = $this->get('/api/companies/search?token=' . $this->token . '&' . $data)
-            ->seeStatusCode(200)
+        $r = $this->get('/api/companies/search?token=' . $this->token . '&' . $data);
+            $r->seeStatusCode(200)
             ->seeJsonStructure([
                 'count'
             ]);

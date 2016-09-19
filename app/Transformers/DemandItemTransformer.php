@@ -27,29 +27,6 @@ class DemandItemTransformer extends TransformerAbstract
             'title' => $item->title
         ];
     }
-    public function includeSelectedResponseItem(DemandItem $item)
-    {
-        if (!isset($item->selectedResponseItem)) {
-            return null;
-        }
-        return $this->item($item->selectedResponseItem, new ResponseItemTransformer());
-    }
 
-    public function includeResponseItems(DemandItem $item)
-    {
-        return $this->collection($item->responseItems, new ResponseItemTransformer());
-    }
-
-    public function addResponseItems()
-    {
-        $this->defaultIncludes[] = 'responseItems';
-        return $this;
-    }
-
-    public function addSelectedResponseItem()
-    {
-        $this->defaultIncludes[] = 'selectedResponseItem';
-        return $this;
-    }
 
 }

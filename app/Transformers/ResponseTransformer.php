@@ -16,7 +16,7 @@ class ResponseTransformer extends TransformerAbstract
 {
 
     protected $defaultIncludes = [
-        'company'
+        'company', 'responseItems'
     ];
 
 
@@ -26,7 +26,7 @@ class ResponseTransformer extends TransformerAbstract
         return [
             'id' => (int)$response->id,
             'status' => $response->status,
-            'delivery_type_title' => isset($response->deliveryType) ? $response->deliveryType->title : null
+            'delivery_type' => $response->delivery_type
         ];
     }
 
@@ -48,11 +48,7 @@ class ResponseTransformer extends TransformerAbstract
     public function addDemand()
     {
         $this->defaultIncludes[] = 'demand';
-    }
-
-    public function addResponseItems()
-    {
-        $this->defaultIncludes[] = 'responseItems';
+        return $this;
     }
 
 
