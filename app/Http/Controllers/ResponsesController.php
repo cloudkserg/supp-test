@@ -70,7 +70,7 @@ class ResponsesController extends Controller
     {
         $response = $request->getResponse();
         $this->responseService->changeItem($response, $request);
-        $this->responseItemService->addItems($response, $request);
+        $this->responseItemService->changeItemsForResponse($response, $request);
         return $this->response->accepted();
 
     }

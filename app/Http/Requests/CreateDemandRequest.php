@@ -51,6 +51,9 @@ class CreateDemandRequest extends ApiRequest
      */
     public function getDeliveryDate()
     {
+        if (!isset($this->delivery_date)) {
+            return null;
+        }
         return Carbon::createFromFormat('d.m.Y', $this->delivery_date);
     }
 }

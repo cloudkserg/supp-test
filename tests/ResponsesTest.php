@@ -58,6 +58,45 @@ class ResponsesTest extends TestCase
         $this->assertCount(2, $response->responseItems);
     }
 
+
+
+    public function testUpdateChange()
+    {
+        //createDemand
+        $this->createBeforeDemand();
+        $demand = $this->createDemandWithItems(1);
+
+        //createResponse
+        $response = $this->createResponseWithItems(2, [
+            'company_id' => $this->company->id,
+            'status' => \App\Type\ResponseStatus::CANCEL,
+            'demand_id' => $demand->id
+        ]);
+
+        $data = [
+            'response_id' => $response->id,
+            'delivery_type' => 'sfsdfsd',
+            'status' => \App\Type\ResponseStatus::ARCHIVED,
+            'responseItems' => [
+                [
+                    'demand_item_id' => 1,
+                    'price' => 23
+                ]
+            ]
+        ];
+
+        $r = $this->patch('/api/responses?token=' . $this->token, $data);
+        $r->seeStatusCode(202);
+
+        $responses = Response::all();
+        $this->assertCount(1, $responses);
+
+        $response = $responses[0];
+        $this->assertEquals(\App\Type\ResponseStatus::ARCHIVED, $response->status);
+        $this->assertEquals($this->company->id, $response->company_id);
+        $this->assertCount(1, $response->responseItems);
+    }
+
     public function testUpdateNotForeign()
     {
         //createDemand

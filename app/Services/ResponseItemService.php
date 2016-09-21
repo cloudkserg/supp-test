@@ -25,8 +25,9 @@ class ResponseItemService
      * @param Response $response
      * @param UpdateResponseRequest $request
      */
-    public function addItems(Response $response, UpdateResponseRequest $request)
+    public function changeItemsForResponse(Response $response, UpdateResponseRequest $request)
     {
+        $this->deleteItemsForResponse($response);
         foreach ($request->responseItems as $responseItemData) {
             $responseItem = new ResponseItem();
             $responseItem->price = $responseItemData['price'];
@@ -71,6 +72,17 @@ class ResponseItemService
     public function deleteItem(ResponseItem $item)
     {
         $item->delete();
+    }
+
+    /**
+     * @param Response $item
+     * @throws \Exception
+     */
+    public function deleteItemsForResponse(Response $item)
+    {
+        foreach ($item->responseItems as $item) {
+            $item->delete();
+        }
     }
 
     /**

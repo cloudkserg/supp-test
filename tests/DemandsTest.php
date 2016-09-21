@@ -62,6 +62,33 @@ class DemandsTest extends TestCase
             ->seeHeader('location', '/demands/1');
     }
 
+    public function testMiniCreate()
+    {
+        $faker = Faker\Factory::create();
+
+        $data = [
+            'regions' => $faker->randomElements($this->regions),
+            'spheres' => $faker->randomElements($this->spheres),
+            'demandItems' => [
+                [
+                    'title' => $faker->title,
+                    'count' => $faker->randomFloat(),
+                    'quantity_id' => $faker->randomElement($this->quantities)
+                ],
+                [
+                    'title' => $faker->title,
+                    'count' => $faker->randomFloat(),
+                    'quantity_id' => $faker->randomElement($this->quantities)
+                ],
+            ]
+        ];
+
+        $this->expectsJobs(\App\Jobs\CreateDraftResponseForDemandJob::class);
+        $r = $this->post('/api/demands?token=' . $this->token, $data);
+        $r->seeStatusCode(201)
+            ->seeHeader('location', '/demands/1');
+    }
+
     public function testCreateErrorWithoutDemandItems()
     {
         $faker = Faker\Factory::create();
