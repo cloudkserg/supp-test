@@ -61,7 +61,7 @@ class ResponseService
         $item->company_id = $companyId;
         $item->demand_id = $demandId;
         $item->status = ResponseStatus::DRAFT;
-        $item->save();
+        $item->saveOrFail();
         return $item;
     }
 
@@ -81,7 +81,7 @@ class ResponseService
     public function changeItem(Response $item, UpdateResponseRequest $request)
     {
         $item->fill($request->all());
-        $item->save();
+        $item->saveOrFail();
     }
 
 

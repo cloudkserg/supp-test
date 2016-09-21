@@ -35,8 +35,12 @@ class DemandItemsController extends Controller
 
     public function update(UpdateDemandItemRequest $request)
     {
-        //updateStatus
-        $this->demandItemService->selectResponseItem($request->getDemandItem(), $request->response_item_id);
+        //updateResponseItem
+        if (isset($request->response_item_id)) {
+            $this->demandItemService->selectResponseItem($request->getDemandItem(), $request->response_item_id);
+        } else {
+            $this->demandItemService->unselectResponseItem($request->getDemandItem());
+        }
         return $this->response->accepted();
 
     }

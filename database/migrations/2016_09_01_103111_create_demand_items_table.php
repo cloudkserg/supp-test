@@ -23,6 +23,7 @@ class CreateDemandItemsTable extends Migration
             $table->foreign('demand_id')->references('id')->on('demands')->onDelete('cascade');
 
             $table->integer('response_item_id')->unsigned()->nullable();
+            $table->foreign('response_item_id')->references('id')->on('response_items')->onDelete('set null');
 
 
             $table->timestamps();

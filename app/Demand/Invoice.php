@@ -2,7 +2,9 @@
 
 namespace App\Demand;
 
+use App\Company;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\File;
 
 /**
  * Class Invoice
@@ -10,24 +12,46 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @property int $id
  * @property string $status
- * @property int $response_item_id
- * @property string $file
+ * @property int $response_id
+ * @property string $filename
+ * @property string $filepath
  *
- * @property ResponseItem $responseItem
+ * @property ResponseItem[] $responseItems
+ * @property Response $response
  */
 class Invoice extends Model
 {
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function responseItems()
+    {
+        return $this->hasMany(ResponseItem::class);
+    }
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function responseItem()
+    public function response()
     {
-        return $this->belongsTo(ResponseItem::class);
+        return $this->belongsTo(Response::class);
     }
 
 
-    public function getFile()
+    public function getPath()
     {
-        return 'string';
+        $path = storage_path('app/invoices/' . $this->response->company_id);
+        if (!file_exists($path)) {
+            $oldmask = umask(0);
+            mkdir($path, '0777', true);
+            umask($oldmask);
+        }
+        return $path;
+    }
+
+
+    public function getFilepathAttribute()
+    {
+        return $this->getPath() . '/' . $this->filename;
     }
 }

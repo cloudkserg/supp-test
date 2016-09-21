@@ -24,7 +24,7 @@ class DemandItemService
     {
         foreach ($createRequest->demandItems as $demandItemData) {
             $demandItem = new DemandItem($demandItemData);
-            $demand->demandItems()->save($demandItem);
+            $demand->demandItems()->saveOrFail($demandItem);
         }
     }
 
@@ -41,12 +41,21 @@ class DemandItemService
     /**
      * @param DemandItem $item
      * @param $responseItemId
-     * @internal param $status
      */
     public function selectResponseItem(DemandItem $item, $responseItemId)
     {
         $item->response_item_id = $responseItemId;
-        $item->save();
+        $item->saveOrFail();
+    }
+
+
+    /**
+     * @param DemandItem $item
+     */
+    public function unselectResponseItem(DemandItem $item)
+    {
+        $item->response_item_id = null;
+        $item->saveOrFail();
     }
 
 }

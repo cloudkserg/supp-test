@@ -61,7 +61,7 @@ class DemandService
         $item->delivery_date = $createRequest->getDeliveryDate();
         $item->company_id = $companyId;
         $item->status = DemandStatus::ACTIVE;
-        $item->save();
+        $item->saveOrFail();
         return $item;
     }
 
@@ -79,11 +79,11 @@ class DemandService
      * @param Demand $item
      * @param $status
      */
-    public function changeItemStatus(Demand $item, $status)
+    public function changeStatus(Demand $item, $status)
     {
         if ($item->status !== $status) {
             $item->status = $status;
-            $item->save();
+            $item->saveOrFail();
         }
     }
 

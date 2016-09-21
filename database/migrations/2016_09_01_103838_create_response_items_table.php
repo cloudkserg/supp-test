@@ -21,6 +21,9 @@ class CreateResponseItemsTable extends Migration
             $table->integer('demand_item_id')->unsigned();
             $table->foreign('demand_item_id')->references('id')->on('demand_items')->onDelete('cascade');
 
+            $table->integer('invoice_id')->unsigned()->nullable();
+            $table->foreign('invoice_id')->references('id')->on('invoices')->onDelete('set null');
+
             $table->integer('price_raw');
 
             $table->timestamps();

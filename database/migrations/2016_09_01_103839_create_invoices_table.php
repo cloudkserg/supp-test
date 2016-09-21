@@ -16,8 +16,8 @@ class CreateInvoicesTable extends Migration
             $table->increments('id');
             $table->string('status');
             $table->string('filename')->nullable();
-            $table->integer('response_item_id')->unsigned();
-            $table->foreign('response_item_id')->references('id')->on('response_items')->onDelete('cascade');
+            $table->integer('response_id')->unsigned();
+            $table->foreign('response_id')->references('id')->on('responses')->onDelete('cascade');
             $table->timestamps();
         });
     }

@@ -20,6 +20,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property Company $company
  * @property Demand $request
  * @property ResponseItem[] $responseItems
+ * @property Invoice[] $invoices
  *
  */
 class Response extends Model
@@ -51,5 +52,13 @@ class Response extends Model
     public function responseItems()
     {
         return $this->hasMany(ResponseItem::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function invoices()
+    {
+        return $this->hasMany(Invoice::class);
     }
 }

@@ -33,7 +33,7 @@ class CompanyService
     {
         $company = new Company();
         $company->title = $request->company_title;
-        $company->save();
+        $company->saveOrFail();
         return $company;
     }
 

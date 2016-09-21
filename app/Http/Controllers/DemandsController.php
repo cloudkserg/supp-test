@@ -89,7 +89,7 @@ class DemandsController extends Controller
     public function update(UpdateDemandRequest $request)
     {
         //updateStatus
-        $this->demandService->changeItemStatus($request->getDemand(), $request->status);
+        $this->demandService->changeStatus($request->getDemand(), $request->status);
         return $this->response->accepted();
 
     }

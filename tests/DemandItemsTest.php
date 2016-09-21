@@ -28,7 +28,7 @@ class DemandsItemsTest extends TestCase
     }
 
 
-    public function testUpdate()
+    public function testUpdateRight()
     {
         $demand = $this->createDemandWithItems(1, [
             'company_id' => $this->company->id
@@ -49,7 +49,7 @@ class DemandsItemsTest extends TestCase
         $this->assertEquals($responseItem->id, $newItem->response_item_id);
     }
 
-    public function testNotUpdateForeign()
+    public function testUpdateForeign()
     {
         $company = factory(\App\Company::class)->create();
         $demand = $this->createDemandWithItems(1, [
@@ -67,6 +67,27 @@ class DemandsItemsTest extends TestCase
 
         $newItem = \App\Demand\DemandItem::find($demandItem->id);
         $this->assertTrue(!isset($newItem->response_item_id));
+    }
+
+    public function testUpdateUnselect()
+    {
+        $demand = $this->createDemandWithItems(1, [
+            'company_id' => $this->company->id
+        ]);
+        $demandItem = $demand->demandItems[0];
+        $response = $this->createResponseWithItems(1);
+        $responseItem = $response->responseItems[0];
+        $demandItem->response_item_id = $responseItem->id;
+
+        $data = [
+        ];
+
+        $r = $this->patch('/api/demandItems/' . $demandItem->id . '?token=' . $this->token,
+            $data);
+        $r->seeStatusCode('202');
+
+        $newItem = \App\Demand\DemandItem::find($demandItem->id);
+        $this->assertTrue(!isset($newItem->responseItem));
     }
 
 

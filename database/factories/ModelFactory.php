@@ -116,17 +116,9 @@ $factory->define(\App\Demand\ResponseItem::class, function (Faker\Generator $fak
    ];
 });
 
-$factory->defineAs(\App\Demand\Invoice::class, 'requested', function (Faker\Generator $faker) {
+$factory->define(\App\Demand\Invoice::class, function (Faker\Generator $faker) {
     return [
         'status' => \App\Type\InvoiceStatus::REQUESTED,
-        'response_item_id' => $faker->randomElement(\App\Demand\ResponseItem::pluck('id')->toArray()),
-    ];
-});
-
-$factory->defineAs(\App\Demand\Invoice::class, 'responsed', function (Faker\Generator $faker) {
-    return [
-        'status' => \App\Type\InvoiceStatus::RESPONSED,
-        'response_item_id' => $faker->randomElement(\App\Demand\ResponseItem::pluck('id')->toArray()),
-        'file' => $faker->file()
+        'response_id' => $faker->randomElement(\App\Demand\Response::pluck('id')->toArray())
     ];
 });

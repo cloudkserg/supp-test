@@ -44,11 +44,14 @@ $api->group(['middleware' => 'api.auth'], function ($api) {
     // response_item_id
     $api->patch('/demandItems/{id}', 'DemandItemsController@update');
 
-    //:todo
+    //responseItems
     $api->post('/invoices', 'InvoicesController@store');
     //:todo + file
-    $api->patch('/invoices/{id}', 'InvoicesController@update');
-    //:todo
+    $api->put('/invoices/{id}', 'InvoicesController@update');
+
+    //download file
+    $api->get('/invoices/{id}/files/{name}', 'InvoicesController@file');
+    //
     $api->delete('/invoices/{id}', 'InvoicesController@delete');
 
     //:todo demands, responses

@@ -16,27 +16,15 @@ class ResponseItemTransformer extends TransformerAbstract
 {
 
 
-    protected $defaultIncludes = [
-        'invoice'
-    ];
-
-
     public function transform(ResponseItem $item)
     {
         return [
             'id' => (int)$item->id,
             'price' => $item->price,
             'status' => $item->status,
-            'demand_item_id' => (int)$item->demand_item_id
+            'demand_item_id' => (int)$item->demand_item_id,
+            'invoice_id' => isset($item->invoice_id) ? (int)$item->invoice_id : null
         ];
-    }
-
-    public function includeInvoice(ResponseItem $item)
-    {
-        if (!isset($item->invoice)) {
-            return null;
-        }
-        return $this->item($item->invoice, new InvoiceTransformer());
     }
 
 

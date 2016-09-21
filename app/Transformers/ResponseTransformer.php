@@ -16,7 +16,7 @@ class ResponseTransformer extends TransformerAbstract
 {
 
     protected $defaultIncludes = [
-        'company', 'responseItems'
+        'company', 'responseItems', 'invoices'
     ];
 
 
@@ -38,6 +38,11 @@ class ResponseTransformer extends TransformerAbstract
     public function includeCompany(Response $response)
     {
         return $this->item($response->company, new CompanyTransformer());
+    }
+
+    public function includeInvoices(Response $response)
+    {
+        return $this->collection($response->invoices, new InvoiceTransformer());
     }
 
     public function includeResponseItems(Response $response)

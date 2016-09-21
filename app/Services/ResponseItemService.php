@@ -8,11 +8,14 @@
 
 namespace App\Services;
 
+use App\Demand\Invoice;
 use App\Demand\Response;
 use App\Demand\ResponseItem;
+use App\Http\Requests\CreateInvoiceRequest;
 use App\Http\Requests\CreateResponseRequest;
 use App\Http\Requests\UpdateResponseRequest;
 use App\Type\ResponseItemStatus;
+use Illuminate\Support\Collection;
 
 
 class ResponseItemService
@@ -41,6 +44,15 @@ class ResponseItemService
         return ResponseItem::findOrFail($id);
     }
 
+    /**
+     * @param $id
+     * @return ResponseItem[]
+     */
+    public function findItems($id)
+    {
+        return ResponseItem::whereIn('id', $id)->get();
+    }
+
 
     /**
      * @param ResponseItem $item
@@ -49,7 +61,7 @@ class ResponseItemService
     public function changeItem(ResponseItem $item, array $data)
     {
         $item->fill($data);
-        $item->save();
+        $item->saveOrFail();
     }
 
     /**
@@ -59,5 +71,17 @@ class ResponseItemService
     public function deleteItem(ResponseItem $item)
     {
         $item->delete();
+    }
+
+    /**
+     * @param Invoice $invoice
+     * @param Collection $responseItems
+     */
+    public function addInvoice(Invoice $invoice, Collection $responseItems)
+    {
+        $responseItems->each(function (ResponseItem $responseItem) use ($invoice) {
+            $responseItem->invoice_id = $invoice->id;
+            $responseItem->saveOrFail();
+        });
     }
 }

@@ -95,6 +95,7 @@ class DemandsIndexTest extends TestCase
             ->seeJsonStructure($this->getJsonStructure());
     }
 
+
     public function testIndexArchived()
     {
 
@@ -149,6 +150,7 @@ class DemandsIndexTest extends TestCase
             'demand_id' => $demand->id
         ]);
         $response->responseItems[0]->demand_item_id = $demand->demandItems[0]->id;
+        return $response;
     }
 
     private function createResponseWithTwoItems(Demand $demand)
@@ -158,18 +160,46 @@ class DemandsIndexTest extends TestCase
         ]);
         $response->responseItems[0]->demand_item_id = $demand->demandItems[0]->id;
         $response->responseItems[1]->demand_item_id = $demand->demandItems[1]->id;
+        return $response;
     }
 
-    private function createItem(Demand $demand)
+
+
+    public function testIndexWithInvoice()
     {
+        $demand = Demand::whereStatus(\App\Type\DemandStatus::ARCHIVED)->first();
         $demand->demandItems()->save(factory(\App\Demand\DemandItem::class)->make());
-    }
 
+        $response = $this->createResponseWithOneItem($demand);
+        $invoice = factory(\App\Demand\Invoice::class)->create([
+            'response_id' => $response->id,
+        ]);
+        $response->responseItems[0]->invoice_id = $invoice->id;
+        $response->responseItems[0]->save();
+
+        $data = http_build_query([
+            'token' => $this->token,
+            'status' => \App\Type\DemandStatus::ARCHIVED
+        ]);
+        $r = $this->get('/api/demands?' . $data);
+            $r->seeStatusCode('200');
+            $r->seeJsonStructure($this->getInvoiceJsonStructure());
+
+        $data = json_decode($r->response->content())->data;
+        $jsonDemand = $data[0];
+        $jsonResponse = $jsonDemand->responses->data[0];
+
+        //has invoices
+        $this->assertCount(1, $jsonResponse->invoices->data);
+
+        //responseItem link to invoice_id
+        $this->assertEquals($invoice->id, $jsonResponse->responseItems->data[0]->invoice_id);
+    }
 
     public function testIndexWithResponse()
     {
         $demand = Demand::whereStatus(\App\Type\DemandStatus::ARCHIVED)->first();
-        $this->createItem($demand);
+        $demand->demandItems()->save(factory(\App\Demand\DemandItem::class)->make());
 
         $this->createResponseWithOneItem($demand);
         $this->createResponseWithTwoItems($demand);
@@ -179,18 +209,20 @@ class DemandsIndexTest extends TestCase
             'status' => \App\Type\DemandStatus::ARCHIVED
         ]);
         $r = $this->get('/api/demands?' . $data);
-            $r->seeStatusCode('200');
-            $r->seeJsonStructure($this->getResponseJsonStructure());
+        $r->seeStatusCode('200');
+        $r->seeJsonStructure($this->getResponseJsonStructure());
 
         $data = json_decode($r->response->content())->data;
 
-        $this->assertCount(1, $data);
+        //same demand
         $jsonDemand = $data[0];
-        $this->assertEquals($demand->id, $jsonDemand->id);
 
+        //demand with items
         $this->assertCount(2, $jsonDemand->demandItems->data);
+        //demand with two responses
         $this->assertCount(2, $jsonDemand->responses->data);
 
+        //response with one and two response items
         $responses = $jsonDemand->responses->data;
         $this->assertCount(1, $responses[0]->responseItems->data);
         $this->assertCount(2, $responses[1]->responseItems->data);
@@ -216,6 +248,19 @@ class DemandsIndexTest extends TestCase
                         'demand_item_id'
                     ]
                 ]]
+            ]
+        ]];
+        return $struct;
+    }
+
+
+    private function getInvoiceJsonStructure()
+    {
+        $struct = $this->getResponseJsonStructure();
+        $struct['data']['*']['responses']['data']['*']['invoices'] = ['data' => [
+            '*' => [
+                'id',
+                'status'
             ]
         ]];
         return $struct;

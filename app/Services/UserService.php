@@ -47,7 +47,7 @@ class UserService
             $user->password = $this->encryptPassword($request->password);
             $user->company_id = $company->id;
             $user->confirmation_code = \str_random(self::CONFIRMATION_LENGTH);
-            $user->save();
+            $user->saveOrFail();
 
         } catch(\Exception $e) {
             \DB::rollBack();
@@ -76,7 +76,7 @@ class UserService
         }
         $user->confirmed = true;
         $user->confirmation_code = null;
-        $user->save();
+        $user->saveOrFail();
 
         return $user;
     }

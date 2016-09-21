@@ -13,6 +13,7 @@ class InvoiceStatus extends ConstType
 {
     const REQUESTED = 'requested';
     const RESPONSED = 'responsed';
+    const CANCEL = 'cancel';
 
     /**
      * @return array
@@ -21,7 +22,8 @@ class InvoiceStatus extends ConstType
     {
         return [
             self::REQUESTED => 'Запрошен',
-            self::RESPONSED => 'Получен счет'
+            self::RESPONSED => 'Получен счет',
+            self::CANCEL => 'Отклонен'
         ];
     }
 
