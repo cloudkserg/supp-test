@@ -19,7 +19,7 @@ class ResponseRepository
      */
     public function findAll(Builder $builder)
     {
-        return $builder->orderBy('id DESC')->get();
+        return $builder->orderBy('id', 'DESC')->get();
     }
 
     /**
