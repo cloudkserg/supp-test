@@ -24,7 +24,8 @@ class DemandItemService
     {
         foreach ($createRequest->demandItems as $demandItemData) {
             $demandItem = new DemandItem($demandItemData);
-            $demand->demandItems()->saveOrFail($demandItem);
+            $demandItem->demand_id = $demand->id;
+            $demandItem->saveOrFail();
         }
     }
 

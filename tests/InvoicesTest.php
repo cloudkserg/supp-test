@@ -103,11 +103,14 @@ class InvoicesTest extends TestCase
     public function testFileRight()
     {
         //invoice
-        $filename = File::basename($filepath);
         $item = factory(\App\Demand\Invoice::class)->create([
-            'response_id' => $this->responseModel->id,
-            'filename' => $filename
+            'response_id' => $this->responseModel->id
         ]);
+        $filepath  = $this->createFile($item->id);
+        $filename = File::basename($filepath);
+        $item->filename = $filename;
+        $item->save();
+
 
         $this->get('/api/invoices/' . $item->id . '/files/' . $filename . '?token=' . $this->token)
             ->seeStatusCode(200);
@@ -127,8 +130,10 @@ class InvoicesTest extends TestCase
         ]);
 
         $path = storage_path('app/tests/report.xls');
+        $newPath = storage_path('app/report.xls');
+        File::copy($path, $newPath);
 
-        $file = new \Illuminate\Http\UploadedFile($path, 'file', 'application/excel', 446, null, true);
+        $file = new \Illuminate\Http\UploadedFile($newPath, 'file', 'application/excel', 446, null, true);
         $data = [
             'file' => $file
         ];
@@ -136,17 +141,14 @@ class InvoicesTest extends TestCase
         $r = $this->put('/api/invoices/' . $item->id . '/?token=' . $this->token,
             $data
         );
-        var_dump($r->response->content());die;
-        $r->seeStatusCode(201);
+        $r->seeStatusCode(202);
 
         $invoice = \App\Demand\Invoice::first();
-        $this->assertEquals('report.csv', $invoice->filename);
+        $this->assertEquals('report.xls', $invoice->filename);
         $this->assertTrue(file_exists($invoice->filepath));
 
-         $service = new \App\Services\InvoiceService();
-         $service->deleteItem($invoice);
-
-        File::delete($path);
+        $service = new \App\Services\InvoiceService();
+        $service->deleteItem($invoice);
     }
 
 

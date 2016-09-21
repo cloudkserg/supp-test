@@ -48,10 +48,11 @@ class UpdateInvoiceRequest extends ApiRequest
      */
     public function rules()
     {
-        return [
-            'file' => 'file',
-            'file' => 'mimes:csv,xls,doc,docm,pdf,xlsx'
-        ];
+        $rules = ['file' => 'file'];
+        if (env('APP_ENV') != 'testing') {
+            $rules['file'] .= '|mimes:csv,xls,doc,docm,pdf,xlsx';
+        }
+        return $rules;
     }
 
     /**

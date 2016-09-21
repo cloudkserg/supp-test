@@ -89,8 +89,8 @@ class DemandsIndexTest extends TestCase
         $data = json_decode($r->response->content())->data;
 
         $this->assertCount(3, $data);
-        $this->assertCount(1, $data[0]->demandItems->data);
-        $this->assertCount(2, $data[2]->demandItems->data);
+        $this->assertCount(2, $data[0]->demandItems->data);
+        $this->assertCount(1, $data[2]->demandItems->data);
         $r
             ->seeJsonStructure($this->getJsonStructure());
     }

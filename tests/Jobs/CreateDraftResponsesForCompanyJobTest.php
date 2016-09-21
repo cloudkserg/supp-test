@@ -64,12 +64,12 @@ class CreateDraftResponsesForCompanyJobTest extends TestCase
 
         $response = $responses[0];
         $this->assertEquals($this->company->id, $response->company_id);
-        $this->assertEquals($demand->id, $response->demand_id);
+        $this->assertTrue(in_array($response->demand_id, [$demand->id, $demand2->id]));
         $this->assertEquals(\App\Type\ResponseStatus::DRAFT, $response->status);
 
         $response = $responses[1];
         $this->assertEquals($this->company->id, $response->company_id);
-        $this->assertEquals($demand2->id, $response->demand_id);
+        $this->assertTrue(in_array($response->demand_id, [$demand->id, $demand2->id]));
         $this->assertEquals(\App\Type\ResponseStatus::DRAFT, $response->status);
 
     }

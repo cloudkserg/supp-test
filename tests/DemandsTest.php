@@ -57,8 +57,8 @@ class DemandsTest extends TestCase
         ];
 
         $this->expectsJobs(\App\Jobs\CreateDraftResponseForDemandJob::class);
-        $this->post('/api/demands?token=' . $this->token, $data)
-            ->seeStatusCode(201)
+        $r = $this->post('/api/demands?token=' . $this->token, $data);
+            $r->seeStatusCode(201)
             ->seeHeader('location', '/demands/1');
     }
 

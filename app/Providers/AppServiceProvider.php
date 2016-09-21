@@ -23,6 +23,7 @@ class AppServiceProvider extends ServiceProvider
             return new Fractal($fractal, 'include', ',', false);
         });
 
+
     }
 
     /**
