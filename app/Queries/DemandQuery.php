@@ -10,6 +10,7 @@ namespace App\Queries;
 
 
 use App\Demand\Demand;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 
 class DemandQuery
@@ -27,7 +28,7 @@ class DemandQuery
 
     /**
      * @param int $companyId
-     * @return $this
+     * @return DemandQuery
      */
     public function forCompany($companyId)
     {
@@ -92,6 +93,31 @@ class DemandQuery
     public function forNotCompany($companyId)
     {
         $this->builder->where('company_id', '!=', $companyId);
+        return $this;
+    }
+
+    public function afterUpdatedAt(Carbon $time)
+    {
+        $this->builder->where(function (Builder $query) use ($time) {
+            $query->where('updated_at', '>', $time)
+                ->orWhere('created_at', '>', $time)
+                ->orWhereHas('demandItems', function (Builder $query) use ($time) {
+                    $query->where('updated_at', '>', $time)
+                        ->orWhere('created_at', '>', $time);
+                })
+                ->orWhereHas('responses', function (Builder $query) use ($time) {
+                    $query->where('updated_at', '>', $time)
+                        ->orWhere('created_at', '>', $time)
+                        ->orWhereHas('responseItems', function (Builder $query) use ($time) {
+                            $query->where('updated_at', '>', $time)
+                                ->orWhere('created_at', '>', $time)
+                                ->orWhereHas('invoice', function (Builder $query) use ($time) {
+                                    $query->where('updated_at', '>', $time)
+                                        ->orWhere('created_at', '>', $time);
+                                });
+                        });
+                });
+        });
         return $this;
     }
 

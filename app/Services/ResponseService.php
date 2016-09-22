@@ -14,6 +14,7 @@ use App\Demand\Demand;
 use App\Http\Requests\UpdateResponseRequest;
 use App\Queries\ResponseQuery;
 use App\Repository\ResponseRepository;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 
 use App\Type\ResponseStatus;
@@ -82,6 +83,14 @@ class ResponseService
     {
         $item->fill($request->all());
         $item->saveOrFail();
+    }
+
+    public function isChangeAfterTimestamp(Company $company, Carbon $time)
+    {
+        $query = new ResponseQuery();
+        $query->forCompany($company->id)
+            ->afterUpdatedAt($time);
+        return $this->repo->count($query->getBuilder()) > 0;
     }
 
 

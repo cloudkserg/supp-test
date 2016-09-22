@@ -11,10 +11,12 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $id
  * @property int $response_id
  * @property int $demand_item_id
+ * @property int $invoice_id
  * @property int $price_raw
  * @property float $price
  *
  * @property Response $response
+ * @property Invoice $invoice
  * @property DemandItem $demandItem
  *
  */
@@ -39,6 +41,14 @@ class ResponseItem extends Model
     public function demandItem()
     {
         return $this->belongsTo(DemandItem::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function invoice()
+    {
+        return $this->belongsTo(Invoice::class);
     }
 
 

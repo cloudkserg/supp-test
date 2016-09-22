@@ -32,6 +32,11 @@ class DemandRepository
         return Demand::whereId($demandId)->first();
     }
 
+    public function count(Builder $builder)
+    {
+        return $builder->count();
+    }
+
 
 
     /**

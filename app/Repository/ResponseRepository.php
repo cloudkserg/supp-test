@@ -31,6 +31,14 @@ class ResponseRepository
         return Response::whereId($demandId)->first();
     }
 
+    /**
+     * @param Builder $builder
+     * @return mixed
+     */
+    public function count(Builder $builder)
+    {
+        return $builder->count();
+    }
 
 
 

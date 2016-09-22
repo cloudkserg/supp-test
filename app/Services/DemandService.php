@@ -10,6 +10,7 @@ namespace App\Services;
 
 
 use App\Demand\Response;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use App\Queries\DemandQuery;
 use App\Company;
@@ -104,5 +105,13 @@ class DemandService
         return  $this->repo->findAll($query->getBuilder());
     }
 
+
+    public function isChangeAfterTimestamp(Company $company, Carbon $time)
+    {
+        $query = new DemandQuery();
+        $query->forCompany($company->id)
+            ->afterUpdatedAt($time);
+        return $this->repo->count($query->getBuilder()) > 0;
+    }
 
 }
