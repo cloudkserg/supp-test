@@ -2,6 +2,7 @@
 
 namespace App\Demand;
 
+use App\Services\ResponseItemService;
 use App\Type\Quantity;
 use App\Type\ResponseItemStatus;
 use Illuminate\Database\Eloquent\Model;
@@ -61,6 +62,18 @@ class DemandItem extends Model
     public function responseItems()
     {
         return $this->hasMany(ResponseItem::class);
+    }
+
+    /**
+     * @return ResponseItem|null
+     */
+    public function getOrdinalSelectedResponseItem()
+    {
+        $responseItemId = $this->getOriginal('response_item_id');
+        if (!isset($responseItemId)) {
+            return null;
+        }
+        return  ResponseItem::find($responseItemId);
     }
 
 }

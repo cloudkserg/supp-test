@@ -68,9 +68,11 @@ class ResponsesController extends Controller
 
     public function update(UpdateResponseRequest $request)
     {
-        $response = $request->getResponse();
-        $this->responseService->changeItem($response, $request);
-        $this->responseItemService->changeItemsForResponse($response, $request);
+        $unChangeResponse = $request->getResponse();
+        $response = $this->responseService->changeItem($unChangeResponse, $request);
+
+        $this->responseItemService->deleteAllForResponse($response);
+        $this->responseItemService->createItemsForResponse($response, $request);
         return $this->response->accepted();
 
     }

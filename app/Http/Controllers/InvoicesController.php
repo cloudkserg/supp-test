@@ -42,8 +42,9 @@ class InvoicesController extends Controller
 
     public function store(CreateInvoiceRequest $createRequest)
     {
-        $invoice = $this->invoiceService->addItem($createRequest->getResponseItemModels()[0]->response->id);
-        $this->responseItemService->addInvoice($invoice, $createRequest->getResponseItemModels());
+        $invoice = $this->invoiceService->createItem(
+            $createRequest->getResponseItemModels()
+        );
 
         return $this->response->created('/invoices/' . $invoice->id);
     }

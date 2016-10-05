@@ -36,6 +36,15 @@ $factory->define(App\User::class, function (Faker\Generator $faker) use ($factor
     ];
 });
 
+$factory->defineAs(App\User::class, 'stub', function (Faker\Generator $faker) use ($factory) {
+    return [
+        'name' => $faker->name,
+        'email' => env('MAIL_ADMIN', $faker->safeEmail),
+        'password' => bcrypt(str_random(10)),
+        'confirmed' => false,
+    ];
+});
+
 $factory->defineAs(App\User::class, 'confirmating', function (Faker\Generator $faker) use ($factory) {
     $user = $factory->raw(App\User::class);
 

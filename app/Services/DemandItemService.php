@@ -10,8 +10,9 @@ namespace App\Services;
 
 use App\Demand\Demand;
 use App\Demand\DemandItem;
+use App\Events\DemandItem\SelectedResponseItemEvent;
+use App\Events\DemandItem\UnselectedResponseItemEvent;
 use App\Http\Requests\CreateDemandRequest;
-use App\Type\DemandItemStatus;
 
 class DemandItemService
 {
@@ -57,6 +58,26 @@ class DemandItemService
     {
         $item->response_item_id = null;
         $item->saveOrFail();
+    }
+
+    public function onUpdate(DemandItem $item)
+    {
+        if ($item->isDirty('response_item_id')) {
+            if (isset($item->response_item_id)) {
+                event(new SelectedResponseItemEvent($item));
+            } else {
+                $this->generateUnselectedEvent($item);
+
+            }
+        }
+    }
+
+    private function generateUnselectedEvent(DemandItem $item)
+    {
+        $responseItem = $item->getOrdinalSelectedResponseItem();
+        if (isset($responseItem)) {
+            event(new UnselectedResponseItemEvent($item, $responseItem));
+        }
     }
 
 }

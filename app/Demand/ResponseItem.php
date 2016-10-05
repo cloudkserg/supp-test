@@ -65,7 +65,36 @@ class ResponseItem extends Model
      */
     public function getPriceAttribute()
     {
-        return $this->price_raw/100;
+        return $this->formatPrice($this->price_raw);
+    }
+
+    /**
+     * @param $priceRaw
+     * @return float
+     */
+    private function formatPrice($priceRaw)
+    {
+        return $priceRaw/100;
+    }
+
+    /**
+     * @return float|null
+     */
+    public function getOriginalPrice()
+    {
+        $price_raw = $this->getOriginal('price_raw');
+        if (!isset($price_raw)) {
+            return null;
+        }
+        return $this->formatPrice($price_raw);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isDirtyPrice()
+    {
+        return $this->isDirty('price_raw');
     }
 
     /**
@@ -73,6 +102,6 @@ class ResponseItem extends Model
      */
     public function getTotalPrice()
     {
-        return round($this->getPrice() * $this->demandItem->count, 2);
+        return round($this->getPriceAttribute() * $this->demandItem->count, 2);
     }
 }

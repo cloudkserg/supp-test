@@ -2,6 +2,13 @@
 namespace App\Providers;
 
 
+
+
+use App\Bindings\DemandBinding;
+use App\Bindings\DemandItemBinding;
+use App\Bindings\InvoiceBinding;
+use App\Bindings\ResponseBinding;
+use App\Bindings\ResponseItemBinding;
 use Dingo\Api\Transformer\Adapter\Fractal;
 use Illuminate\Support\ServiceProvider;
 use League\Fractal\Manager;
@@ -22,6 +29,13 @@ class AppServiceProvider extends ServiceProvider
             //$fractal->setSerializer(new JsonApiSerializer());
             return new Fractal($fractal, 'include', ',', false);
         });
+
+
+        (new ResponseBinding())->generateEventBindings();
+        (new ResponseItemBinding())->generateEventBindings();
+        (new InvoiceBinding())->generateEventBindings();
+        (new DemandBinding())->generateEventBindings();
+        (new DemandItemBinding())->generateEventBindings();
 
 
     }

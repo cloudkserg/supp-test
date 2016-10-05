@@ -9,7 +9,7 @@
 namespace App\Events;
 use App\User;
 
-class RegisterUser
+class RegisterUserEvent
 {
     /**
      * @var User

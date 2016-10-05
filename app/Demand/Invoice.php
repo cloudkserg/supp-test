@@ -5,7 +5,6 @@ namespace App\Demand;
 use App\Company;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\File;
-
 /**
  * Class Invoice
  * @package App\Request
@@ -16,7 +15,7 @@ use Illuminate\Support\Facades\File;
  * @property string $filename
  * @property string $filepath
  *
- * @property ResponseItem[] $responseItems
+ * @property \Illuminate\Database\Eloquent\Collection $responseItems
  * @property Response $response
  */
 class Invoice extends Model
@@ -54,4 +53,5 @@ class Invoice extends Model
     {
         return $this->getPath() . '/' . $this->filename;
     }
+
 }

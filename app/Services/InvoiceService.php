@@ -10,27 +10,49 @@ namespace App\Services;
 
 
 
+use App\Demand\ResponseItem;
 use App\Type\InvoiceStatus;
 use App\Demand\Invoice;
 use Illuminate\Http\UploadedFile;
+use App\Events\Invoice\CreateInvoiceEvent;
+use App\Events\Invoice\DeleteInvoiceEvent;
+use App\Events\Invoice\ResponsedInvoiceEvent;
+use Illuminate\Database\Eloquent\Collection;
 
 class InvoiceService
 {
 
+    /**
+     * @var ResponseItemService
+     */
+    private $responseItemService;
 
+    /**
+     *
+     */
+    function __construct()
+    {
+        $this->responseItemService = new ResponseItemService();
+    }
 
 
     /**
-     * @param int $responseId
-     * @return Invoice
+     * @param Collection $responseItems
+     * @return Invoice|null
      */
-    public function addItem($responseId)
+    public function createItem(Collection $responseItems)
     {
-        $item = new Invoice();
-        $item->response_id = $responseId;
-        $item->status = InvoiceStatus::REQUESTED;
-        $item->saveOrFail();
-        return $item;
+        if (empty($responseItems)) {
+            return null;
+        }
+        $response = $responseItems[0]->response;
+
+        $invoice = $this->create($response->id);
+        $this->attachResponseItems($responseItems, $invoice->id);
+
+        event(new CreateInvoiceEvent($invoice));
+
+        return $invoice;
     }
 
     /**
@@ -65,6 +87,17 @@ class InvoiceService
         $item->saveOrFail();
     }
 
+    /**
+     * @param Collection $responseItems
+     * @param $invoiceId
+     */
+    private function attachResponseItems(Collection $responseItems, $invoiceId)
+    {
+        $responseItems->each(function (ResponseItem $responseItem) use ($invoiceId) {
+            $this->responseItemService->setInvoice($responseItem, $invoiceId);
+        });
+    }
+
 
     private function saveFile(UploadedFile $file, $filepath)
     {
@@ -77,5 +110,26 @@ class InvoiceService
         \File::delete($file);
     }
 
+
+    public function onDelete(Invoice $item)
+    {
+        event(new DeleteInvoiceEvent($item));
+    }
+
+    public function onUpdate(Invoice $item)
+    {
+        if ($item->isDirty('status') and $item->status == InvoiceStatus::RESPONSED) {
+            event(new ResponsedInvoiceEvent($item));
+        }
+    }
+
+    private function create($responseId)
+    {
+        $item = new Invoice();
+        $item->response_id = $responseId;
+        $item->status = InvoiceStatus::REQUESTED;
+        $item->saveOrFail();
+        return $item;
+    }
 
 }

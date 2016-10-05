@@ -2,7 +2,7 @@
 
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use App\Jobs\CreateDraftResponseForCompanyJob;
-
+use App\Events\RegisterUserEvent;
 class UsersTest extends TestCase
 {
     use DatabaseMigrations;
@@ -11,6 +11,9 @@ class UsersTest extends TestCase
     public function testCreate()
     {
         $this->expectsJobs(CreateDraftResponseForCompanyJob::class);
+
+        $this->expectsEvents(RegisterUserEvent::class);
+
         $this->post('/api/users', [
                 'email' => 'abba@mail.ru',
                 'password' => '123456',
@@ -25,6 +28,7 @@ class UsersTest extends TestCase
 
     public function testErrorValidationPassword()
     {
+        $this->doesntExpectEvents(RegisterUserEvent::class);
         $this->post('/api/users', [
             'email' => 'abba@mail.ru',
             'password' => '123456',

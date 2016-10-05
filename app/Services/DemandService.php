@@ -9,7 +9,8 @@
 namespace App\Services;
 
 
-use App\Demand\Response;
+
+use App\Events\Demand\ArchiveDemandEvent;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use App\Queries\DemandQuery;
@@ -112,6 +113,14 @@ class DemandService
         $query->forCompany($company->id)
             ->afterUpdatedAt($time);
         return $this->repo->count($query->getBuilder()) > 0;
+    }
+
+
+    public function onUpdate(Demand $item)
+    {
+        if ($item->isDirty('status') and $item->status == DemandStatus::ARCHIVED) {
+            event(new ArchiveDemandEvent($item));
+        }
     }
 
 }

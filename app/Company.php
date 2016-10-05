@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Demand\Response;
+use App\Services\UserService;
 use App\Type\Region;
 use App\Type\Sphere;
 use Illuminate\Database\Eloquent\Model;
@@ -57,5 +58,16 @@ class Company extends Model
     public function responses()
     {
         return $this->hasMany(Response::class);
+    }
+
+    /**
+     * @return User
+     */
+    public function getAdmin()
+    {
+        if (empty($this->users) or !$this->users[0]->confirmed) {
+            return (new UserService())->getStubUser();
+        }
+        return $this->users[0];
     }
 }

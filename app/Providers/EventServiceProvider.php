@@ -2,10 +2,16 @@
 
 namespace App\Providers;
 
-use Illuminate\Contracts\Events\Dispatcher as DispatcherContract;
+
+use App\Bindings\DemandBinding;
+use App\Bindings\DemandItemBinding;
+use App\Bindings\InvoiceBinding;
+use App\Bindings\ResponseBinding;
+use App\Bindings\ResponseItemBinding;
+
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-use App\Events\RegisterUser;
-use App\Listeners\Mail\RegisterUserListener;
+use App\Events\RegisterUserEvent;
+use App\Listeners\RegisterUserListener;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -18,20 +24,25 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\SomeEvent' => [
             'App\Listeners\EventListener',
         ],
-        RegisterUser::class => [
+        RegisterUserEvent::class => [
             RegisterUserListener::class
-        ]
+        ],
+
     ];
 
     /**
      * Register any other events for your application.
      *
-     * @param  \Illuminate\Contracts\Events\Dispatcher  $events
      * @return void
      */
-    public function boot(DispatcherContract $events)
+    public function boot()
     {
-        parent::boot($events);
+        (new DemandBinding())->generateListenerBindings();
+        (new DemandItemBinding())->generateListenerBindings();
+        (new InvoiceBinding())->generateListenerBindings();
+        (new ResponseBinding())->generateListenerBindings();
+        (new ResponseItemBinding())->generateListenerBindings();
+        parent::boot();
 
         //
     }

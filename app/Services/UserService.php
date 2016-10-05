@@ -10,11 +10,12 @@ namespace App\Services;
 
 use App\Http\Requests\User\CreateUserRequest;
 use App\User;
-use App\Events\RegisterUser;
+use App\Events\RegisterUserEvent;
 
 
 class UserService
 {
+    const DEFAULT_NAME = 'default_user';
 
     const CONFIRMATION_LENGTH = 30;
     /**
@@ -28,6 +29,14 @@ class UserService
     public function __construct()
     {
         $this->companyService = new CompanyService();
+    }
+
+    /**
+     * @return User
+     */
+    public function getStubUser()
+    {
+        return factory(User::class, 'stub')->make();
     }
 
     /**
@@ -55,7 +64,7 @@ class UserService
         }
         \DB::commit();
 
-        \Event::fire(new RegisterUser($user));
+        \Event::fire(new RegisterUserEvent($user));
         return $user;
     }
 

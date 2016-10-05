@@ -11,6 +11,11 @@ namespace App\Services;
 
 use App\Company;
 use App\Demand\Demand;
+use App\Events\Response\ActiveResponseEvent;
+use App\Events\Response\ArchiveResponseEvent;
+use App\Events\Response\CancelResponseEvent;
+use App\Events\Response\ChangeResponseEvent;
+use App\Events\Response\CreateResponseEvent;
 use App\Http\Requests\UpdateResponseRequest;
 use App\Queries\ResponseQuery;
 use App\Repository\ResponseRepository;
@@ -78,11 +83,13 @@ class ResponseService
     /**
      * @param Response $item
      * @param UpdateResponseRequest $request
+     * @return Response
      */
     public function changeItem(Response $item, UpdateResponseRequest $request)
     {
         $item->fill($request->all());
         $item->saveOrFail();
+        return $item;
     }
 
     public function isChangeAfterTimestamp(Company $company, Carbon $time)
@@ -91,6 +98,47 @@ class ResponseService
         $query->forCompany($company->id)
             ->afterUpdatedAt($time);
         return $this->repo->count($query->getBuilder()) > 0;
+    }
+
+
+    /**
+     * @param Response $item
+     */
+    public function onCreate(Response $item)
+    {
+        event(new CreateResponseEvent($item));
+    }
+
+    /**
+     * @param Response $item
+     */
+    public function onUpdate(Response $item)
+    {
+        if ($item->isDirty('status')) {
+            $this->generateEventStatus($item, $item->status);
+        }
+        if ($item->isDirty(['delivery_type'])) {
+            event(new ChangeResponseEvent($item, $item->getOriginal('delivery_type')));
+        }
+    }
+
+
+    /**
+     * @param Response $item
+     * @param $status
+     */
+    private function generateEventStatus(Response $item, $status)
+    {
+        switch($status) {
+            case ResponseStatus::ACTIVE:
+                event(new ActiveResponseEvent($item));
+                break;
+            default:
+                if ($item->getOriginal('status') == ResponseStatus::ACTIVE) {
+                    event(new CancelResponseEvent($item));
+                }
+                break;
+        }
     }
 
 

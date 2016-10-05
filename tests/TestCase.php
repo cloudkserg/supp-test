@@ -72,6 +72,12 @@ abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
         factory(\App\Type\Quantity::class, 2)->create();
     }
 
+    /**
+     * @param $countItems
+     * @param array $data
+     * @param array $ItemData
+     * @return App\Demand\Response
+     */
     protected function createResponseWithItems($countItems, $data = [], $ItemData = [])
     {
 

@@ -53,6 +53,7 @@ class UpdateResponseRequest extends ApiRequest
             'status' => 'string',
             'delivery_type' => 'string',
             'responseItems' => 'array|required',
+            'responseItems.*.id' => 'integer',
             'responseItems.*.demand_item_id' => 'integer|required',
             'responseItems.*.price' => 'numeric|required'
         ];

@@ -18,8 +18,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Carbon\Carbon updated_at
  *
  * @property Company $company
- * @property Demand $request
- * @property ResponseItem[] $responseItems
+ * @property Demand $demand
+ * @property \Illuminate\Database\Eloquent\Collection; $responseItems
  * @property Invoice[] $invoices
  *
  */

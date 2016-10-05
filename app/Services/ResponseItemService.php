@@ -11,29 +11,48 @@ namespace App\Services;
 use App\Demand\Invoice;
 use App\Demand\Response;
 use App\Demand\ResponseItem;
-use App\Http\Requests\CreateInvoiceRequest;
-use App\Http\Requests\CreateResponseRequest;
+use App\Events\ResponseItem\DeleteResponseItemEvent;
 use App\Http\Requests\UpdateResponseRequest;
-use App\Type\ResponseItemStatus;
 use Illuminate\Support\Collection;
-
+use App\Events\ResponseItem\ChangeResponseItemEvent;
 
 class ResponseItemService
 {
-
     /**
      * @param Response $response
      * @param UpdateResponseRequest $request
+     * @return array
      */
-    public function changeItemsForResponse(Response $response, UpdateResponseRequest $request)
+    public function createItemsForResponse(Response $response, UpdateResponseRequest $request)
     {
-        $this->deleteItemsForResponse($response);
-        foreach ($request->responseItems as $responseItemData) {
-            $responseItem = new ResponseItem();
-            $responseItem->price = $responseItemData['price'];
-            $responseItem->demand_item_id = $responseItemData['demand_item_id'];
-            $response->responseItems()->save($responseItem);
-        }
+        $responseItemData = collect($request->responseItemData);
+        $this->deleteNonExistantItems(
+            $response->responseItems,
+            $responseItemData->pluck('id')
+        );
+
+        return $responseItemData->map(function ($data) use ($response) {
+            $item = isset($data['id']) ? $this->findItem($data['id']) : new ResponseItem();
+
+            $item->price = $data['price'];
+            $item->demand_item_id = $data['demand_item_id'];
+            $response->responseItems()->save($item);
+
+            return $item;
+        });
+    }
+
+    /**
+     * @param Collection $items
+     * @param array $ids
+     */
+    private function deleteNonExistantItems(Collection $items, array $ids)
+    {
+        $items->each(function(ResponseItem $item) use ($ids) {
+            if (!in_array($item->id, $ids)) {
+                $item->delete();
+            }
+        });
     }
 
     /**
@@ -74,26 +93,34 @@ class ResponseItemService
         $item->delete();
     }
 
+
     /**
-     * @param Response $item
-     * @throws \Exception
+     * @param ResponseItem $responseItem
+     * @param int $invoiceId
      */
-    public function deleteItemsForResponse(Response $item)
+    public function setInvoice(ResponseItem $responseItem, $invoiceId)
     {
-        foreach ($item->responseItems as $item) {
-            $item->delete();
-        }
+        $responseItem->invoice_id = $invoiceId;
+        $responseItem->saveOrFail();
+    }
+
+
+    /**
+     * @param ResponseItem $item
+     */
+    public function onDelete(ResponseItem $item)
+    {
+        event(new DeleteResponseItemEvent($item));
     }
 
     /**
-     * @param Invoice $invoice
-     * @param Collection $responseItems
+     * @param ResponseItem $item
      */
-    public function addInvoice(Invoice $invoice, Collection $responseItems)
+    public function onUpdate(ResponseItem $item)
     {
-        $responseItems->each(function (ResponseItem $responseItem) use ($invoice) {
-            $responseItem->invoice_id = $invoice->id;
-            $responseItem->saveOrFail();
-        });
+        if ($item->isDirtyPrice()) {
+            event(new ChangeResponseItemEvent($item, $item->getOriginalPrice()));
+        }
     }
+
 }
