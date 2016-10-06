@@ -10,7 +10,17 @@ namespace App\Http\Requests\User;
 
 
 use App\Http\Requests\ApiRequest;
+use Swagger\Annotations as SWG;
 
+/**
+ * @SWG\Definition(
+ *      definition="ConfirmationRequest",
+ *      required={"confirmation_code"},
+ *      @SWG\Property(property="confirmation_code", type="string", maxLength=255, description="code confirm from email")
+ * )
+ * Class ConfirmationRequest
+ * @package App\Http\Requests\User
+ */
 class ConfirmationRequest extends ApiRequest
 {
     /**

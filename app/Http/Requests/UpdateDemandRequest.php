@@ -10,7 +10,17 @@ namespace App\Http\Requests;
 
 use App\Demand\Demand;
 use App\Services\DemandService;
+use Swagger\Annotations as SWG;
 
+/**
+ * @SWG\Definition(
+ *      definition="UpdateDemandRequest",
+ *      required={"status"},
+ *      @SWG\Property(property="status", type="string", enum={"active","archived"}),
+ * )
+ * Class UpdateDemandRequest
+ * @package App\Http\Requests
+ */
 class UpdateDemandRequest extends ApiRequest
 {
     /**
@@ -48,8 +58,7 @@ class UpdateDemandRequest extends ApiRequest
     public function rules()
     {
         return [
-            'demand_id' => 'int|required',
-            'status' => 'string'
+            'status' => 'string|required'
         ];
     }
 
@@ -59,7 +68,7 @@ class UpdateDemandRequest extends ApiRequest
     public function getDemand()
     {
         if (!isset($this->item)) {
-            $this->item = $this->demandService->findItem($this->demand_id);
+            $this->item = $this->demandService->findItem((int)$this->route('id'));
         }
         return $this->item;
     }

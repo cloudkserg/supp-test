@@ -30,7 +30,7 @@ class SelectedResponseItemListener
         $demandItem = $event->item;
         $responseItem = $demandItem->selectedResponseItem;
         $admin = $responseItem->response->company->getAdmin();
-        Mail::to($admin->email)->send(new SelectedResponseItemMail($demandItem));
+        \Mail::to($admin->email)->send(new SelectedResponseItemMail($demandItem));
 
     }
 }

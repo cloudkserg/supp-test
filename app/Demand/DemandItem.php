@@ -37,7 +37,7 @@ class DemandItem extends Model
      */
     public function selectedResponseItem()
     {
-        return $this->belongsTo(ResponseItem::class);
+        return $this->belongsTo(ResponseItem::class, 'response_item_id');
     }
 
     /**

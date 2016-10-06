@@ -1,0 +1,1305 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "Supp",
+        "description": "An API that uses supp service",
+        "version": "1.0.0"
+    },
+    "basePath": "/api",
+    "schemes": [
+        "http"
+    ],
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "paths": {
+        "/companies/search": {
+            "get": {
+                "tags": [
+                    "company"
+                ],
+                "summary": "Finds Companies by spheres and regions",
+                "description": "",
+                "operationId": "findCompanyBySphereAndRegion",
+                "parameters": [
+                    {
+                        "name": "regions",
+                        "in": "query",
+                        "description": "Region to filter by",
+                        "required": true,
+                        "type": "array",
+                        "items": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "spheres",
+                        "in": "query",
+                        "description": "Sphere to filter by",
+                        "required": true,
+                        "type": "array",
+                        "items": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "properties": {
+                                "count": {
+                                    "type": "integer"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/responses/NotFoundResponse"
+                    },
+                    "401": {
+                        "$ref": "#/responses/NotAuthResponse"
+                    },
+                    "default": {
+                        "$ref": "#/responses/DefaultErrorResponse"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
+        "/users/{user_id}/confirmations": {
+            "post": {
+                "tags": [
+                    "user"
+                ],
+                "summary": "Confirm user registration",
+                "description": "",
+                "operationId": "confirmUserRegistration",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "description": "User id",
+                        "required": true,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "ConfirmationRequest",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/ConfirmationRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "successful operation",
+                        "headers": {
+                            "location": {
+                                "description": "/users/1",
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/responses/NotFoundResponse"
+                    },
+                    "401": {
+                        "$ref": "#/responses/NotAuthResponse"
+                    },
+                    "default": {
+                        "$ref": "#/responses/DefaultErrorResponse"
+                    }
+                }
+            }
+        },
+        "/demandItems/{id}": {
+            "patch": {
+                "tags": [
+                    "demandItem"
+                ],
+                "summary": "Update demandItem",
+                "description": "",
+                "operationId": "updateDemandItem",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "DemandItem id",
+                        "required": true,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "DemandItem",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/UpdateDemandItemRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "202": {
+                        "description": "successful operation"
+                    },
+                    "404": {
+                        "$ref": "#/responses/NotFoundResponse"
+                    },
+                    "401": {
+                        "$ref": "#/responses/NotAuthResponse"
+                    },
+                    "default": {
+                        "$ref": "#/responses/DefaultErrorResponse"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
+        "/demands": {
+            "get": {
+                "tags": [
+                    "demand"
+                ],
+                "summary": "Get my demands by status",
+                "description": "",
+                "operationId": "getDemands",
+                "parameters": [
+                    {
+                        "name": "status",
+                        "in": "query",
+                        "description": "filtered Status [or array of status]",
+                        "type": "string",
+                        "enum": [
+                            "active",
+                            "archived"
+                        ]
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/DemandModelWithResponses"
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/responses/NotFoundResponse"
+                    },
+                    "401": {
+                        "$ref": "#/responses/NotAuthResponse"
+                    },
+                    "default": {
+                        "$ref": "#/responses/DefaultErrorResponse"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "demand"
+                ],
+                "summary": "Create demand",
+                "description": "",
+                "operationId": "createDemands",
+                "parameters": [
+                    {
+                        "name": "Demand",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/CreateDemandRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "successful operation",
+                        "headers": {
+                            "location": {
+                                "description": "/demands/1",
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/responses/NotFoundResponse"
+                    },
+                    "401": {
+                        "$ref": "#/responses/NotAuthResponse"
+                    },
+                    "default": {
+                        "$ref": "#/responses/DefaultErrorResponse"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
+        "/demands/{id}": {
+            "patch": {
+                "tags": [
+                    "demand"
+                ],
+                "summary": "Update demand",
+                "description": "",
+                "operationId": "updateDemands",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "Demand",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/UpdateDemandRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "successful operation",
+                        "headers": {
+                            "location": {
+                                "description": "/demands/1",
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/responses/NotFoundResponse"
+                    },
+                    "401": {
+                        "$ref": "#/responses/NotAuthResponse"
+                    },
+                    "default": {
+                        "$ref": "#/responses/DefaultErrorResponse"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
+        "/invoices": {
+            "post": {
+                "tags": [
+                    "invoice"
+                ],
+                "summary": "Create invoice",
+                "description": "",
+                "operationId": "createInvoices",
+                "parameters": [
+                    {
+                        "name": "Invoice",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/CreateInvoiceRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "successful operation",
+                        "headers": {
+                            "location": {
+                                "description": "/invoices/1",
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/responses/NotFoundResponse"
+                    },
+                    "401": {
+                        "$ref": "#/responses/NotAuthResponse"
+                    },
+                    "default": {
+                        "$ref": "#/responses/DefaultErrorResponse"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
+        "/invoices/{id}": {
+            "put": {
+                "tags": [
+                    "invoice"
+                ],
+                "summary": "Update invoice and(or) upload file",
+                "description": "",
+                "operationId": "updateInvoices",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "required": true,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "file",
+                        "in": "formData",
+                        "required": true,
+                        "type": "file"
+                    }
+                ],
+                "responses": {
+                    "202": {
+                        "description": "successful operation"
+                    },
+                    "404": {
+                        "$ref": "#/responses/NotFoundResponse"
+                    },
+                    "401": {
+                        "$ref": "#/responses/NotAuthResponse"
+                    },
+                    "default": {
+                        "$ref": "#/responses/DefaultErrorResponse"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "invoice"
+                ],
+                "summary": "Delete invoice",
+                "description": "",
+                "operationId": "deleteInvoices",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "202": {
+                        "description": "successful operation"
+                    },
+                    "404": {
+                        "$ref": "#/responses/NotFoundResponse"
+                    },
+                    "401": {
+                        "$ref": "#/responses/NotAuthResponse"
+                    },
+                    "default": {
+                        "$ref": "#/responses/DefaultErrorResponse"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
+        "/invoices/{id}/files/{name}": {
+            "get": {
+                "tags": [
+                    "invoice"
+                ],
+                "summary": "Download file for invoice with name",
+                "description": "",
+                "operationId": "downloadInvoice",
+                "produces": [
+                    "application/octet-stream",
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "required": true,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "202": {
+                        "description": "successful operation",
+                        "schema": {
+                            "description": "get content of file",
+                            "type": "file"
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/responses/NotFoundResponse"
+                    },
+                    "401": {
+                        "$ref": "#/responses/NotAuthResponse"
+                    },
+                    "default": {
+                        "$ref": "#/responses/DefaultErrorResponse"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
+        "/responseItems/{id}": {
+            "delete": {
+                "tags": [
+                    "responseItem"
+                ],
+                "summary": "Delete responseItem",
+                "description": "",
+                "operationId": "deleteResponseItem",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "202": {
+                        "description": "successful operation"
+                    },
+                    "404": {
+                        "$ref": "#/responses/NotFoundResponse"
+                    },
+                    "401": {
+                        "$ref": "#/responses/NotAuthResponse"
+                    },
+                    "default": {
+                        "$ref": "#/responses/DefaultErrorResponse"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            },
+            "patch": {
+                "tags": [
+                    "responseItem"
+                ],
+                "summary": "Update ResponseItem",
+                "description": "",
+                "operationId": "updateResponseItem",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "type": "integer"
+                    },
+                    {
+                        "name": "ResponseItem",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/UpdateResponseItemRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "202": {
+                        "description": "successful operation"
+                    },
+                    "404": {
+                        "$ref": "#/responses/NotFoundResponse"
+                    },
+                    "401": {
+                        "$ref": "#/responses/NotAuthResponse"
+                    },
+                    "default": {
+                        "$ref": "#/responses/DefaultErrorResponse"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
+        "/responses": {
+            "get": {
+                "tags": [
+                    "response"
+                ],
+                "summary": "Get my responses by status",
+                "description": "",
+                "operationId": "getResponses",
+                "parameters": [
+                    {
+                        "name": "status",
+                        "in": "query",
+                        "description": "filtered Status [or array of status]",
+                        "type": "string",
+                        "enum": [
+                            "active",
+                            "archived",
+                            "draft",
+                            "cancel"
+                        ]
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/ResponseModelWithDemand"
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/responses/NotFoundResponse"
+                    },
+                    "401": {
+                        "$ref": "#/responses/NotAuthResponse"
+                    },
+                    "default": {
+                        "$ref": "#/responses/DefaultErrorResponse"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
+        "/responses/{id}": {
+            "patch": {
+                "tags": [
+                    "response"
+                ],
+                "summary": "Update response",
+                "description": "",
+                "operationId": "updateResponses",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "Response",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/UpdateResponseRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "202": {
+                        "description": "successful operation"
+                    },
+                    "404": {
+                        "$ref": "#/responses/NotFoundResponse"
+                    },
+                    "401": {
+                        "$ref": "#/responses/NotAuthResponse"
+                    },
+                    "default": {
+                        "$ref": "#/responses/DefaultErrorResponse"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
+        "/tokens": {
+            "put": {
+                "tags": [
+                    "token"
+                ],
+                "summary": "Refresh token for authorization",
+                "description": "",
+                "operationId": "updateToken",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "formData",
+                        "description": "working token",
+                        "required": true,
+                        "type": "string",
+                        "maxLength": 255
+                    }
+                ],
+                "responses": {
+                    "202": {
+                        "description": "successful operation",
+                        "schema": {
+                            "properties": {
+                                "token": {
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad: Token not provided",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorModel"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden: invalid token provided",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorModel"
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/responses/NotFoundResponse"
+                    },
+                    "401": {
+                        "$ref": "#/responses/NotAuthResponse"
+                    },
+                    "default": {
+                        "$ref": "#/responses/DefaultErrorResponse"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "token"
+                ],
+                "summary": "Create token for authorization",
+                "description": "",
+                "operationId": "createToken",
+                "parameters": [
+                    {
+                        "name": "email",
+                        "in": "formData",
+                        "description": "email",
+                        "required": true,
+                        "type": "string",
+                        "maxLength": 255
+                    },
+                    {
+                        "name": "password",
+                        "in": "formData",
+                        "description": "password",
+                        "required": true,
+                        "type": "string",
+                        "maxLength": 255
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "successful operation",
+                        "schema": {
+                            "properties": {
+                                "token": {
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/responses/NotFoundResponse"
+                    },
+                    "401": {
+                        "$ref": "#/responses/NotAuthResponse"
+                    },
+                    "default": {
+                        "$ref": "#/responses/DefaultErrorResponse"
+                    }
+                }
+            }
+        },
+        "/updates": {
+            "get": {
+                "tags": [
+                    "update"
+                ],
+                "summary": "Get updates in demands and responses for me",
+                "description": "",
+                "operationId": "getUpdates",
+                "parameters": [
+                    {
+                        "name": "timestamp",
+                        "in": "query",
+                        "description": "Time after that need check updates",
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "properties": {
+                                "demands": {
+                                    "description": "update demands or not",
+                                    "type": "boolean"
+                                },
+                                "responses": {
+                                    "description": "update responses or not",
+                                    "type": "boolean"
+                                },
+                                "timestamp": {
+                                    "description": "last timestamp of this check",
+                                    "type": "integer"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/responses/NotFoundResponse"
+                    },
+                    "401": {
+                        "$ref": "#/responses/NotAuthResponse"
+                    },
+                    "default": {
+                        "$ref": "#/responses/DefaultErrorResponse"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
+        "/users": {
+            "post": {
+                "tags": [
+                    "user"
+                ],
+                "summary": "Create user(init registration -- after need confirm)",
+                "description": "",
+                "operationId": "createUser",
+                "parameters": [
+                    {
+                        "name": "User",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/CreateUserRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "successful operation",
+                        "headers": {
+                            "location": {
+                                "description": "/users/1",
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/responses/NotFoundResponse"
+                    },
+                    "401": {
+                        "$ref": "#/responses/NotAuthResponse"
+                    },
+                    "default": {
+                        "$ref": "#/responses/DefaultErrorResponse"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "ErrorModel": {
+            "required": [
+                "status_code",
+                "message"
+            ],
+            "properties": {
+                "status_code": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "CreateDemandRequest": {
+            "required": [
+                "demandItems"
+            ],
+            "properties": {
+                "title": {
+                    "description": "title demand",
+                    "type": "string"
+                },
+                "address": {
+                    "description": "address demand",
+                    "type": "string"
+                },
+                "desc": {
+                    "description": "description of demand",
+                    "type": "string"
+                },
+                "delivery_date": {
+                    "description": "date delivery of demand(dd.mm.YYYY)",
+                    "type": "string"
+                },
+                "addition_emails": {
+                    "description": "addition emails",
+                    "type": "array",
+                    "items": {
+                        "description": "email",
+                        "type": "string"
+                    }
+                },
+                "regions": {
+                    "description": "regions",
+                    "type": "array",
+                    "items": {
+                        "description": "region",
+                        "type": "string"
+                    }
+                },
+                "spheres": {
+                    "description": "spheres",
+                    "type": "array",
+                    "items": {
+                        "description": "sphere",
+                        "type": "string"
+                    }
+                },
+                "demandItems": {
+                    "description": "demandItems",
+                    "type": "array",
+                    "items": {
+                        "description": "demandItem",
+                        "required": [
+                            "title",
+                            "count",
+                            "quantity_id"
+                        ],
+                        "properties": {
+                            "title": {
+                                "type": "string"
+                            },
+                            "count": {
+                                "type": "number"
+                            },
+                            "quantity_id": {
+                                "type": "integer"
+                            }
+                        },
+                        "type": "object"
+                    }
+                }
+            }
+        },
+        "CreateInvoiceRequest": {
+            "required": [
+                "responseItems"
+            ],
+            "properties": {
+                "responseItems": {
+                    "description": "id of response_item",
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        "UpdateDemandItemRequest": {
+            "properties": {
+                "response_item_id": {
+                    "description": "select or unselect(null)",
+                    "type": "integer"
+                }
+            }
+        },
+        "UpdateDemandRequest": {
+            "required": [
+                "status"
+            ],
+            "properties": {
+                "status": {
+                    "type": "string",
+                    "enum": [
+                        "active",
+                        "archived"
+                    ]
+                }
+            }
+        },
+        "UpdateResponseItemRequest": {
+            "required": [
+                "price"
+            ],
+            "properties": {
+                "price": {
+                    "type": "number"
+                }
+            }
+        },
+        "UpdateResponseRequest": {
+            "required": [
+                "responseItems"
+            ],
+            "properties": {
+                "status": {
+                    "type": "string",
+                    "enum": [
+                        "active",
+                        "draft",
+                        "cancel",
+                        "archived"
+                    ]
+                },
+                "delivery_type": {
+                    "type": "string"
+                },
+                "responseItems": {
+                    "type": "array",
+                    "items": {
+                        "required": [
+                            "demand_item_id",
+                            "price"
+                        ],
+                        "properties": {
+                            "id": {
+                                "description": "id for change and null for new",
+                                "type": "integer"
+                            },
+                            "demand_item_id": {
+                                "type": "integer"
+                            },
+                            "price": {
+                                "type": "number"
+                            }
+                        },
+                        "type": "object"
+                    }
+                }
+            }
+        },
+        "ConfirmationRequest": {
+            "required": [
+                "confirmation_code"
+            ],
+            "properties": {
+                "confirmation_code": {
+                    "description": "code confirm from email",
+                    "type": "string",
+                    "maxLength": 255
+                }
+            }
+        },
+        "CreateUserRequest": {
+            "required": [
+                "company_title",
+                "name",
+                "email",
+                "password"
+            ],
+            "properties": {
+                "company_title": {
+                    "description": "title unique for company",
+                    "type": "string",
+                    "maxLength": 255
+                },
+                "name": {
+                    "description": "user name",
+                    "type": "string",
+                    "maxLength": 255
+                },
+                "email": {
+                    "description": "email unique for users",
+                    "type": "string"
+                },
+                "password": {
+                    "description": "password, check for confirm",
+                    "type": "string",
+                    "minLength": 6
+                },
+                "confirmation_password": {
+                    "description": "confirmation with pass",
+                    "type": "string",
+                    "minLength": 6
+                }
+            }
+        },
+        "CompanyModel": {
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "DemandItemModel": {
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "demand_id": {
+                    "type": "integer"
+                },
+                "quantityTitle": {
+                    "description": "string or null",
+                    "type": "string"
+                },
+                "count": {
+                    "type": "number"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "DemandModel": {
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "company": {
+                    "type": "object",
+                    "$ref": "#/definitions/CompanyModel"
+                },
+                "demandItems": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/DemandItemModel"
+                    }
+                }
+            },
+            "type": "object"
+        },
+        "DemandModelWithResponses": {
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "company": {
+                    "type": "object",
+                    "$ref": "#/definitions/CompanyModel"
+                },
+                "demandItems": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/DemandItemModel"
+                    }
+                },
+                "responses": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ResponseModel"
+                    }
+                }
+            }
+        },
+        "InvoiceModel": {
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "response_id": {
+                    "type": "integer"
+                },
+                "file": {
+                    "type": "string"
+                }
+            }
+        },
+        "ResponseItemModel": {
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "response_id": {
+                    "type": "integer"
+                },
+                "price": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "selected": {
+                    "type": "boolean"
+                },
+                "invoice_id": {
+                    "type": "integer"
+                },
+                "demand_item_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "ResponseModel": {
+            "properties": {
+                "id": {
+                    "description": "/**",
+                    "type": "integer"
+                },
+                "demand_id": {
+                    "description": "/**",
+                    "type": "integer"
+                },
+                "delivery_type": {
+                    "description": "/**",
+                    "type": "string"
+                },
+                "status": {
+                    "description": "/**",
+                    "type": "string"
+                },
+                "company": {
+                    "description": "/**",
+                    "type": "object",
+                    "$ref": "#/definitions/CompanyModel"
+                },
+                "invoices": {
+                    "description": "/**",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/InvoiceModel"
+                    }
+                },
+                "responseItems": {
+                    "description": "/**",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ResponseItemModel"
+                    }
+                }
+            }
+        },
+        "ResponseModelWithDemand": {
+            "properties": {
+                "id": {
+                    "description": "/**",
+                    "type": "integer"
+                },
+                "demand_id": {
+                    "description": "/**",
+                    "type": "integer"
+                },
+                "delivery_type": {
+                    "description": "/**",
+                    "type": "string"
+                },
+                "status": {
+                    "description": "/**",
+                    "type": "string"
+                },
+                "company": {
+                    "description": "/**",
+                    "type": "object",
+                    "$ref": "#/definitions/CompanyModel"
+                },
+                "invoices": {
+                    "description": "/**",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/InvoiceModel"
+                    }
+                },
+                "responseItems": {
+                    "description": "/**",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ResponseItemModel"
+                    }
+                },
+                "demand": {
+                    "description": "/**",
+                    "$ref": "#/definitions/DemandModel"
+                }
+            }
+        }
+    },
+    "responses": {
+        "NotAuthResponse": {
+            "description": "Not Auth",
+            "schema": {
+                "$ref": "#/definitions/ErrorModel"
+            }
+        },
+        "NotFoundResponse": {
+            "description": "Not Found",
+            "schema": {
+                "$ref": "#/definitions/ErrorModel"
+            }
+        },
+        "DefaultErrorResponse": {
+            "description": "Default Error",
+            "schema": {
+                "$ref": "#/definitions/ErrorModel"
+            }
+        }
+    },
+    "securityDefinitions": {
+        "token": {
+            "type": "apiKey",
+            "name": "token",
+            "in": "query"
+        }
+    }
+}

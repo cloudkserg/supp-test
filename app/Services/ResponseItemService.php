@@ -25,10 +25,10 @@ class ResponseItemService
      */
     public function createItemsForResponse(Response $response, UpdateResponseRequest $request)
     {
-        $responseItemData = collect($request->responseItemData);
+        $responseItemData = collect($request->responseItems);
         $this->deleteNonExistantItems(
             $response->responseItems,
-            $responseItemData->pluck('id')
+            $responseItemData->pluck('id')->toArray()
         );
 
         return $responseItemData->map(function ($data) use ($response) {

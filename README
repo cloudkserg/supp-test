@@ -1,1 +1,75 @@
-777 storage/
+# INSTALL PROJECT
+
+## 1. Set rights for folder
+```bash
+chown -R 777 storage/ bootstrap/cache
+```
+
+## 2. Install dependencies
+[Get Composer](https://getcomposer.org/doc/00-intro.md#globally).
+
+For production variant
+```bash
+composer install --no-dev
+```
+
+For development variant
+```bash
+composer install --dev
+```
+
+## 3. Create Env file
+
+Copy Env example file to Env file and change requiring
+
+```bash
+cp .env.example .env
+```
+
+Requiring settings in .env:
+- APP_DEBUG = true, false (debug mode)
+- APP_ENV = local, production, development (app mode)
+- APP_URL = url to app
+
+- DB_CONNECTION=mysql (database type)
+- DB_HOST=127.0.0.1 (database host)
+- DB_PORT=3306 (database port)
+- DB_DATABASE=supp (database name)
+- DB_USERNAME=root (database user)
+- DB_PASSWORD=xxxx (database pass)
+
+- MAIL_FROM_ADDRESS=xxx@ex.com (address from mails send)
+- MAIL_FROM_NAME=FROM_SUPP (name from mails send)
+- MAIL_ADMIN=xxx@ex.com (address when default mails send)
+
+- API_DEBUG = true, false (debug mode for api)
+
+
+## 4. Generate app_key
+```bash
+php artisan key:generate
+```
+
+
+# ADDITIONS
+
+## Run tests
+```bash
+phpunit tests/
+```
+## Update swagger file
+```bash
+php artisan swagger:generate
+```
+
+## Set php development server
+```bash
+php artisan serve
+```
+
+## url for show swagger
+/doc/
+
+## url for show swagger.json
+/doc/swagger.json
+

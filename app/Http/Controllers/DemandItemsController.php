@@ -32,7 +32,45 @@ class DemandItemsController extends Controller
 
 
 
-
+    /**
+     * @SWG\Patch(
+     *     path="/demandItems/{id}",
+     *     summary="Update demandItem",
+     *     tags={"demandItem"},
+     *     description="",
+     *     operationId="updateDemandItem",
+     *      @SWG\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="DemandItem id",
+     *         required=true,
+     *         type="integer",
+     *      ),
+     *     @SWG\Parameter(
+     *         name="DemandItem",
+     *         in="body",
+     *         @SWG\Schema(ref="#/definitions/UpdateDemandItemRequest")
+     *     ),
+     *     @SWG\Response(
+     *         response=202,
+     *         description="successful operation"
+     *     ),
+     *     @SWG\Response(
+     *         response=404,
+     *         ref="#/responses/NotFoundResponse"
+     *     ),
+     *     @SWG\Response(
+     *         response=401,
+     *         ref="#/responses/NotAuthResponse"
+     *     ),
+     *     @SWG\Response(
+     *         response="default",
+     *         ref="#/responses/DefaultErrorResponse"
+     *     ),
+     *
+     *     security={{ "token": {} }}
+     * )
+     */
     public function update(UpdateDemandItemRequest $request)
     {
         //updateResponseItem

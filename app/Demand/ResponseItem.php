@@ -53,6 +53,15 @@ class ResponseItem extends Model
 
 
     /**
+     * @return bool
+     */
+    public function isSelected()
+    {
+        return ($this->demandItem->response_item_id === $this->id);
+    }
+
+
+    /**
      * @param $value
      */
     public function setPriceAttribute($value)

@@ -118,10 +118,9 @@ class DemandsTest extends TestCase
         ]);
 
         $data = [
-            'demand_id' => $demand->id,
             'status' => \App\Type\DemandStatus::ARCHIVED
         ];
-        $r = $this->patch('/api/demands?token=' . $this->token, $data);
+        $r = $this->patch(sprintf('/api/demands/%s?token=%s', $demand->id, $this->token), $data);
             $r->seeStatusCode(202);
 
         $this->assertEquals(\App\Type\DemandStatus::ARCHIVED, Demand::find($demand->id)->status);
@@ -135,10 +134,9 @@ class DemandsTest extends TestCase
         ]);
 
         $data = [
-            'demand_id' => $demand->id,
             'status' => \App\Type\DemandStatus::ACTIVE
         ];
-        $r = $this->patch('/api/demands?token=' . $this->token, $data);
+        $r = $this->patch(sprintf('/api/demands/%s?token=%s', $demand->id, $this->token), $data);
         $r->seeStatusCode(202);
 
         $this->assertEquals(\App\Type\DemandStatus::ACTIVE, Demand::find($demand->id)->status);
@@ -152,10 +150,9 @@ class DemandsTest extends TestCase
         ]);
 
         $data = [
-            'demand_id' => $demand->id,
             'status' => \App\Type\DemandStatus::ACTIVE
         ];
-        $r = $this->patch('/api/demands?token=' . $this->token, $data);
+        $r = $this->patch(sprintf('/api/demands/%s?token=%s', $demand->id, $this->token), $data);
         $r->seeStatusCode(202);
 
         $this->assertEquals(\App\Type\DemandStatus::ACTIVE, Demand::find($demand->id)->status);
@@ -170,10 +167,9 @@ class DemandsTest extends TestCase
         ]);
 
         $data = [
-            'demand_id' => $demand->id,
             'status' => \App\Type\DemandStatus::ARCHIVED
         ];
-        $r = $this->patch('/api/demands?token=' . $this->token, $data);
+        $r = $this->patch(sprintf('/api/demands/%s?token=%s', $demand->id, $this->token), $data);
         $r->seeStatusCode(403);
 
         $this->assertEquals(\App\Type\DemandStatus::ACTIVE, Demand::find($demand->id)->status);

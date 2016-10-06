@@ -11,7 +11,86 @@ namespace App\Transformers;
 
 use App\Demand\Response;
 use League\Fractal\TransformerAbstract;
+use Swagger\Annotations as SWG;
 
+/**
+/**
+
+ * @SWG\Definition(
+ *      definition="ResponseModel",
+ *      @SWG\Property(
+ *          property="id",
+ *          type="integer"
+ *      ),
+ *      @SWG\Property(
+ *          property="demand_id",
+ *          type="integer"
+ *      ),
+ *      @SWG\Property(
+ *          property="delivery_type",
+ *          type="string"
+ *      ),
+ *      @SWG\Property(
+ *          property="status",
+ *          type="string"
+ *      ),
+ *      @SWG\Property(
+ *          property="company",
+ *          type="object",
+ *          ref="#/definitions/CompanyModel"
+ *      ),
+ *      @SWG\Property(
+ *          property="invoices",
+ *          type="array",
+ *          @SWG\Items(ref="#/definitions/InvoiceModel")
+ *      ),
+ *      @SWG\Property(
+ *          property="responseItems",
+ *          type="array",
+ *          @SWG\Items(ref="#/definitions/ResponseItemModel")
+ *      )
+ * )
+ * @SWG\Definition(
+ *      definition="ResponseModelWithDemand",
+ *      @SWG\Property(
+ *          property="id",
+ *          type="integer"
+ *      ),
+ *      @SWG\Property(
+ *          property="demand_id",
+ *          type="integer"
+ *      ),
+ *      @SWG\Property(
+ *          property="delivery_type",
+ *          type="string"
+ *      ),
+ *      @SWG\Property(
+ *          property="status",
+ *          type="string"
+ *      ),
+ *      @SWG\Property(
+ *          property="company",
+ *          type="object",
+ *          ref="#/definitions/CompanyModel"
+ *      ),
+ *      @SWG\Property(
+ *          property="invoices",
+ *          type="array",
+ *          @SWG\Items(ref="#/definitions/InvoiceModel")
+ *      ),
+ *      @SWG\Property(
+ *          property="responseItems",
+ *          type="array",
+ *          @SWG\Items(ref="#/definitions/ResponseItemModel")
+ *      ),
+ *      @SWG\Property(
+ *          property="demand",
+ *          ref="#/definitions/DemandModel"
+ *      )
+ * )
+ * Class ResponseTransformer
+ * @package App\Transformers
+ */
 class ResponseTransformer extends TransformerAbstract
 {
 
@@ -25,6 +104,7 @@ class ResponseTransformer extends TransformerAbstract
     {
         return [
             'id' => (int)$response->id,
+            'demand_id' => (int)$response->demand_id,
             'status' => $response->status,
             'delivery_type' => $response->delivery_type
         ];
@@ -50,6 +130,10 @@ class ResponseTransformer extends TransformerAbstract
         return $this->collection($response->responseItems, new ResponseItemTransformer());
     }
 
+    /**
+     *
+     * @return $this
+     */
     public function addDemand()
     {
         $this->defaultIncludes[] = 'demand';

@@ -7,8 +7,12 @@
  */
 
 namespace App\Type;
+use Swagger\Annotations as SWG;
 
-
+/**
+ * Class ResponseStatus
+ * @package App\Type
+ */
 class ResponseStatus extends ConstType
 {
     const DRAFT = 'draft';

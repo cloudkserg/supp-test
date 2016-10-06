@@ -12,7 +12,7 @@ use App\Company;
 use App\Http\Requests;
 use App\Http\Requests\UpdateResponseRequest;
 use App\Http\Requests\IndexResponsesRequest;
-
+use Swagger\Annotations as SWG;
 
 class ResponsesController extends Controller
 {
@@ -55,6 +55,44 @@ class ResponsesController extends Controller
         return $this->getUser()->company;
     }
 
+    /**
+     * @SWG\Get(
+     *     path="/responses",
+     *     summary="Get my responses by status",
+     *     tags={"response"},
+     *     description="",
+     *     operationId="getResponses",
+     *      @SWG\Parameter(
+     *         name="status",
+     *         in="query",
+     *         type="string",
+     *         enum={"active","archived", "draft", "cancel"},
+     *         description="filtered Status [or array of status]"
+     *      ),
+     *     @SWG\Response(
+     *         response=200,
+     *         description="successful operation",
+     *         @SWG\Schema(
+     *              type="array",
+     *              @SWG\Items(ref="#/definitions/ResponseModelWithDemand")
+     *          )
+     *     ),
+     *     @SWG\Response(
+     *         response=404,
+     *         ref="#/responses/NotFoundResponse"
+     *     ),
+     *     @SWG\Response(
+     *         response=401,
+     *         ref="#/responses/NotAuthResponse"
+     *     ),
+     *     @SWG\Response(
+     *         response="default",
+     *         ref="#/responses/DefaultErrorResponse"
+     *     ),
+     *
+     *     security={{ "token": {} }}
+     * )
+     */
     public function index(IndexResponsesRequest $request)
     {
          $items = $this->responseService->getItemsByCompanyAndStatus(
@@ -66,12 +104,44 @@ class ResponsesController extends Controller
         );
     }
 
+    /**
+     * @SWG\Patch(
+     *     path="/responses/{id}",
+     *     summary="Update response",
+     *     tags={"response"},
+     *     description="",
+     *     operationId="updateResponses",
+     *     @SWG\Parameter(name="id", in="path", required=true, type="integer"),
+     *     @SWG\Parameter(
+     *          name="Response",
+     *          in="body",
+     *          @SWG\Schema(ref="#/definitions/UpdateResponseRequest")
+     *      ),
+     *     @SWG\Response(
+     *         response=202,
+     *         description="successful operation",
+     *     ),
+     *     @SWG\Response(
+     *         response=404,
+     *         ref="#/responses/NotFoundResponse"
+     *     ),
+     *     @SWG\Response(
+     *         response=401,
+     *         ref="#/responses/NotAuthResponse"
+     *     ),
+     *     @SWG\Response(
+     *         response="default",
+     *         ref="#/responses/DefaultErrorResponse"
+     *     ),
+     *
+     *     security={{ "token": {} }}
+     * )
+     */
     public function update(UpdateResponseRequest $request)
     {
         $unChangeResponse = $request->getResponse();
         $response = $this->responseService->changeItem($unChangeResponse, $request);
 
-        $this->responseItemService->deleteAllForResponse($response);
         $this->responseItemService->createItemsForResponse($response, $request);
         return $this->response->accepted();
 

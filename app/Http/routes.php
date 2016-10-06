@@ -29,13 +29,13 @@ $api->group(['middleware' => 'api.auth'], function ($api) {
     $api->get('/demands', 'DemandsController@index');
     $api->post('/demands', 'DemandsController@store');
     //status=archive,active, without
-    $api->patch('/demands', 'DemandsController@update');
+    $api->patch('/demands/{id}', 'DemandsController@update');
 
     // status=draft, archive, active, without
     $api->get('/responses', 'ResponsesController@index');
 
     // status=archive, active responseItems + data
-    $api->patch('/responses', 'ResponsesController@update');
+    $api->patch('/responses/{id}', 'ResponsesController@update');
 
     // price
     $api->patch('/responseItems/{id}', 'ResponseItemsController@update');

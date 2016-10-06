@@ -40,7 +40,7 @@ class GenerateInvoiceEventsTest extends \TestCase
         $response = $this->createResponseWithItems(1);
 
         $invoice = (new \App\Services\InvoiceService())
-            ->createItem($response->id, $response->responseItems);
+            ->createItem($response->responseItems);
 
         Event::assertFired(CreateInvoiceEvent::class, function ($e) use ($invoice) {
             return (

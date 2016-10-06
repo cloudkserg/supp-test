@@ -7,8 +7,14 @@
  */
 
 namespace App\Type;
+use Swagger\Annotations as SWG;
 
-
+/**
+ *
+ *
+ * Class DemandStatus
+ * @package App\Type
+ */
 class DemandStatus extends ConstType
 {
     const ACTIVE = 'active';

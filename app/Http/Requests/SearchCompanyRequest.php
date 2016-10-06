@@ -11,6 +11,11 @@ namespace App\Http\Requests;
 
 use Carbon\Carbon;
 
+/**
+ *
+ * Class SearchCompanyRequest
+ * @package App\Http\Requests
+ */
 class SearchCompanyRequest extends ApiRequest
 {
     /**
@@ -32,8 +37,10 @@ class SearchCompanyRequest extends ApiRequest
     {
         return [
             'regions' => 'array|required',
+            'regions.0' => 'int|required',
             'reqions.*' => 'int',
             'spheres' => 'array|required',
+            'spheres.0' => 'int|required',
             'spheres.*' => 'int'
         ];
     }

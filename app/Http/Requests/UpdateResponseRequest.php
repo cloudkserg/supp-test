@@ -12,7 +12,29 @@ namespace App\Http\Requests;
 use App\Http\Requests\ApiRequest;
 use App\Demand\Response;
 use App\Services\ResponseService;
+use Swagger\Annotations as SWG;
 
+/**
+ * @SWG\Definition(
+ *      definition="UpdateResponseRequest",
+ *      required={"responseItems"},
+ *      @SWG\Property(property="status", type="string", enum={"active","draft","cancel","archived"}),
+ *      @SWG\Property(property="delivery_type", type="string"),
+ *      @SWG\Property(
+ *          property="responseItems",
+ *          type="array",
+ *          @SWG\Items(
+ *              type="object",
+ *              required={"demand_item_id", "price"},
+ *              @SWG\Property(property="id", type="integer", description="id for change and null for new"),
+ *              @SWG\Property(property="demand_item_id", type="integer"),
+ *              @SWG\Property(property="price", type="number")
+ *          )
+ *      )
+ * )
+ * Class UpdateResponseRequest
+ * @package App\Http\Requests
+ */
 class UpdateResponseRequest extends ApiRequest
 {
     /**
@@ -49,10 +71,10 @@ class UpdateResponseRequest extends ApiRequest
     public function rules()
     {
         return [
-            'response_id' => 'integer|required',
             'status' => 'string',
             'delivery_type' => 'string',
             'responseItems' => 'array|required',
+            'responseItems.0' => 'required',
             'responseItems.*.id' => 'integer',
             'responseItems.*.demand_item_id' => 'integer|required',
             'responseItems.*.price' => 'numeric|required'
@@ -66,7 +88,7 @@ class UpdateResponseRequest extends ApiRequest
     public function getResponse()
     {
         if (!isset($this->item)) {
-            $this->item = $this->responseService->findItem($this->response_id);
+            $this->item = $this->responseService->findItem((int)$this->route('id'));
         }
         return $this->item;
     }

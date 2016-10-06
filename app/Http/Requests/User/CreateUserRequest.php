@@ -3,8 +3,21 @@
 namespace App\Http\Requests\User;
 
 use App\Http\Requests\ApiRequest;
+use Swagger\Annotations as SWG;
+
 
 /**
+ * @SWG\Definition(
+ *      definition="CreateUserRequest",
+ *      required={"company_title", "name", "email", "password"},
+ *      @SWG\Property(property="company_title", type="string", maxLength=255, description="title unique for company"),
+ *      @SWG\Property(property="name", type="string", maxLength=255, description="user name"),
+ *      @SWG\Property(property="email", type="string", description="email unique for users" ),
+ *      @SWG\Property(property="password", type="string", minLength=6, description="password, check for confirm"),
+ *      @SWG\Property(property="confirmation_password", type="string", minLength=6, description="confirmation with pass")
+ * )
+ *
+ *
  * Class CreateUserRequest
  * @package App\Http\Requests
  *
@@ -36,7 +49,7 @@ class CreateUserRequest extends ApiRequest
         return [
             'company_title' => 'required|max:255|unique:companies,title',
             'name' => 'required|max:255',
-            'email' => 'required|email|max:255|unique:users',
+            'email' => 'required|email|unique:users',
             'password' => 'required|min:6|confirmed',
         ];
     }

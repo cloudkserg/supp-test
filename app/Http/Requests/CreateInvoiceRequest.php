@@ -12,7 +12,20 @@ namespace App\Http\Requests;
 
 use App\Demand\ResponseItem;
 use App\Services\ResponseItemService;
+use Swagger\Annotations as SWG;
 
+/**
+ * @SWG\Definition(
+ *      definition="CreateInvoiceRequest",
+ *      required={"responseItems"},
+ *      @SWG\Property(
+ *          property="responseItems", type="array", description="id of response_item",
+ *          @SWG\Items(type="integer")
+ *      )
+ * )
+ * Class CreateInvoiceRequest
+ * @package App\Http\Requests
+ */
 class CreateInvoiceRequest extends ApiRequest
 {
 

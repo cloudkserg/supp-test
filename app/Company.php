@@ -16,7 +16,7 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @property Sphere[] $spheres
  * @property Region[] $regions
- * @property User[] $users
+ * @property \Illuminate\Database\Eloquent\Collection $users
  * @property Response[] $responses
  */
 class Company extends Model
@@ -65,9 +65,11 @@ class Company extends Model
      */
     public function getAdmin()
     {
-        if (empty($this->users) or !$this->users[0]->confirmed) {
-            return (new UserService())->getStubUser();
-        }
-        return $this->users[0];
+        return $this->users->first(
+            function (User $user) {
+                return $user->confirmed;
+            },
+            (new UserService())->getStubUser()
+        );
     }
 }

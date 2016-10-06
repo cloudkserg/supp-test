@@ -11,7 +11,18 @@ namespace App\Http\Requests;
 use App\Demand\ResponseItem;
 use App\Services\ResponseItemService;
 use Illuminate\Http\Request;
+use Swagger\Annotations as SWG;
 
+/**
+ * @SWG\Definition(
+ *      definition="UpdateResponseItemRequest",
+ *      required={"price"},
+ *      @SWG\Property(property="price", type="number")
+ * )
+ *
+ * Class UpdateResponseItemRequest
+ * @package App\Http\Requests
+ */
 class UpdateResponseItemRequest extends ApiRequest
 {
     /**
@@ -49,7 +60,7 @@ class UpdateResponseItemRequest extends ApiRequest
     public function rules()
     {
         return [
-            'price' => 'numeric'
+            'price' => 'numeric|required'
         ];
     }
 

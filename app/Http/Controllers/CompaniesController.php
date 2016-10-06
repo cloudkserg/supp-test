@@ -47,7 +47,54 @@ class CompaniesController extends Controller
     }
 
     /**
+     * @SWG\Get(
+     *     path="/companies/search",
+     *     summary="Finds Companies by spheres and regions",
+     *     tags={"company"},
+     *     description="",
+     *     operationId="findCompanyBySphereAndRegion",
+     *      @SWG\Parameter(
+     *         name="regions",
+     *         in="query",
+     *         description="Region to filter by",
+     *         required=true,
+     *         type="array",
+     *         @SWG\Items(type="integer"),
+     *      ),
+     *     @SWG\Parameter(
+     *         name="spheres",
+     *         in="query",
+     *         description="Sphere to filter by",
+     *         required=true,
+     *         type="array",
+     *         @SWG\Items(type="integer"),
+     *     ),
+     *     @SWG\Response(
+     *         response=200,
+     *         description="successful operation",
+     *         @SWG\Schema(
+     *             type="object",
+     *             @SWG\Property(property="count", type="integer")
+     *         ),
+     *     ),
+     *     @SWG\Response(
+     *         response=404,
+     *         ref="#/responses/NotFoundResponse"
+     *     ),
+     *     @SWG\Response(
+     *         response=401,
+     *         ref="#/responses/NotAuthResponse"
+     *     ),
+     *     @SWG\Response(
+     *         response="default",
+     *         ref="#/responses/DefaultErrorResponse"
+     *     ),
+     *     security={{ "token": {} }}
+     * )
+     */
+    /**
      * Display a listing of the resource.
+     *
      *
      * @param SearchCompanyRequest $request
      * @return \Illuminate\Http\Response

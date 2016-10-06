@@ -10,7 +10,15 @@ namespace App\Http\Requests;
 
 use App\Demand\DemandItem;
 use App\Services\DemandItemService;
-
+use Swagger\Annotations as SWG;
+/**
+ * @SWG\Definition(
+ *      definition="UpdateDemandItemRequest",
+ *      @SWG\Property(property="response_item_id", type="integer", description="select or unselect(null)")
+ * )
+ * Class UpdateDemandItemRequest
+ * @package App\Http\Requests
+ */
 class UpdateDemandItemRequest extends ApiRequest
 {
     /**

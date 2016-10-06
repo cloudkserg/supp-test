@@ -7,9 +7,8 @@ use App\Services\UserService;
 use App\Http\Requests\User\CreateUserRequest;
 
 use Dingo\Api\Routing\Helpers;
-
+use Swagger\Annotations as SWG;
 /**
- * @Resource("Users")
  */
 class UsersController extends Controller
 {
@@ -30,13 +29,38 @@ class UsersController extends Controller
     }
 
 
-	/**
-	 * Register user
-	 *
-	 * Register a new user with a `username` and `password`.
-	 *
-	 * @Post("/")
-	 */
+    /**
+     * @SWG\Post(
+     *     path="/users",
+     *     summary="Create user(init registration -- after need confirm)",
+     *     tags={"user"},
+     *     description="",
+     *     operationId="createUser",
+     *     @SWG\Parameter(
+     *          name="User",
+     *          in="body",
+     *          @SWG\Schema(ref="#/definitions/CreateUserRequest")
+     *      ),
+     *     @SWG\Response(
+     *         response=201,
+     *         description="successful operation",
+     *         @SWG\Header(header="location", type="string", description="/users/1")
+     *     ),
+     *     @SWG\Response(
+     *         response=404,
+     *         ref="#/responses/NotFoundResponse"
+     *     ),
+     *     @SWG\Response(
+     *         response=401,
+     *         ref="#/responses/NotAuthResponse"
+     *     ),
+     *     @SWG\Response(
+     *         response="default",
+     *         ref="#/responses/DefaultErrorResponse"
+     *     ),
+     *
+     * )
+     */
     public function store(CreateUserRequest $request)
     {
         $user = $this->userService->createUser($request);
