@@ -16,65 +16,6 @@
         "application/json"
     ],
     "paths": {
-        "/companies/search": {
-            "get": {
-                "tags": [
-                    "company"
-                ],
-                "summary": "Finds Companies by spheres and regions",
-                "description": "",
-                "operationId": "findCompanyBySphereAndRegion",
-                "parameters": [
-                    {
-                        "name": "regions",
-                        "in": "query",
-                        "description": "Region to filter by",
-                        "required": true,
-                        "type": "array",
-                        "items": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "spheres",
-                        "in": "query",
-                        "description": "Sphere to filter by",
-                        "required": true,
-                        "type": "array",
-                        "items": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "successful operation",
-                        "schema": {
-                            "properties": {
-                                "count": {
-                                    "type": "integer"
-                                }
-                            },
-                            "type": "object"
-                        }
-                    },
-                    "404": {
-                        "$ref": "#/responses/NotFoundResponse"
-                    },
-                    "401": {
-                        "$ref": "#/responses/NotAuthResponse"
-                    },
-                    "default": {
-                        "$ref": "#/responses/DefaultErrorResponse"
-                    }
-                },
-                "security": [
-                    {
-                        "token": []
-                    }
-                ]
-            }
-        },
         "/users/{user_id}/confirmations": {
             "post": {
                 "tags": [
@@ -478,6 +419,41 @@
                 ]
             }
         },
+        "/regions": {
+            "get": {
+                "tags": [
+                    "region"
+                ],
+                "summary": "Get Regions",
+                "description": "",
+                "operationId": "listRegions",
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/RegionModel"
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/responses/NotFoundResponse"
+                    },
+                    "401": {
+                        "$ref": "#/responses/NotAuthResponse"
+                    },
+                    "default": {
+                        "$ref": "#/responses/DefaultErrorResponse"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
         "/responseItems/{id}": {
             "delete": {
                 "tags": [
@@ -631,6 +607,41 @@
                 "responses": {
                     "202": {
                         "description": "successful operation"
+                    },
+                    "404": {
+                        "$ref": "#/responses/NotFoundResponse"
+                    },
+                    "401": {
+                        "$ref": "#/responses/NotAuthResponse"
+                    },
+                    "default": {
+                        "$ref": "#/responses/DefaultErrorResponse"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
+        "/spheres": {
+            "get": {
+                "tags": [
+                    "sphere"
+                ],
+                "summary": "Get Spheres",
+                "description": "",
+                "operationId": "listSpheres",
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/SphereModel"
+                            }
+                        }
                     },
                     "404": {
                         "$ref": "#/responses/NotFoundResponse"
@@ -1167,6 +1178,16 @@
                 }
             }
         },
+        "RegionModel": {
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
         "ResponseItemModel": {
             "properties": {
                 "id": {
@@ -1271,6 +1292,16 @@
                 "demand": {
                     "description": "/**",
                     "$ref": "#/definitions/DemandModel"
+                }
+            }
+        },
+        "SphereModel": {
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "title": {
+                    "type": "string"
                 }
             }
         }

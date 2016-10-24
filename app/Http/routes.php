@@ -57,6 +57,9 @@ $api->group(['middleware' => 'api.auth'], function ($api) {
     //:todo demands, responses
     $api->get('/updates', 'UpdatesController@index');
 
+    $api->get('/regions', 'RegionsController@index');
+    $api->get('/spheres', 'SpheresController@index');
+
     // spheres, regions
     $api->get('/companies/search', 'CompaniesController@search');
 
