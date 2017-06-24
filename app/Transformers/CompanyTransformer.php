@@ -17,12 +17,51 @@ use Swagger\Annotations as SWG;
  *      definition="CompanyModel",
  *      @SWG\Property(property="id", type="integer"),
  *      @SWG\Property(property="title", type="string")
+ *      @SWG\Property(
+ *          property="regions",
+ *          type="array",
+ *          @SWG\Items(ref="#/definitions/RegionModel")
+ *      ),
+ *      @SWG\Property(
+ *          property="spheres",
+ *          type="array",
+ *          @SWG\Items(ref="#/definitions/SphereModel")
+ *      ),
  * )
  * Class CompanyTransformer
  * @package App\Transformers
  */
 class CompanyTransformer extends TransformerAbstract
 {
+
+    public function includeSpheres(Company $company)
+    {
+        return $this->collection($company->spheres, new SphereTransformer());
+    }
+
+    public function includeRegions(Company $company)
+    {
+        return $this->collection($company->regions, new RegionTransformer());
+    }
+
+    /**
+     *
+     * @return $this
+     */
+    public function addSpheres()
+    {
+        $this->defaultIncludes[] = 'spheres';
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function addRegions()
+    {
+        $this->defaultIncludes[] = 'regions';
+        return $this;
+    }
 
     public function transform(Company $company)
     {

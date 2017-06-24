@@ -61,6 +61,9 @@ $api->group(['middleware' => 'api.auth'], function ($api) {
     $api->get('/spheres', 'SpheresController@index');
 
     // spheres, regions
-    $api->get('/companies/search', 'CompaniesController@search');
+    //$api->get('/companies/search', 'CompaniesController@search');
+
+    // status=archive, active responseItems + data
+    $api->get('/companies/{id}', 'CompaniesController@get');
 
 });
