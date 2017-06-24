@@ -26,7 +26,11 @@ class TokenService
     {
         $token = null;
         try {
-            if (!$user = Auth::attempt(['email' => $email, 'password' => $password, 'confirmed' => true])) {
+            if (!Auth::attempt(['email' => $email, 'password' => $password, 'confirmed' => true])) {
+                throw new UnauthorizedHttpException("Email address / password do not match");
+            }
+            $user = Auth::getUser();
+            if (!isset($user)) {
                 throw new UnauthorizedHttpException("Email address / password do not match");
             }
 
