@@ -15,7 +15,19 @@ use Swagger\Annotations as SWG;
  *      @SWG\Property(property="email", type="string", description="email unique for users" ),
  *      @SWG\Property(property="password", type="string", minLength=6, description="password, check for confirm"),
  *      @SWG\Property(property="confirmation_password", type="string", minLength=6, description="confirmation with pass")
- * )
+ *      @SWG\Property(
+ *         property="regions",
+ *         description="regions",
+ *         type="array",
+ *         @SWG\Items(type="string", description="region")
+ *      ),
+ *      @SWG\Property(
+ *         property="spheres",
+ *         description="spheres",
+ *         type="array",
+ *         @SWG\Items(type="string", description="sphere")
+ *      ),
+ *
  *
  *
  * Class CreateUserRequest
@@ -25,6 +37,8 @@ use Swagger\Annotations as SWG;
  * @property string $name
  * @property string $email
  * @property string $password
+ * @property int[] $spheres
+ * @property int[] $regions
  *
  */
 class CreateUserRequest extends ApiRequest
@@ -51,6 +65,10 @@ class CreateUserRequest extends ApiRequest
             'name' => 'required|max:255',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:6|confirmed',
+            'regions' => 'array|required',
+            'regions.*' => 'integer',
+            'spheres' => 'array|required',
+            'spheres.*' => 'integer',
         ];
     }
 }

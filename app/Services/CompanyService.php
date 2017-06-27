@@ -34,6 +34,10 @@ class CompanyService
         $company = new Company();
         $company->title = $request->company_title;
         $company->saveOrFail();
+
+        $company->regions()->attach($request->get('regions'));
+        $company->spheres()->attach($request->get('spheres'));
+
         return $company;
     }
 

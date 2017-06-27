@@ -14,16 +14,43 @@ class UsersTest extends TestCase
 
         $this->expectsEvents(RegisterUserEvent::class);
 
+        $this->createBeforeCompany();
+
+        $spheres = \App\Type\Sphere::take(2)->get();
+        $regions = \App\Type\Region::take(2)->get();
+
         $this->post('/api/users', [
                 'email' => 'abba@mail.ru',
                 'password' => '123456',
                 'password_confirmation' => '123456',
                 'name' => 'Test user',
-                'company_title' => 'Test company'
+                'company_title' => 'Test company',
+                'spheres' => collect($spheres)->pluck('id')->toArray(),
+                'regions' => collect($regions)->pluck('id')->toArray()
             ])
             ->seeStatusCode(201)
             ->seeHeader('location', '/users/1');
 
+
+        $user = \App\User::find(1);
+        $this->assertInstanceOf(\App\User::class, $user);
+        $company = $user->company;
+        $this->assertInstanceOf(\App\Company::class, $company);
+        $this->assertCount(2, $company->spheres);
+        $this->assertCount(2, $company->regions);
+
+    }
+
+    public function testErrorWithSpheres()
+    {
+        $this->doesntExpectEvents(RegisterUserEvent::class);
+        $this->post('/api/users', [
+            'email' => 'abba@mail.ru',
+            'password' => '123456',
+            'password_confirmation' => '123456',
+            'name' => 'Test user',
+            'compay_title' => 'Test company'
+        ])->seeStatusCode(422);
     }
 
     public function testErrorValidationPassword()

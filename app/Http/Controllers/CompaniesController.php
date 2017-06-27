@@ -70,7 +70,7 @@ class CompaniesController extends Controller
      */
     public function get(Company $company)
     {
-        return $this->collection($company,  (new CompanyTransformer())->addRegions()->addSpheres());
+        return $this->response->item($company,  (new CompanyTransformer())->addRegions()->addSpheres());
     }
 
 }

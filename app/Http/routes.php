@@ -13,13 +13,28 @@
 |
 |
 */
-
+//
+//registration + regions, spheres
+//PATCH companies/{id}
+//title
+//spheres - array [id]
+//regions - array [id]
+//founded - text
+//site - text
+//address - text
+//description - text
+//GET quantities
+//
+//POST /users/{user_id}/recoveries
 
 $api->post('/users', 'UsersController@store');
 $api->post('/users/{user_id}/confirmations', 'ConfirmationsController@store');
 
 $api->post('/tokens', 'TokensController@store');
 $api->put('/tokens', 'TokensController@update');
+
+$api->get('/regions', 'RegionsController@index');
+$api->get('/spheres', 'SpheresController@index');
 
 
 $api->group(['middleware' => 'api.auth'], function ($api) {
@@ -56,9 +71,6 @@ $api->group(['middleware' => 'api.auth'], function ($api) {
 
     //:todo demands, responses
     $api->get('/updates', 'UpdatesController@index');
-
-    $api->get('/regions', 'RegionsController@index');
-    $api->get('/spheres', 'SpheresController@index');
 
     // spheres, regions
     //$api->get('/companies/search', 'CompaniesController@search');
