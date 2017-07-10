@@ -119,7 +119,7 @@ class CreateDemandRequest extends ApiRequest
         if (!isset($this->delivery_date)) {
             return null;
         }
-        return Carbon::createFromFormat('d.m.Y', $this->delivery_date);
+        return Carbon::parse($this->delivery_date);
     }
 }
 

@@ -35,7 +35,7 @@ class DemandsTest extends TestCase
         $data = [
             'title' => $faker->title,
             'desc' => $faker->text,
-            'delivery_date' => $faker->date('d.m.Y'),
+            'delivery_date' => $faker->date('d.m.Y H:i'),
             'addition_emails' => [
                 $faker->safeEmail,
                 $faker->safeEmail
@@ -96,7 +96,7 @@ class DemandsTest extends TestCase
         $data = [
             'title' => $faker->title,
             'desc' => $faker->text,
-            'delivery_date' => $faker->date('d.m.Y'),
+            'delivery_date' => $faker->date('d.m.Y H:i'),
             'addition_emails' => [
                 $faker->safeEmail,
                 $faker->safeEmail
@@ -149,10 +149,7 @@ class DemandsTest extends TestCase
             'status' => \App\Type\DemandStatus::ACTIVE
         ];
         $r = $this->patch(sprintf('/api/demands/%s?token=%s', $demandId, $this->token), $data);
-        var_dump($r->response->content());die;
-        $r->seeStatusCode(202);
-
-        $this->assertEquals(\App\Type\DemandStatus::ACTIVE, Demand::find($demand->id)->status);
+        $r->seeStatusCode(404);
     }
 
     public function testUpdateSame()
