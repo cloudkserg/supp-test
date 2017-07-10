@@ -33,7 +33,7 @@ class QuantitiesController extends Controller
      * @SWG\Get(
      *     path="/quantities",
      *     summary="Get Quantities",
-     *     tags={"region"},
+     *     tags={"quantity"},
      *     description="",
      *     operationId="listQuantities",
      *     @SWG\Response(

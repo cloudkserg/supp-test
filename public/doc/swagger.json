@@ -496,7 +496,7 @@
         "/quantities": {
             "get": {
                 "tags": [
-                    "region"
+                    "quantity"
                 ],
                 "summary": "Get Quantities",
                 "description": "",
