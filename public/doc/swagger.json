@@ -97,7 +97,7 @@
                 ]
             }
         },
-        "/users/{user_id}/confirmations": {
+        "/users/confirmations": {
             "post": {
                 "tags": [
                     "user"
@@ -106,13 +106,6 @@
                 "description": "",
                 "operationId": "confirmUserRegistration",
                 "parameters": [
-                    {
-                        "name": "user_id",
-                        "in": "path",
-                        "description": "User id",
-                        "required": true,
-                        "type": "integer"
-                    },
                     {
                         "name": "ConfirmationRequest",
                         "in": "body",
@@ -481,6 +474,41 @@
                         "schema": {
                             "description": "get content of file",
                             "type": "file"
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/responses/NotFoundResponse"
+                    },
+                    "401": {
+                        "$ref": "#/responses/NotAuthResponse"
+                    },
+                    "default": {
+                        "$ref": "#/responses/DefaultErrorResponse"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
+        "/quantities": {
+            "get": {
+                "tags": [
+                    "region"
+                ],
+                "summary": "Get Quantities",
+                "description": "",
+                "operationId": "listQuantities",
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/QuantityModel"
+                            }
                         }
                     },
                     "404": {
@@ -1194,7 +1222,7 @@
                     "type": "string",
                     "minLength": 6
                 },
-                "confirmation_password": {
+                "password_confirmation": {
                     "description": "confirmation with pass",
                     "type": "string",
                     "minLength": 6
@@ -1285,6 +1313,18 @@
                 "status": {
                     "type": "string"
                 },
+                "created": {
+                    "type": "string"
+                },
+                "desc": {
+                    "type": "string"
+                },
+                "address": {
+                    "type": "string"
+                },
+                "delivery_date": {
+                    "type": "string"
+                },
                 "company": {
                     "type": "object",
                     "$ref": "#/definitions/CompanyModel"
@@ -1339,6 +1379,16 @@
                     "type": "integer"
                 },
                 "file": {
+                    "type": "string"
+                }
+            }
+        },
+        "QuantityModel": {
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "title": {
                     "type": "string"
                 }
             }

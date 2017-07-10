@@ -13,19 +13,9 @@
 |
 |
 */
-//
-//registration + regions, spheres
-//PATCH companies/{id}
-//title
-//spheres - array [id]
-//regions - array [id]
-//founded - text
-//site - text
-//address - text
-//description - text
-//GET quantities
-//
-//POST /users/{user_id}/recoveries
+
+
+$api->get('/quantities', 'QuantitiesController@index');
 
 $api->post('/users', 'UsersController@store');
 $api->post('/users/confirmations', 'ConfirmationsController@store');
