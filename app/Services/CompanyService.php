@@ -36,8 +36,8 @@ class CompanyService
         $company->title = $request->company_title;
         $company->saveOrFail();
 
-        $company->regions()->attach($request->get('regions'));
-        $company->spheres()->attach($request->get('spheres'));
+        $company->regions()->sync($request->get('regions'));
+        $company->spheres()->sync($request->get('spheres'));
 
         return $company;
     }
@@ -52,8 +52,8 @@ class CompanyService
         $item->fill($request->all());
         $item->saveOrFail();
 
-        $item->regions()->attach($request->get('regions'));
-        $item->spheres()->attach($request->get('spheres'));
+        $item->regions()->sync($request->get('regions'));
+        $item->spheres()->sync($request->get('spheres'));
 
         return $item;
     }

@@ -66,8 +66,8 @@ class DemandService
         $item->saveOrFail();
 
 
-        $item->regions()->attach($createRequest->get('regions'));
-        $item->spheres()->attach($createRequest->get('spheres'));
+        $item->regions()->sync($createRequest->get('regions'));
+        $item->spheres()->sync($createRequest->get('spheres'));
         return $item;
     }
 
