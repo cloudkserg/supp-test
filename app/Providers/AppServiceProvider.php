@@ -9,6 +9,7 @@ use App\Bindings\DemandItemBinding;
 use App\Bindings\InvoiceBinding;
 use App\Bindings\ResponseBinding;
 use App\Bindings\ResponseItemBinding;
+use App\Overwrite\Fractal\ArraySerializer;
 use Dingo\Api\Transformer\Adapter\Fractal;
 use Illuminate\Support\ServiceProvider;
 use League\Fractal\Manager;
@@ -26,7 +27,7 @@ class AppServiceProvider extends ServiceProvider
         //add json api
         $this->app['Dingo\Api\Transformer\Factory']->setAdapter(function ($app) {
             $fractal = new Manager();
-            //$fractal->setSerializer(new JsonApiSerializer());
+            $fractal->setSerializer(new ArraySerializer());
             return new Fractal($fractal, 'include', ',', false);
         });
 

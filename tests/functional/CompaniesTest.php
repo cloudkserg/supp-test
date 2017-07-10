@@ -97,13 +97,13 @@ class CompaniesTest extends TestCase
         $r = $this->get('api/companies/'.  $this->company->id . '?token=' . $this->token);
         $r->seeStatusCode(200);
 
-        $r->seeJsonStructure(['data' => [
+        $r->seeJsonStructure([
             'id',
             'title',
             'founded',
             'desc',
             'address'
-        ]]);
+        ]);
     }
 
 

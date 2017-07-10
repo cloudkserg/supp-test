@@ -25,8 +25,7 @@ class DemandsIndexTest extends TestCase
 
     private function getJsonStructure()
     {
-        return ['data' => [
-            '*' => [
+        return ['data' =>['*' => [
                 'id',
                 'title',
                 'status',
@@ -34,10 +33,10 @@ class DemandsIndexTest extends TestCase
                 'created',
                 'address',
                 'delivery_date',
-                'company' => ['data' => [
+                'company' => [
                     'id',
                     'title'
-                ]],
+                ],
                 'demandItems' => ['data' => [
                     '*' => [
                         'id',
@@ -240,10 +239,10 @@ class DemandsIndexTest extends TestCase
                 'id',
                 'status',
                 'delivery_type',
-                'company' => ['data' => [
+                'company' => [
                     'id',
                     'title'
-                ]],
+                ],
                 'responseItems' => ['data' => [
                     '*' => [
                         'id',

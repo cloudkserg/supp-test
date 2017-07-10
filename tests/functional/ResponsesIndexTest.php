@@ -81,10 +81,10 @@ class ResponsesIndexTest extends TestCase
         $this->assertCount(2, $data);
 
         //first - my draft
-        $this->assertEquals($this->company->id, $data[0]->company->data->id);
+        $this->assertEquals($this->company->id, $data[0]->company->id);
 
         //second - my active
-        $this->assertEquals($this->company->id, $data[1]->company->data->id);
+        $this->assertEquals($this->company->id, $data[1]->company->id);
     }
 
 
@@ -99,10 +99,10 @@ class ResponsesIndexTest extends TestCase
                 'id',
                 'status',
                 'delivery_type',
-                'company' => ['data' => [
+                'company' => [
                     'id',
                     'title'
-                ]],
+                ],
                 'responseItems' => ['data' => [
                     '*' => [
                         'id',
@@ -111,7 +111,7 @@ class ResponsesIndexTest extends TestCase
                         'demand_item_id',
                     ]
                 ]],
-                'demand' => ['data' => [
+                'demand' => [
                     'id',
                     'title',
                     'status',
@@ -124,7 +124,7 @@ class ResponsesIndexTest extends TestCase
                             'count'
                         ]
                     ]]
-                ]]
+                ]
             ]
         ]];
     }
