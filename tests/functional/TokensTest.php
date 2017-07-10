@@ -36,7 +36,7 @@ class TokensTest extends TestCase
 
     public function testCreate()
     {
-        $this->post('/api/tokens', [
+        $r = $this->post('/api/tokens', [
                 'email' => $this->user->email,
                 'password' => self::PASSWORD
             ])
@@ -44,6 +44,11 @@ class TokensTest extends TestCase
             ->seeJsonStructure([
                 'token'
             ]);
+
+        $token = json_decode($r->response->content())->token;
+        $payload = JWTAuth::setToken($token)->getPayload();
+        $this->assertEquals($this->user->id, $payload->get('id'));
+        $this->assertEquals($this->user->company->title, $payload->get('company'));
     }
 
     public function testErrorWithoutPassword()
