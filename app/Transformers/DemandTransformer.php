@@ -31,6 +31,22 @@ use Swagger\Annotations as SWG;
  *          type="string"
  *      ),
  *      @SWG\Property(
+ *          property="created",
+ *          type="string"
+ *      ),
+ *      @SWG\Property(
+ *          property="desc",
+ *          type="string"
+ *      ),
+ *      @SWG\Property(
+ *          property="address",
+ *          type="string"
+ *      ),
+ *      @SWG\Property(
+ *          property="delivery_date",
+ *          type="string"
+ *      ),
+ *      @SWG\Property(
  *          property="company",
  *          type="object",
  *          ref="#/definitions/CompanyModel"
@@ -86,7 +102,11 @@ class DemandTransformer extends TransformerAbstract
         return [
             'id' => (int)$demand->id,
             'title' => $demand->title,
-            'status' => $demand->status
+            'status' => $demand->status,
+            'created' => $demand->created_at->toDateTimeString(),
+            'desc' => $demand->desc,
+            'address' => $demand->address,
+            'delivery_date' => !empty($demand->delivery_date) ? $demand->delivery_date->toDateTimeString() : ''
         ];
     }
 

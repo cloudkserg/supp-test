@@ -64,6 +64,10 @@ class DemandService
         $item->company_id = $companyId;
         $item->status = DemandStatus::ACTIVE;
         $item->saveOrFail();
+
+
+        $item->regions()->attach($createRequest->get('regions'));
+        $item->spheres()->attach($createRequest->get('spheres'));
         return $item;
     }
 

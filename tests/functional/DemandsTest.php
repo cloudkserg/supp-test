@@ -60,6 +60,17 @@ class DemandsTest extends TestCase
         $r = $this->post('/api/demands?token=' . $this->token, $data);
             $r->seeStatusCode(201)
             ->seeHeader('location', '/demands/1');
+
+
+
+        $demand = Demand::find(1);
+        $this->assertEquals($data['title'], $demand->title);
+        $this->assertEquals($data['desc'], $demand->desc);
+        $this->assertCount(2, $demand->addition_emails);
+        $this->assertCount(1, $demand->regions);
+        $this->assertCount(1, $demand->spheres);
+        $this->assertCount(2, $demand->demandItems);
+
     }
 
     public function testMiniCreate()

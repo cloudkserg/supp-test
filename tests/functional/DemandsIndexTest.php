@@ -30,6 +30,10 @@ class DemandsIndexTest extends TestCase
                 'id',
                 'title',
                 'status',
+                'desc',
+                'created',
+                'address',
+                'delivery_date',
                 'company' => ['data' => [
                     'id',
                     'title'
