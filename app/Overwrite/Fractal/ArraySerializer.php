@@ -22,6 +22,9 @@ class ArraySerializer extends \League\Fractal\Serializer\ArraySerializer{
      */
     public function collection($resourceKey, array $data)
     {
-        return [$resourceKey ?: 'data' => $data];
+	if (!empty($resourceKey)) {
+		return [$resourceKey];
+	}
+	return $data;
     }
 }
