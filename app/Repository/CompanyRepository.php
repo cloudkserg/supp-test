@@ -34,4 +34,12 @@ class CompanyRepository
         return $builder->get();
     }
 
+    /**
+     * @param int $companyId
+     * @return Company
+     */
+    public function findById($companyId)
+    {
+        return Company::whereId($companyId)->first();
+    }
 }

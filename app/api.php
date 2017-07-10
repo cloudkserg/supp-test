@@ -2,7 +2,7 @@
 use Swagger\Annotations as SWG;
 /**
  * @SWG\Swagger(
- *     basePath="/api",
+ *     basePath="/",
  *     schemes={"http"},
  *     produces={"application/json"},
  *     consumes={"application/json"},

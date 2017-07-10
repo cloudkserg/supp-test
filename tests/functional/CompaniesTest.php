@@ -14,67 +14,168 @@ class CompaniesTest extends TestCase
 
 
 
-    public function testSearch()
+//    public function testSearch()
+//    {
+//        $spheres = factory(\App\Type\Sphere::class, 4)->create();
+//        $regions = factory(\App\Type\Region::class, 4)->create();
+//        $companies = factory(\App\Company::class, 10)->create();
+//
+//
+//        $this->attachCompanyToSphereAndRegion($companies[0],
+//            [$spheres[0]->id, $spheres[3]->id],
+//            [$regions[0]->id, $regions[3]->id]
+//        );
+//        $this->attachCompanyToSphereAndRegion($companies[1],
+//            [$spheres[0]->id, $spheres[2]->id],
+//            [$regions[0]->id]
+//        );
+//        $this->attachCompanyToSphereAndRegion($companies[2],
+//            [$spheres[2]->id],
+//            [$regions[0]->id, $regions[1]->id, $regions[2]->id]
+//        );
+//        $this->attachCompanyToSphereAndRegion($companies[3],
+//            [$spheres[2]->id, $spheres[3]->id],
+//            [$regions[3]->id, $regions[1]->id, $regions[2]->id]
+//        );
+//
+//        $data = http_build_query([
+//            'spheres' => [$spheres[3]->id, $spheres[2]->id],
+//            'regions' => [$regions[0]->id]
+//        ]);
+//        $r = $this->get('/api/companies/search?token=' . $this->token . '&' . $data);
+//        var_dump($r->response->content());die;
+//            $r->seeStatusCode(200)
+//            ->seeJsonStructure([
+//                'count'
+//            ]);
+//
+//        $count = json_decode($r->response->content())->count;
+//        $this->assertEquals(3, $count);
+//
+//
+//        $data = http_build_query([
+//            'spheres' => [$spheres[0]->id],
+//            'regions' => [$regions[0]->id, $regions[1]->id]
+//        ]);
+//        $r = $this->get('/api/companies/search?token=' . $this->token . '&' . $data)
+//            ->seeStatusCode(200)
+//            ->seeJsonStructure([
+//                'count'
+//            ]);
+//
+//        $count = json_decode($r->response->content())->count;
+//        $this->assertEquals(2, $count);
+//
+//
+//    }
+
+
+
+//    public function testSearchAuth()
+//    {
+//        $this->get('/api/companies/search')
+//            ->seeStatusCode(401);
+//    }
+
+
+    public function testIndexNotAuth()
     {
-        $spheres = factory(\App\Type\Sphere::class, 4)->create();
-        $regions = factory(\App\Type\Region::class, 4)->create();
-        $companies = factory(\App\Company::class, 10)->create();
-
-
-        $this->attachCompanyToSphereAndRegion($companies[0],
-            [$spheres[0]->id, $spheres[3]->id],
-            [$regions[0]->id, $regions[3]->id]
-        );
-        $this->attachCompanyToSphereAndRegion($companies[1],
-            [$spheres[0]->id, $spheres[2]->id],
-            [$regions[0]->id]
-        );
-        $this->attachCompanyToSphereAndRegion($companies[2],
-            [$spheres[2]->id],
-            [$regions[0]->id, $regions[1]->id, $regions[2]->id]
-        );
-        $this->attachCompanyToSphereAndRegion($companies[3],
-            [$spheres[2]->id, $spheres[3]->id],
-            [$regions[3]->id, $regions[1]->id, $regions[2]->id]
-        );
-
-        $data = http_build_query([
-            'spheres' => [$spheres[3]->id, $spheres[2]->id],
-            'regions' => [$regions[0]->id]
-        ]);
-        $r = $this->get('/api/companies/search?token=' . $this->token . '&' . $data);
-            $r->seeStatusCode(200)
-            ->seeJsonStructure([
-                'count'
-            ]);
-
-        $count = json_decode($r->response->content())->count;
-        $this->assertEquals(3, $count);
-
-
-        $data = http_build_query([
-            'spheres' => [$spheres[0]->id],
-            'regions' => [$regions[0]->id, $regions[1]->id]
-        ]);
-        $r = $this->get('/api/companies/search?token=' . $this->token . '&' . $data)
-            ->seeStatusCode(200)
-            ->seeJsonStructure([
-                'count'
-            ]);
-
-        $count = json_decode($r->response->content())->count;
-        $this->assertEquals(2, $count);
-
-
-    }
-
-
-
-    public function testSearchAuth()
-    {
-        $this->get('/api/companies/search')
+        $this->get('/api/companies/12')
             ->seeStatusCode(401);
     }
+
+    public function testIndexForeign()
+    {
+        $company = $this->createCompany();
+        $r = $this->get('api/companies/' .  $company->id . '?token=' . $this->token)
+            ->seeStatusCode(403);
+    }
+
+
+    public function testIndex()
+    {
+        $r = $this->get('api/companies/'.  $this->company->id . '?token=' . $this->token);
+        $r->seeStatusCode(200);
+
+        $r->seeJsonStructure(['data' => [
+            'id',
+            'title',
+            'founded',
+            'desc',
+            'address'
+        ]]);
+    }
+
+
+    private function createCompany()
+    {
+        $company = new \App\Company();
+        $company->title = 'abba';
+        $company->save();
+
+        return $company;
+    }
+
+    public function testUpdateNotAuth()
+    {
+        $this->patch('/api/companies/12')
+            ->seeStatusCode(401);
+    }
+
+    public function testUpdateForeign()
+    {
+        $company = $this->createCompany();
+        $r = $this->patch('api/companies/' .  $company->id . '?token=' . $this->token)
+            ->seeStatusCode(403);
+    }
+
+
+    public function testUpdateTitleDuplicate()
+    {
+        $company = new \App\Company();
+        $company->title = 'abba';
+        $company->save();
+
+        $data = ['title' => $company->title, 'spheres' => [1], 'regions' => [2]];
+        $this->patch('api/companies/' . $this->company->id . '?token=' . $this->token, $data)
+           ->seeStatusCode(422);
+    }
+
+    public function testUpdateRequired()
+    {
+        $data = ['title' => $this->company->title];
+        $this->patch('api/companies/' . $this->company->id . '?token=' . $this->token, $data)
+            ->seeStatusCode(422);
+    }
+
+    public function testUpdateX()
+    {
+        $regions = factory(\App\Type\Region::class, 2)->create();
+        $spheres = factory(\App\Type\Sphere::class, 2)->create();
+
+        $data = [
+            'title' => $this->company->title,
+            'founded' => 'xss',
+            'desc' => 'bbb',
+            'site' => 'anok',
+            'address' => 'givens',
+            'regions' => collect($regions)->pluck('id')->toArray(),
+            'spheres' => collect($spheres)->pluck('id')->toArray()
+        ];
+
+        $r = $this->patch(sprintf('/api/companies/%s?token=%s', $this->company->id, $this->token), $data);
+        $r->seeStatusCode(202);
+
+        $company = \App\Company::query()->find($this->company->id);
+        $this->assertEquals($this->company->title, $company->title);
+        $this->assertEquals($data['founded'], $company->founded);
+        $this->assertEquals($data['desc'], $company->desc);
+        $this->assertEquals($data['site'], $company->site);
+        $this->assertEquals($data['address'], $company->address);
+        $this->assertCount(2, $company->regions);
+        $this->assertCount(2, $company->spheres);
+    }
+
 
 
 

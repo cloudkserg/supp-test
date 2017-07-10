@@ -16,7 +16,11 @@ use Swagger\Annotations as SWG;
  * @SWG\Definition(
  *      definition="CompanyModel",
  *      @SWG\Property(property="id", type="integer"),
- *      @SWG\Property(property="title", type="string")
+ *      @SWG\Property(property="title", type="string"),
+ *      @SWG\Property(property="site", type="string"),
+ *      @SWG\Property(property="address", type="string"),
+ *      @SWG\Property(property="founded", type="string"),
+ *      @SWG\Property(property="desc", type="string"),
  *      @SWG\Property(
  *          property="regions",
  *          type="array",
@@ -67,7 +71,11 @@ class CompanyTransformer extends TransformerAbstract
     {
         return [
             'id' => (int)$company->id,
-            'title' => $company->title
+            'title' => $company->title,
+            'founded' => $company->founded,
+            'site' => $company->site,
+            'address' => $company->address,
+            'desc' => $company->desc
         ];
     }
 

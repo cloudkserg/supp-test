@@ -11,6 +11,8 @@ namespace App\Http\Requests;
 use App\Demand\DemandItem;
 use App\Services\DemandItemService;
 use Swagger\Annotations as SWG;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
 /**
  * @SWG\Definition(
  *      definition="UpdateDemandItemRequest",
@@ -67,6 +69,9 @@ class UpdateDemandItemRequest extends ApiRequest
     {
         if (!isset($this->item)) {
             $this->item = $this->demandItemService->findItem((int)$this->route('id'));
+            if (!isset($this->item)) {
+                throw new NotFoundHttpException('Not found item');
+            }
         }
         return $this->item;
     }

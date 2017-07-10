@@ -77,5 +77,5 @@ $api->group(['middleware' => 'api.auth'], function ($api) {
 
     // status=archive, active responseItems + data
     $api->get('/companies/{id}', 'CompaniesController@get');
-
+    $api->patch('/companies/{id}', 'CompaniesController@update');
 });

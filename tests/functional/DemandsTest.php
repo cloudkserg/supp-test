@@ -142,6 +142,19 @@ class DemandsTest extends TestCase
         $this->assertEquals(\App\Type\DemandStatus::ACTIVE, Demand::find($demand->id)->status);
     }
 
+    public function testUpdateNotExist()
+    {
+        $demandId = 567;
+        $data = [
+            'status' => \App\Type\DemandStatus::ACTIVE
+        ];
+        $r = $this->patch(sprintf('/api/demands/%s?token=%s', $demandId, $this->token), $data);
+        var_dump($r->response->content());die;
+        $r->seeStatusCode(202);
+
+        $this->assertEquals(\App\Type\DemandStatus::ACTIVE, Demand::find($demand->id)->status);
+    }
+
     public function testUpdateSame()
     {
         $demand = $this->createDemandWithItems(1, [

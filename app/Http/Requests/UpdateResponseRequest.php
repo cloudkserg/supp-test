@@ -13,6 +13,7 @@ use App\Http\Requests\ApiRequest;
 use App\Demand\Response;
 use App\Services\ResponseService;
 use Swagger\Annotations as SWG;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * @SWG\Definition(
@@ -89,6 +90,9 @@ class UpdateResponseRequest extends ApiRequest
     {
         if (!isset($this->item)) {
             $this->item = $this->responseService->findItem((int)$this->route('id'));
+            if (!isset($this->item)) {
+                throw new NotFoundHttpException('Not found item');
+            }
         }
         return $this->item;
     }

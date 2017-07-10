@@ -9,6 +9,7 @@
 namespace App\Services;
 use App\Company;
 use App\Demand\Demand;
+use App\Http\Requests\UpdateCompanyRequest;
 use App\Http\Requests\User\CreateUserRequest;
 use App\Queries\CompanyQuery;
 use App\Repository\CompanyRepository;
@@ -39,6 +40,32 @@ class CompanyService
         $company->spheres()->attach($request->get('spheres'));
 
         return $company;
+    }
+
+    /**
+     * @param Company $item
+     * @param UpdateCompanyRequest $request
+     * @return Company
+     */
+    public function changeItem(Company $item, UpdateCompanyRequest $request)
+    {
+        $item->fill($request->all());
+        $item->saveOrFail();
+
+        $item->regions()->attach($request->get('regions'));
+        $item->spheres()->attach($request->get('spheres'));
+
+        return $item;
+    }
+
+
+    /**
+     * @param $id
+     * @return Demand
+     */
+    public function findItem($id)
+    {
+        return $this->repo->findById($id);
     }
 
     public function countAvailableCompanies(Company $company, array $spheres, array $regions)

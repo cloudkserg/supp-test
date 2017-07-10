@@ -13,6 +13,10 @@ use Illuminate\Database\Eloquent\Model;
  * @package App
  * @property int $id
  * @property string $title
+ * @property string $founded
+ * @property string $site
+ * @property string $address
+ * @property string $desc
  *
  * @property Sphere[] $spheres
  * @property Region[] $regions
@@ -22,6 +26,14 @@ use Illuminate\Database\Eloquent\Model;
 class Company extends Model
 {
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'title', 'desc', 'address', 'site', 'founded'
+    ];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

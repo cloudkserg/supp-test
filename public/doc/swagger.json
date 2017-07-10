@@ -5,7 +5,7 @@
         "description": "An API that uses supp service",
         "version": "1.0.0"
     },
-    "basePath": "/api",
+    "basePath": "/",
     "schemes": [
         "http"
     ],
@@ -16,6 +16,87 @@
         "application/json"
     ],
     "paths": {
+        "/companies/{id}": {
+            "get": {
+                "tags": [
+                    "company"
+                ],
+                "summary": "Company get",
+                "description": "",
+                "operationId": "company",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Company id",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/CompanyModel"
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/responses/NotFoundResponse"
+                    },
+                    "401": {
+                        "$ref": "#/responses/NotAuthResponse"
+                    },
+                    "default": {
+                        "$ref": "#/responses/DefaultErrorResponse"
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "company"
+                ],
+                "summary": "Update company",
+                "description": "",
+                "operationId": "updateCompanies",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "Response",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/UpdateCompanyRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "202": {
+                        "description": "successful operation"
+                    },
+                    "404": {
+                        "$ref": "#/responses/NotFoundResponse"
+                    },
+                    "401": {
+                        "$ref": "#/responses/NotAuthResponse"
+                    },
+                    "default": {
+                        "$ref": "#/responses/DefaultErrorResponse"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
         "/users/{user_id}/confirmations": {
             "post": {
                 "tags": [
@@ -957,6 +1038,50 @@
                 }
             }
         },
+        "UpdateCompanyRequest": {
+            "required": [
+                "title"
+            ],
+            "properties": {
+                "title": {
+                    "description": "title unique for company",
+                    "type": "string",
+                    "maxLength": 255
+                },
+                "desc": {
+                    "description": "desc",
+                    "type": "string"
+                },
+                "founded": {
+                    "description": "founded string",
+                    "type": "string"
+                },
+                "site": {
+                    "description": "site",
+                    "type": "string"
+                },
+                "address": {
+                    "description": "address",
+                    "type": "string"
+                },
+                "regions": {
+                    "description": "regions",
+                    "type": "array",
+                    "items": {
+                        "description": "region",
+                        "type": "string"
+                    }
+                },
+                "spheres": {
+                    "description": "spheres",
+                    "type": "array",
+                    "items": {
+                        "description": "sphere",
+                        "type": "string"
+                    }
+                }
+            }
+        },
         "UpdateDemandItemRequest": {
             "properties": {
                 "response_item_id": {
@@ -1073,6 +1198,22 @@
                     "description": "confirmation with pass",
                     "type": "string",
                     "minLength": 6
+                },
+                "regions": {
+                    "description": "regions",
+                    "type": "array",
+                    "items": {
+                        "description": "region",
+                        "type": "string"
+                    }
+                },
+                "spheres": {
+                    "description": "spheres",
+                    "type": "array",
+                    "items": {
+                        "description": "sphere",
+                        "type": "string"
+                    }
                 }
             }
         },
@@ -1083,6 +1224,30 @@
                 },
                 "title": {
                     "type": "string"
+                },
+                "site": {
+                    "type": "string"
+                },
+                "address": {
+                    "type": "string"
+                },
+                "founded": {
+                    "type": "string"
+                },
+                "desc": {
+                    "type": "string"
+                },
+                "regions": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/RegionModel"
+                    }
+                },
+                "spheres": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/SphereModel"
+                    }
                 }
             }
         },

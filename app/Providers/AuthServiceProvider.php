@@ -2,11 +2,13 @@
 
 namespace App\Providers;
 
+use App\Company;
 use App\Demand\Demand;
 use App\Demand\DemandItem;
 use App\Demand\Invoice;
 use App\Demand\Response;
 use App\Demand\ResponseItem;
+use App\Policies\CompanyPolicy;
 use App\Policies\DemandPolicy;
 use App\Policies\DemandItemPolicy;
 use App\Policies\ResponsePolicy;
@@ -27,7 +29,8 @@ class AuthServiceProvider extends ServiceProvider
         DemandItem::class => DemandItemPolicy::class,
         Response::class => ResponsePolicy::class,
         ResponseItem::class => ResponseItemPolicy::class,
-        Invoice::class => InvoicePolicy::class
+        Invoice::class => InvoicePolicy::class,
+        Company::class => CompanyPolicy::class
     ];
 
     /**
