@@ -148,7 +148,8 @@ class CompaniesTest extends TestCase
             ->seeStatusCode(422);
     }
 
-    public function testUpdateX()
+
+    public function testUpdate()
     {
         $regions = factory(\App\Type\Region::class, 2)->create();
         $spheres = factory(\App\Type\Sphere::class, 2)->create();
