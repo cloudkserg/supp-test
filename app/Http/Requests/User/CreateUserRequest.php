@@ -14,7 +14,7 @@ use Swagger\Annotations as SWG;
  *      @SWG\Property(property="name", type="string", maxLength=255, description="user name"),
  *      @SWG\Property(property="email", type="string", description="email unique for users" ),
  *      @SWG\Property(property="password", type="string", minLength=6, description="password, check for confirm"),
- *      @SWG\Property(property="confirmation_password", type="string", minLength=6, description="confirmation with pass"),
+ *      @SWG\Property(property="password_confirmation", type="string", minLength=6, description="confirmation with pass"),
  *      @SWG\Property(
  *         property="regions",
  *         description="regions",
