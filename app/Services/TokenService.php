@@ -39,7 +39,8 @@ class TokenService
              */
             $token = JWTAuth::fromUser($user, [
                 'id' => $user->id,
-                'company' => $user->company->title
+                'company_title' => $user->company->title,
+                'company_id' => $user->company->id
             ]);
         } catch (JWTException $e) {
             // something went wrong whilst attempting to encode the token

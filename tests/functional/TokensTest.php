@@ -48,7 +48,8 @@ class TokensTest extends TestCase
         $token = json_decode($r->response->content())->token;
         $payload = JWTAuth::setToken($token)->getPayload();
         $this->assertEquals($this->user->id, $payload->get('id'));
-        $this->assertEquals($this->user->company->titlec, $payload->get('company'));
+        $this->assertEquals($this->user->company->title, $payload->get('company_title'));
+        $this->assertEquals($this->user->company->id, $payload->get('company_id'));
     }
 
     public function testErrorWithoutPassword()
