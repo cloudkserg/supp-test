@@ -142,4 +142,32 @@ class TokensTest extends TestCase
             ->seeStatusCode(400);
     }
 
+
+    public function testDeleteNotAuth()
+    {
+        $token = 'adasdas';
+        $r = $this->delete('/api/tokens/' . $token . '?token=' . $token)
+            ->seeStatusCode(401);
+    }
+
+    public function testDelete()
+    {
+        $r = $this->post('/api/tokens', [
+            'email' => $this->user->email,
+            'password' => self::PASSWORD
+        ])
+            ->seeStatusCode(201)
+            ->seeJsonStructure([
+                'token'
+            ]);
+
+        $token = json_decode($r->response->content())->token;
+
+        $r = $this->delete('/api/tokens/' . $token . '?token=' . $token)
+            ->seeStatusCode(202);
+
+//        $this->get('/api/demands?token=' . $token)
+//            ->seeStatusCode(401);
+    }
+
 }

@@ -29,6 +29,7 @@ $api->get('/spheres', 'SpheresController@index');
 
 $api->group(['middleware' => 'api.auth'], function ($api) {
     $api->get('/tokens/test', 'TokensController@test');
+    $api->delete('/tokens/{token}', 'TokensController@delete');
 
     // + filter status=archive,active, without
     $api->get('/demands', 'DemandsController@index');

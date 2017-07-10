@@ -147,4 +147,76 @@ class TokensController extends Controller
     {
         return $this->response->noContent();
     }
+
+    /**
+     * @SWG\Delete(
+     *     path="/tokens",
+     *     summary="Delete token for authorization",
+     *     tags={"token"},
+     *     description="",
+     *     operationId="deleteToken",
+     *     @SWG\Parameter(
+     *          name="token",
+     *          type="string",
+     *          in="query",
+     *          required=true,
+     *          description="working token",
+     *          maxLength=255
+     *      ),
+     *     @SWG\Response(
+     *         response=202,
+     *         description="successful operation",
+     *         @SWG\Schema(
+     *         )
+     *     ),
+     *     @SWG\Response(
+     *         response=400,
+     *         description="Bad: Token not provided",
+     *         @SWG\Schema(ref="#/definitions/ErrorModel")
+     *     ),
+     *     @SWG\Response(
+     *         response=403,
+     *         description="Forbidden: invalid token provided",
+     *         @SWG\Schema(ref="#/definitions/ErrorModel")
+     *     ),
+     *     @SWG\Response(
+     *         response=404,
+     *         ref="#/responses/NotFoundResponse"
+     *     ),
+     *     @SWG\Response(
+     *         response=401,
+     *         ref="#/responses/NotAuthResponse"
+     *     ),
+     *     @SWG\Response(
+     *         response="default",
+     *         ref="#/responses/DefaultErrorResponse"
+     *     ),
+     *     security={{ "token": {} }}
+     * )
+     */
+    public function delete($token)
+    {
+        if(!$token)
+        {
+            return $this->response->errorBadRequest('Token not provided');
+        }
+
+
+        $service = new TokenService();
+        try{
+            $service->delete($token);
+        } catch (BadTokenException $e) {
+            return $this->response->errorForbidden('Invalid token provided');
+        }
+
+        return $this->response->accepted();
+    }
+
+    /**
+     * @return \Illuminate\Auth\GenericUser|\Illuminate\Database\Eloquent\Model
+     */
+    public function getUser()
+    {
+        return $this->auth->user();
+    }
 }

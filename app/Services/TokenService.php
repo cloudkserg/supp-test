@@ -60,4 +60,13 @@ class TokenService
         return $token;
     }
 
+    public function delete($token)
+    {
+        try {
+            JWTAuth::invalidate($token);
+        } catch (TokenInvalidException $e) {
+            throw new BadTokenException($e->getMessage());
+        }
+    }
+
 }

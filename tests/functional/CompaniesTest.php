@@ -178,6 +178,26 @@ class CompaniesTest extends TestCase
     }
 
 
+    public function testUpdateNotRequired()
+    {
+        $regions = factory(\App\Type\Region::class, 2)->create();
+        $spheres = factory(\App\Type\Sphere::class, 2)->create();
+
+        $data = [
+            'title' => $this->company->title,
+            'regions' => collect($regions)->pluck('id')->toArray(),
+            'spheres' => collect($spheres)->pluck('id')->toArray()
+        ];
+
+        $r = $this->patch(sprintf('/api/companies/%s?token=%s', $this->company->id, $this->token), $data);
+        $r->seeStatusCode(202);
+
+        $company = \App\Company::query()->find($this->company->id);
+        $this->assertEquals($this->company->title, $company->title);
+        $this->assertCount(2, $company->regions);
+        $this->assertCount(2, $company->spheres);
+    }
+
 
 
 }

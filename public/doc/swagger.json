@@ -869,6 +869,56 @@
                         "$ref": "#/responses/DefaultErrorResponse"
                     }
                 }
+            },
+            "delete": {
+                "tags": [
+                    "token"
+                ],
+                "summary": "Delete token for authorization",
+                "description": "",
+                "operationId": "deleteToken",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "working token",
+                        "required": true,
+                        "type": "string",
+                        "maxLength": 255
+                    }
+                ],
+                "responses": {
+                    "202": {
+                        "description": "successful operation",
+                        "schema": {}
+                    },
+                    "400": {
+                        "description": "Bad: Token not provided",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorModel"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden: invalid token provided",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorModel"
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/responses/NotFoundResponse"
+                    },
+                    "401": {
+                        "$ref": "#/responses/NotAuthResponse"
+                    },
+                    "default": {
+                        "$ref": "#/responses/DefaultErrorResponse"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
             }
         },
         "/updates": {
