@@ -9,6 +9,7 @@
 namespace App\Services;
 
 use App\Http\Requests\User\CreateUserRequest;
+use App\Repository\UserRepository;
 use App\User;
 use App\Events\RegisterUserEvent;
 
@@ -22,6 +23,10 @@ class UserService
      * @var CompanyService
      */
     private $companyService;
+    /**
+     * @var UserRepository
+     */
+    private $userRepository;
 
     /**
      *
@@ -29,6 +34,7 @@ class UserService
     public function __construct()
     {
         $this->companyService = new CompanyService();
+        $this->userRepository = new UserRepository();
     }
 
     /**
@@ -77,9 +83,9 @@ class UserService
         return bcrypt($password);
     }
 
-    public function confirmUser($id, $code)
+    public function confirmUser($code)
     {
-        $user = User::whereConfirmationCode($code)->whereId($id)->first();
+        $user = $this->userRepository->findByConfirmationCode($code);
         if (!$user) {
             throw new \Exception('Пользователя не нашли.');
         }

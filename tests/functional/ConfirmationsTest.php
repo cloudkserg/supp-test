@@ -27,8 +27,8 @@ class ConfirmationsTest extends TestCase
 
     public function testCreate()
     {
-        $this->post(
-            'api/users/' . $this->confirmatingUser->id . '/confirmations',
+        $r = $this->post(
+            'api/users/confirmations',
             [
                 'confirmation_code' => $this->confirmatingUser->confirmation_code
             ]
@@ -40,7 +40,7 @@ class ConfirmationsTest extends TestCase
     public function testErrorAlreadyCreating()
     {
         $this->post(
-            'api/users/' . $this->user->id . '/confirmations',
+            'api/users/confirmations',
             [
                 'confirmation_code' => $this->user->confirmation_code
             ]
@@ -51,7 +51,7 @@ class ConfirmationsTest extends TestCase
     public function testErrorWithoutConfirmationCode()
     {
         $this->post(
-            'api/users/' . $this->confirmatingUser->id . '/confirmations',
+            'api/users/confirmations',
             [
             ]
         )
@@ -61,7 +61,7 @@ class ConfirmationsTest extends TestCase
     public function testErrorWithNotRightConfirmationCode()
     {
         $this->post(
-            'api/users/' . $this->confirmatingUser->id . '/confirmations',
+            'api/users/confirmations',
             [
                 'confirmation_code' => str_random(30)
             ]

@@ -27,18 +27,11 @@ class ConfirmationsController extends Controller
 
     /**
      * @SWG\Post(
-     *     path="/users/{user_id}/confirmations",
+     *     path="/users/confirmations",
      *     summary="Confirm user registration",
      *     tags={"user"},
      *     description="",
      *     operationId="confirmUserRegistration",
-     *      @SWG\Parameter(
-     *         name="user_id",
-     *         in="path",
-     *         description="User id",
-     *         required=true,
-     *         type="integer",
-     *      ),
      *     @SWG\Parameter(
      *         name="ConfirmationRequest",
      *         in="body",
@@ -63,10 +56,11 @@ class ConfirmationsController extends Controller
      *     ),
      * )
      */
-    public function store($user_id, ConfirmationRequest $request)
+    public function store(ConfirmationRequest $request)
     {
-        $this->userService->confirmUser($user_id, $request->confirmation_code);
-        return $this->response->created('/users/' . $user_id);
+        $user = $this->userService->confirmUser($request->get('confirmation_code'));
+        return $this->response->created('/users/' . $user->id);
     }
+
 
 }

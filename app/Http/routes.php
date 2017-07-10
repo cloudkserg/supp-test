@@ -28,7 +28,7 @@
 //POST /users/{user_id}/recoveries
 
 $api->post('/users', 'UsersController@store');
-$api->post('/users/{user_id}/confirmations', 'ConfirmationsController@store');
+$api->post('/users/confirmations', 'ConfirmationsController@store');
 
 $api->post('/tokens', 'TokensController@store');
 $api->put('/tokens', 'TokensController@update');

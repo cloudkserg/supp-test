@@ -10,6 +10,7 @@ namespace App\Http\Requests\User;
 
 
 use App\Http\Requests\ApiRequest;
+use App\Services\UserService;
 use Swagger\Annotations as SWG;
 
 /**
@@ -23,6 +24,9 @@ use Swagger\Annotations as SWG;
  */
 class ConfirmationRequest extends ApiRequest
 {
+
+
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -44,5 +48,6 @@ class ConfirmationRequest extends ApiRequest
             'confirmation_code' => 'required|max:255'
         ];
     }
+
 
 }
