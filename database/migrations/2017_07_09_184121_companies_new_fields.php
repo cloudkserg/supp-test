@@ -29,10 +29,10 @@ class CompaniesNewFields extends Migration
     public function down()
     {
         Schema::table('companies', function (Blueprint $table) {
-            $table->removeColumn('founded');
-            $table->removeColumn('site');
-            $table->removeColumn('address');
-            $table->removeColumn('desc');
+            $table->dropColumn('founded');
+            $table->dropColumn('site');
+            $table->dropColumn('address');
+            $table->dropColumn('desc');
         });
     }
 }

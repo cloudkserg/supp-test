@@ -10,6 +10,7 @@ namespace App\Transformers;
 
 
 use App\Demand\Response;
+use Carbon\Carbon;
 use League\Fractal\TransformerAbstract;
 use Swagger\Annotations as SWG;
 
@@ -65,6 +66,15 @@ use Swagger\Annotations as SWG;
  *          type="string"
  *      ),
  *      @SWG\Property(
+ *          property="desc",
+ *          type="string"
+ *      ),
+ *      @SWG\Property(
+ *          property="readed",
+ *          type="string",
+ *          description="datetime"
+ *      ),
+ *      @SWG\Property(
  *          property="status",
  *          type="string"
  *      ),
@@ -106,7 +116,9 @@ class ResponseTransformer extends TransformerAbstract
             'id' => (int)$response->id,
             'demand_id' => (int)$response->demand_id,
             'status' => $response->status,
-            'delivery_type' => $response->delivery_type
+            'delivery_type' => $response->delivery_type,
+            'desc' => $response->desc,
+            'readed' => isset($response->readed_time) ? $response->readed_time : Carbon::parse($response->readed_time)->toDateTimeString()
         ];
     }
 

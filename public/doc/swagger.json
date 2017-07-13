@@ -1250,6 +1250,13 @@
                 "delivery_type": {
                     "type": "string"
                 },
+                "readed": {
+                    "description": "datetime",
+                    "type": "string"
+                },
+                "desc": {
+                    "type": "string"
+                },
                 "responseItems": {
                     "type": "array",
                     "items": {
@@ -1570,6 +1577,14 @@
                 },
                 "delivery_type": {
                     "description": "/**",
+                    "type": "string"
+                },
+                "desc": {
+                    "description": "/**",
+                    "type": "string"
+                },
+                "readed": {
+                    "description": "datetime",
                     "type": "string"
                 },
                 "status": {

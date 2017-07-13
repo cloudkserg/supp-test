@@ -127,5 +127,32 @@ class ResponsesTest extends TestCase
     }
 
 
+    public function testUpdateReadedDesc()
+    {
+        //createDemand
+        $this->createBeforeDemand();
+        $demand = $this->createDemandWithItems(1);
+
+        //createResponse
+        $response = $this->createResponseWithItems(0, [
+            'company_id' => $this->company->id,
+            'status' => \App\Type\ResponseStatus::DRAFT,
+            'demand_id' => $demand->id
+        ]);
+
+        $data = [
+            'readed' => \Carbon\Carbon::create()->toDateTimeString(),
+            'desc' => 'sfsdfsd'
+        ];
+
+        $r = $this->patch(sprintf('/api/responses/%s?token=%s', $response->id, $this->token), $data);
+        $r->seeStatusCode(202);
+
+        $response = Response::find($response->id);
+        $this->assertNotEmpty($response->readed_time);
+        $this->assertEquals($data['desc'], $response->desc);
+    }
+
+
 
 }

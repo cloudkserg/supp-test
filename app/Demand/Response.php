@@ -15,6 +15,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $demand_id
  * @property string delivery_type
  * @property string $status
+ * @property \Carbon\Carbon readed_time
+ * @property string $desc
  * @property \Carbon\Carbon updated_at
  *
  * @property Company $company
@@ -25,9 +27,12 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Response extends Model
 {
+    protected $dates = [
+        'readed_time'
+    ];
 
     protected $fillable = [
-        'delivery_type', 'status'
+        'delivery_type', 'status', 'desc'
     ];
 
     /**

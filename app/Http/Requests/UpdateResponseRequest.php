@@ -12,6 +12,8 @@ namespace App\Http\Requests;
 use App\Http\Requests\ApiRequest;
 use App\Demand\Response;
 use App\Services\ResponseService;
+use App\Type\ResponseStatus;
+use Carbon\Carbon;
 use Swagger\Annotations as SWG;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -21,6 +23,8 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  *      required={"responseItems"},
  *      @SWG\Property(property="status", type="string", enum={"active","draft","cancel","archived"}),
  *      @SWG\Property(property="delivery_type", type="string"),
+ *      @SWG\Property(property="readed", type="string", description="datetime"),
+ *      @SWG\Property(property="desc", type="string"),
  *      @SWG\Property(
  *          property="responseItems",
  *          type="array",
@@ -64,6 +68,15 @@ class UpdateResponseRequest extends ApiRequest
         return $this->user()->can('update', $this->getResponse());
     }
 
+
+    /**
+     * @return bool
+     */
+    private function isDemandActive()
+    {
+        return ($this->get('status') == 'ACTIVE' or $this->getResponse()->status == ResponseStatus::ACTIVE);
+    }
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -71,15 +84,40 @@ class UpdateResponseRequest extends ApiRequest
      */
     public function rules()
     {
-        return [
+        $rules = [
             'status' => 'string',
+            'readed' => 'date',
             'delivery_type' => 'string',
-            'responseItems' => 'array|required',
-            'responseItems.0' => 'required',
+            'desc' => 'string',
+
+            'responseItems' => 'array',
             'responseItems.*.id' => 'integer',
-            'responseItems.*.demand_item_id' => 'integer|required',
-            'responseItems.*.price' => 'numeric|required'
+            'responseItems.*.demand_item_id' => 'integer',
+            'responseItems.*.price' => 'numeric'
         ];
+
+        if ($this->isDemandActive()) {
+            $rules = array_merge($rules, [
+                'responseItems' => 'array|required',
+                'responseItems.0' => 'required',
+                'responseItems.*.id' => 'integer',
+                'responseItems.*.demand_item_id' => 'integer|required',
+                'responseItems.*.price' => 'numeric|required'
+            ]);
+        }
+
+        return $rules;
+    }
+
+    /**
+     * @return Carbon
+     */
+    public function getReaded()
+    {
+        if ($this->get('readed') === null) {
+            return null;
+        }
+        return Carbon::parse($this->get('readed'));
     }
 
 

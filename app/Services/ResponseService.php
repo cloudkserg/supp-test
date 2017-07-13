@@ -88,6 +88,7 @@ class ResponseService
     public function changeItem(Response $item, UpdateResponseRequest $request)
     {
         $item->fill($request->all());
+        $item->readed_time = $request->getReaded();
         $item->saveOrFail();
         return $item;
     }
