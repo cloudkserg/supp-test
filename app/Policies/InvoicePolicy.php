@@ -12,7 +12,7 @@ class InvoicePolicy
 
     public function update(User $user, Invoice $invoice)
     {
-        return $user->company_id == $invoice->response->company_id;
+        return $user->company_id == $invoice->response->company_id and $invoice->response->demand->isActive();
     }
 
 }

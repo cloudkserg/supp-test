@@ -271,6 +271,47 @@
             }
         },
         "/demands/{id}": {
+            "delete": {
+                "tags": [
+                    "demand"
+                ],
+                "summary": "Delete demand",
+                "description": "",
+                "operationId": "deleteDemands",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "successful operation",
+                        "headers": {
+                            "location": {
+                                "description": "/demands/1",
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/responses/NotFoundResponse"
+                    },
+                    "401": {
+                        "$ref": "#/responses/NotAuthResponse"
+                    },
+                    "default": {
+                        "$ref": "#/responses/DefaultErrorResponse"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            },
             "patch": {
                 "tags": [
                     "demand"

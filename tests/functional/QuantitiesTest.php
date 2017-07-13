@@ -20,15 +20,13 @@ class QuantitiesTest extends TestCase
         $r = $this->get('/api/quantities');
             $r->seeStatusCode(200)
             ->seeJsonStructure([
-                'data' => [
                     '*' => [
                         'id',
                         'title'
                     ]
-                ]
             ]);
 
-        $regions = json_decode($r->response->content())->data;
+        $regions = json_decode($r->response->content());
         $this->assertEquals(4, count($regions));
 
     }

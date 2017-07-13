@@ -25,7 +25,7 @@ class DemandsIndexTest extends TestCase
 
     private function getJsonStructure()
     {
-        return ['data' =>['*' => [
+        return ['*' => [
                 'id',
                 'title',
                 'status',
@@ -37,7 +37,7 @@ class DemandsIndexTest extends TestCase
                     'id',
                     'title'
                 ],
-                'demandItems' => ['data' => [
+                'demandItems' => [
                     '*' => [
                         'id',
                         'status',
@@ -45,11 +45,11 @@ class DemandsIndexTest extends TestCase
                         'count',
                         'title',
                     ]
-                ]],
-                'responses' => ['data' => [
-                ]]
+                ],
+                'responses' => [
+                ]
             ]
-        ]];
+        ];
     }
 
     private function createThreeActiveOneArchivedOneAnotherActive()
@@ -89,11 +89,11 @@ class DemandsIndexTest extends TestCase
         ]);
         $r = $this->get('/api/demands?' . $data);
         $r->seeStatusCode('200');
-        $data = json_decode($r->response->content())->data;
+        $data = json_decode($r->response->content());
 
         $this->assertCount(3, $data);
-        $this->assertCount(2, $data[0]->demandItems->data);
-        $this->assertCount(1, $data[2]->demandItems->data);
+        $this->assertCount(2, $data[0]->demandItems);
+        $this->assertCount(1, $data[2]->demandItems);
         $r
             ->seeJsonStructure($this->getJsonStructure());
     }
@@ -109,7 +109,7 @@ class DemandsIndexTest extends TestCase
         ]);
         $r = $this->get('/api/demands?' . $data);
         $r->seeStatusCode('200');
-        $data = json_decode($r->response->content())->data;
+        $data = json_decode($r->response->content());
 
         $this->assertCount(1, $data);
         $r
@@ -125,7 +125,7 @@ class DemandsIndexTest extends TestCase
         ]);
         $r = $this->get('/api/demands?' . $data);
         $r->seeStatusCode('200');
-        $data = json_decode($r->response->content())->data;
+        $data = json_decode($r->response->content());
 
         $this->assertCount(4, $data);
         $r
@@ -141,7 +141,7 @@ class DemandsIndexTest extends TestCase
         ]);
         $r = $this->get('/api/demands?' . $data);
         $r->seeStatusCode('200');
-        $data = json_decode($r->response->content())->data;
+        $data = json_decode($r->response->content());
         $this->assertCount(4, $data);
         $r
             ->seeJsonStructure($this->getJsonStructure());
@@ -188,15 +188,15 @@ class DemandsIndexTest extends TestCase
             $r->seeStatusCode('200');
             $r->seeJsonStructure($this->getInvoiceJsonStructure());
 
-        $data = json_decode($r->response->content())->data;
+        $data = json_decode($r->response->content());
         $jsonDemand = $data[0];
-        $jsonResponse = $jsonDemand->responses->data[0];
+        $jsonResponse = $jsonDemand->responses[0];
 
         //has invoices
-        $this->assertCount(1, $jsonResponse->invoices->data);
+        $this->assertCount(1, $jsonResponse->invoices);
 
         //responseItem link to invoice_id
-        $this->assertEquals($invoice->id, $jsonResponse->responseItems->data[0]->invoice_id);
+        $this->assertEquals($invoice->id, $jsonResponse->responseItems[0]->invoice_id);
     }
 
     public function testIndexWithResponse()
@@ -215,26 +215,26 @@ class DemandsIndexTest extends TestCase
         $r->seeStatusCode('200');
         $r->seeJsonStructure($this->getResponseJsonStructure());
 
-        $data = json_decode($r->response->content())->data;
+        $data = json_decode($r->response->content());
 
         //same demand
         $jsonDemand = $data[0];
 
         //demand with items
-        $this->assertCount(2, $jsonDemand->demandItems->data);
+        $this->assertCount(2, $jsonDemand->demandItems);
         //demand with two responses
-        $this->assertCount(2, $jsonDemand->responses->data);
+        $this->assertCount(2, $jsonDemand->responses);
 
         //response with one and two response items
-        $responses = $jsonDemand->responses->data;
-        $this->assertCount(1, $responses[0]->responseItems->data);
-        $this->assertCount(2, $responses[1]->responseItems->data);
+        $responses = $jsonDemand->responses;
+        $this->assertCount(1, $responses[0]->responseItems);
+        $this->assertCount(2, $responses[1]->responseItems);
     }
 
     private function getResponseJsonStructure()
     {
         $struct = $this->getJsonStructure();
-        $struct['data']['*']['responses'] = ['data' => [
+        $struct['*']['responses'] = [
             '*' => [
                 'id',
                 'status',
@@ -243,16 +243,16 @@ class DemandsIndexTest extends TestCase
                     'id',
                     'title'
                 ],
-                'responseItems' => ['data' => [
+                'responseItems' => [
                     '*' => [
                         'id',
                         'status',
                         'price',
                         'demand_item_id'
                     ]
-                ]]
+                ]
             ]
-        ]];
+        ];
         return $struct;
     }
 
@@ -260,12 +260,12 @@ class DemandsIndexTest extends TestCase
     private function getInvoiceJsonStructure()
     {
         $struct = $this->getResponseJsonStructure();
-        $struct['data']['*']['responses']['data']['*']['invoices'] = ['data' => [
+        $struct['*']['responses']['*']['invoices'] = [
             '*' => [
                 'id',
                 'status'
             ]
-        ]];
+        ];
         return $struct;
     }
 

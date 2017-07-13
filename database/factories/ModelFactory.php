@@ -86,7 +86,7 @@ $factory->define(App\Demand\Demand::class, function (Faker\Generator $faker) {
        'title' => $faker->optional()->title,
        'desc' => $faker->text,
        'address' => $faker->address,
-       'status' => $faker->randomElement((new DemandStatus())->getValues()),
+       'status' => DemandStatus::ACTIVE,
        'delivery_date' => Carbon::parse($faker->date),
        'company_id' => $faker->randomElement(\App\Company::pluck('id')->toArray()),
        'addition_emails' => $faker->shuffleArray([

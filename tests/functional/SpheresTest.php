@@ -19,15 +19,13 @@ class SpheresTest extends TestCase
         $r = $this->get('/api/spheres');
             $r->seeStatusCode(200)
             ->seeJsonStructure([
-                'data' => [
                     '*' => [
                         'id',
                         'title'
                     ]
-                ]
             ]);
 
-        $spheres = json_decode($r->response->content())->data;
+        $spheres = json_decode($r->response->content());
         $this->assertEquals(4, count($spheres));
 
     }

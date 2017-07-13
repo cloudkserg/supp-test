@@ -4,6 +4,7 @@ namespace App\Demand;
 
 use App\Collections\DemandCollection;
 use App\Company;
+use App\Type\DemandStatus;
 use App\Type\Region;
 use App\Type\Sphere;
 use Illuminate\Database\Eloquent\Model;
@@ -102,6 +103,15 @@ class Demand extends Model
     public function demandItems()
     {
         return $this->hasMany(DemandItem::class);
+    }
+
+
+    /**
+     * @return bool
+     */
+    public function isActive()
+    {
+        return $this->status == DemandStatus::ACTIVE;
     }
 
 

@@ -11,6 +11,7 @@ namespace App\Services;
 
 
 use App\Events\Demand\ArchiveDemandEvent;
+use App\Events\Demand\DeleteDemandEvent;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use App\Queries\DemandQuery;
@@ -94,6 +95,15 @@ class DemandService
     }
 
     /**
+     * @param Demand $item
+     */
+    public function delete(Demand $item)
+    {
+        $item->status = DemandStatus::DELETED;
+        $item->saveOrFail();
+    }
+
+    /**
      * @param Company $company
      * @return Collection|static[]
      */
@@ -124,6 +134,9 @@ class DemandService
     {
         if ($item->isDirty('status') and $item->status == DemandStatus::ARCHIVED) {
             event(new ArchiveDemandEvent($item));
+        }
+        if ($item->isDirty('status') and $item->status == DemandStatus::DELETED) {
+            event(new DeleteDemandEvent($item));
         }
     }
 

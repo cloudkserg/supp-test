@@ -196,4 +196,39 @@ class DemandsController extends Controller
         return $this->response->accepted();
 
     }
+
+    /**
+     * @SWG\Delete(
+     *     path="/demands/{id}",
+     *     summary="Delete demand",
+     *     tags={"demand"},
+     *     description="",
+     *     operationId="deleteDemands",
+     *     @SWG\Parameter(name="id", in="path", required=true, type="integer"),
+     *     @SWG\Response(
+     *         response=201,
+     *         description="successful operation",
+     *         @SWG\Header(header="location", type="string", description="/demands/1")
+     *     ),
+     *     @SWG\Response(
+     *         response=404,
+     *         ref="#/responses/NotFoundResponse"
+     *     ),
+     *     @SWG\Response(
+     *         response=401,
+     *         ref="#/responses/NotAuthResponse"
+     *     ),
+     *     @SWG\Response(
+     *         response="default",
+     *         ref="#/responses/DefaultErrorResponse"
+     *     ),
+     *
+     *     security={{ "token": {} }}
+     * )
+     */
+    public function delete(Requests\DeleteDemandRequest $request)
+    {
+        $this->demandService->delete($request->getDemand());
+        return $this->response->accepted();
+    }
 }

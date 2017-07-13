@@ -22,6 +22,23 @@ class DemandsTest extends TestCase
     }
 
 
+    public function testDeleteAuth()
+    {
+        $this->delete('/api/demands/1')
+            ->seeStatusCode(401);
+    }
+
+
+    public function testDelete()
+    {
+        $demand = factory(Demand::class)->create();
+
+        $r = $this->delete('/api/demands/' . $demand->id . '?token=' . $this->token)
+            ->seeStatusCode(202);
+    }
+
+
+
     public function testCreateAuth()
     {
         $this->post('/api/demands')

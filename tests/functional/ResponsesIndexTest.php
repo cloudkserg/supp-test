@@ -75,7 +75,7 @@ class ResponsesIndexTest extends TestCase
         $r = $this->get('/api/responses?' . $data);
         $r->seeStatusCode('200');
         $r->seeJsonStructure($this->getJsonStructure());
-        $data = json_decode($r->response->content())->data;
+        $data = json_decode($r->response->content());
 
         //only 3
         $this->assertCount(2, $data);
@@ -94,7 +94,7 @@ class ResponsesIndexTest extends TestCase
 
     private function getJsonStructure()
     {
-        return ['data' => [
+        return [
             '*' => [
                 'id',
                 'status',
@@ -103,19 +103,19 @@ class ResponsesIndexTest extends TestCase
                     'id',
                     'title'
                 ],
-                'responseItems' => ['data' => [
+                'responseItems' => [
                     '*' => [
                         'id',
                         'price',
                         'status',
                         'demand_item_id',
                     ]
-                ]],
+                ],
                 'demand' => [
                     'id',
                     'title',
                     'status',
-                    'demandItems' => ['data' => [
+                    'demandItems' => [
                         '*' => [
                             'id',
                             'title',
@@ -123,10 +123,10 @@ class ResponsesIndexTest extends TestCase
                             'quantityTitle',
                             'count'
                         ]
-                    ]]
+                    ]
                 ]
             ]
-        ]];
+        ];
     }
 
 

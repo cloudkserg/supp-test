@@ -37,6 +37,7 @@ $api->group(['middleware' => 'api.auth'], function ($api) {
     $api->post('/demands', 'DemandsController@store');
     //status=archive,active, without
     $api->patch('/demands/{id}', 'DemandsController@update');
+    $api->delete('/demands/{id}', 'DemandsController@delete');
 
     // status=draft, archive, active, without
     $api->get('/responses', 'ResponsesController@index');

@@ -19,6 +19,7 @@ class DemandStatus extends ConstType
 {
     const ACTIVE = 'active';
     const ARCHIVED = 'archived';
+    const DELETED = 'deleted';
 
     /**
      * @return array
@@ -27,7 +28,8 @@ class DemandStatus extends ConstType
     {
         return [
             self::ACTIVE => 'Создан',
-            self::ARCHIVED => 'Архив'
+            self::ARCHIVED => 'Архив',
+            self::DELETED => 'Удалено'
         ];
     }
 

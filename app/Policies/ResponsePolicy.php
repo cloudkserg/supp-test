@@ -12,7 +12,7 @@ class ResponsePolicy
 
     public function update(User $user, Response $response)
     {
-        return $user->company_id == $response->company_id;
+        return $user->company_id == $response->company_id and $response->demand->isActive();
     }
 
 }

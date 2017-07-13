@@ -12,7 +12,7 @@ class ResponseItemPolicy
 
     public function update(User $user, ResponseItem $responseItem)
     {
-        return $user->company_id == $responseItem->response->company_id;
+        return $user->company_id == $responseItem->response->company_id and $responseItem->response->demand->isActive();
     }
 
 }
