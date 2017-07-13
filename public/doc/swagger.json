@@ -869,7 +869,9 @@
                         "$ref": "#/responses/DefaultErrorResponse"
                     }
                 }
-            },
+            }
+        },
+        "/tokens/{token}": {
             "delete": {
                 "tags": [
                     "token"
@@ -880,11 +882,9 @@
                 "parameters": [
                     {
                         "name": "token",
-                        "in": "query",
-                        "description": "working token",
+                        "in": "path",
                         "required": true,
-                        "type": "string",
-                        "maxLength": 255
+                        "type": "string"
                     }
                 ],
                 "responses": {

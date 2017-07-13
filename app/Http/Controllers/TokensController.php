@@ -150,19 +150,12 @@ class TokensController extends Controller
 
     /**
      * @SWG\Delete(
-     *     path="/tokens",
+     *     path="/tokens/{token}",
      *     summary="Delete token for authorization",
      *     tags={"token"},
      *     description="",
      *     operationId="deleteToken",
-     *     @SWG\Parameter(
-     *          name="token",
-     *          type="string",
-     *          in="query",
-     *          required=true,
-     *          description="working token",
-     *          maxLength=255
-     *      ),
+     *     @SWG\Parameter(name="token", in="path", required=true, type="string"),
      *     @SWG\Response(
      *         response=202,
      *         description="successful operation",
