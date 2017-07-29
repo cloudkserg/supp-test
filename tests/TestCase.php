@@ -45,7 +45,7 @@ abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
             'email' => $this->user->email,
             'password' => self::PASSWORD
         ]);
-        $this->token = json_decode($r->response->content())->token;
+        $this->token = $r->json()['token'];
 
     }
 

@@ -24,7 +24,7 @@ class ResponseItemsTest extends TestCase
         $responseItem = $response->responseItems[0];
 
         $this->patch('/api/responseItems/' . $responseItem->id)
-            ->seeStatusCode(401);
+            ->assertStatus(401);
     }
 
 
@@ -43,7 +43,7 @@ class ResponseItemsTest extends TestCase
 
         $r = $this->patch('/api/responseItems/' . $responseItem->id . '?token=' . $this->token,
             $data);
-        $r->seeStatusCode('202');
+        $r->assertStatus(202);
 
         $newItem = \App\Demand\ResponseItem::find($responseItem->id);
         $this->assertEquals(100, $newItem->price);
@@ -65,7 +65,7 @@ class ResponseItemsTest extends TestCase
 
         $r = $this->patch('/api/responseItems/' . $responseItem->id . '?token=' . $this->token,
             $data);
-        $r->seeStatusCode('403');
+        $r->assertStatus(403);
 
         $newItem = \App\Demand\ResponseItem::find($responseItem->id);
         $this->assertEquals(9, $newItem->price);
@@ -78,7 +78,7 @@ class ResponseItemsTest extends TestCase
         $responseItem = $response->responseItems[0];
 
         $this->delete('/api/responseItems/' . $responseItem->id)
-            ->seeStatusCode(401);
+            ->assertStatus(401);
     }
 
 
@@ -90,7 +90,7 @@ class ResponseItemsTest extends TestCase
         $responseItem = $response->responseItems[0];
 
         $r = $this->delete('/api/responseItems/' . $responseItem->id . '?token=' . $this->token);
-        $r->seeStatusCode('202');
+        $r->assertStatus(202);
 
         $newItem = \App\Demand\ResponseItem::find($responseItem->id);
         $this->assertTrue(!isset($newItem));
@@ -105,7 +105,7 @@ class ResponseItemsTest extends TestCase
         $responseItem = $response->responseItems[0];
 
         $r = $this->delete('/api/responseItems/' . $responseItem->id . '?token=' . $this->token);
-        $r->seeStatusCode('403');
+        $r->assertStatus(403);
 
         $newItem = \App\Demand\ResponseItem::find($responseItem->id);
         $this->assertTrue(isset($newItem));

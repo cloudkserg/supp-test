@@ -23,7 +23,7 @@ class InvoicesTest extends TestCase
     public function testCreateAuth()
     {
         $this->post('/api/invoices')
-            ->seeStatusCode(401);
+            ->assertStatus(401);
     }
 
     public function testCreate()
@@ -36,8 +36,8 @@ class InvoicesTest extends TestCase
         ];
 
         $r = $this->post('/api/invoices?token=' . $this->token, $data);
-            $r->seeStatusCode(201)
-            ->seeHeader('location', '/invoices/1');
+            $r->assertStatus(201)
+            ->assertHeader('location', '/invoices/1');
 
         $items = $this->responseModel->invoices;
         $this->assertCount(1, $items);
@@ -59,7 +59,7 @@ class InvoicesTest extends TestCase
         ];
 
         $this->post('/api/invoices?token=' . $this->token, $data)
-            ->seeStatusCode(403);
+            ->assertStatus(403);
 
         $items = $this->responseModel->invoices;
         $this->assertCount(0, $items);
@@ -68,7 +68,7 @@ class InvoicesTest extends TestCase
     public function testFileAuth()
     {
         $this->get('/api/invoices/1/files/abba')
-            ->seeStatusCode(401);
+            ->assertStatus(401);
     }
 
     public function testFileForeign()
@@ -83,7 +83,7 @@ class InvoicesTest extends TestCase
         ]);
 
         $r = $this->get('/api/invoices/' . $item->id . '/files/abba?token=' . $this->token)
-            ->seeStatusCode(403);
+            ->assertStatus(403);
     }
 
     private function createFile($invoiceId)
@@ -113,14 +113,14 @@ class InvoicesTest extends TestCase
 
 
         $this->get('/api/invoices/' . $item->id . '/files/' . $filename . '?token=' . $this->token)
-            ->seeStatusCode(200);
+            ->assertStatus(200);
         \File::delete($filepath);
     }
 
     public function testUpdateAuth()
     {
         $this->put('/api/invoices/11')
-            ->seeStatusCode(401);
+            ->assertStatus(401);
     }
 
     public function testUpdateRight()
@@ -141,7 +141,7 @@ class InvoicesTest extends TestCase
         $r = $this->put('/api/invoices/' . $item->id . '/?token=' . $this->token,
             $data
         );
-        $r->seeStatusCode(202);
+        $r->assertStatus(202);
 
         $invoice = \App\Demand\Invoice::first();
         $this->assertEquals('report.xls', $invoice->filename);
@@ -155,7 +155,7 @@ class InvoicesTest extends TestCase
     public function testDeleteAuth()
     {
         $this->delete('/api/invoices/11')
-            ->seeStatusCode(401);
+            ->assertStatus(401);
     }
 
     public function testDeleteRight()
@@ -165,7 +165,7 @@ class InvoicesTest extends TestCase
         ]);
 
         $r = $this->delete('/api/invoices/' . $item->id . '/?token=' . $this->token);
-        $r->seeStatusCode(202);
+        $r->assertStatus(202);
 
         $this->assertEquals(0, \App\Demand\Invoice::count());
     }
@@ -181,7 +181,7 @@ class InvoicesTest extends TestCase
         ]);
 
         $r = $this->delete('/api/invoices/' . $item->id . '/?token=' . $this->token);
-        $r->seeStatusCode(403);
+        $r->assertStatus(403);
 
         $this->assertEquals(1, \App\Demand\Invoice::count());
     }

@@ -33,8 +33,8 @@ class ConfirmationsTest extends TestCase
                 'confirmation_code' => $this->confirmatingUser->confirmation_code
             ]
         )
-            ->seeStatusCode(201)
-            ->seeHeader('location', '/users/' . $this->confirmatingUser->id);
+            ->assertStatus(201)
+            ->assertHeader('location', '/users/' . $this->confirmatingUser->id);
     }
 
     public function testErrorAlreadyCreating()
@@ -45,7 +45,7 @@ class ConfirmationsTest extends TestCase
                 'confirmation_code' => $this->user->confirmation_code
             ]
         )
-            ->seeStatusCode(422);
+            ->assertStatus(422);
     }
 
     public function testErrorWithoutConfirmationCode()
@@ -55,7 +55,7 @@ class ConfirmationsTest extends TestCase
             [
             ]
         )
-            ->seeStatusCode(422);
+            ->assertStatus(422);
     }
 
     public function testErrorWithNotRightConfirmationCode()
@@ -66,7 +66,7 @@ class ConfirmationsTest extends TestCase
                 'confirmation_code' => str_random(30)
             ]
         )
-            ->seeStatusCode(500);
+            ->assertStatus(500);
     }
 
 }

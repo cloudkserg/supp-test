@@ -16,7 +16,7 @@ class ResponsesTest extends TestCase
     public function testUpdateAuth()
     {
         $this->patch('/api/responses/1')
-            ->seeStatusCode(401);
+            ->assertStatus(401);
     }
 
     public function testUpdate()
@@ -47,7 +47,7 @@ class ResponsesTest extends TestCase
         ];
 
         $r = $this->patch(sprintf('/api/responses/%s?token=%s', $response->id, $this->token), $data);
-            $r->seeStatusCode(202);
+            $r->assertStatus(202);
 
         $responses = Response::all();
         $this->assertCount(1, $responses);
@@ -85,7 +85,7 @@ class ResponsesTest extends TestCase
         ];
 
         $r = $this->patch(sprintf('/api/responses/%s?token=%s', $response->id, $this->token), $data);
-        $r->seeStatusCode(202);
+        $r->assertStatus(202);
 
         $responses = Response::all();
         $this->assertCount(1, $responses);
@@ -123,7 +123,7 @@ class ResponsesTest extends TestCase
         ];
 
         $r = $this->patch(sprintf('/api/responses/%s?token=%s', $response->id, $this->token), $data);
-        $r->seeStatusCode(403);
+        $r->assertStatus(403);
     }
 
 
@@ -146,7 +146,7 @@ class ResponsesTest extends TestCase
         ];
 
         $r = $this->patch(sprintf('/api/responses/%s?token=%s', $response->id, $this->token), $data);
-        $r->seeStatusCode(202);
+        $r->assertStatus(202);
 
         $response = Response::find($response->id);
         $this->assertNotEmpty($response->readed_time);

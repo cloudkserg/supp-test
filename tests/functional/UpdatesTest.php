@@ -33,7 +33,7 @@ class UpdatesTest extends TestCase
     public function testIndexAuth()
     {
         $this->get('/api/updates')
-            ->seeStatusCode(401);
+            ->assertStatus(401);
     }
 
     public function testIndexDemandForTimestampNull()
@@ -47,14 +47,14 @@ class UpdatesTest extends TestCase
             'token' => $this->token
         ]);
         $r = $this->get('/api/updates?' . $data);
-        $r->seeStatusCode('200');
-        $r->seeJsonStructure([
+        $r->assertStatus(200);
+        $r->assertJsonStructure([
             'demands', 'responses', 'timestamp'
         ]);
-        $data = json_decode($r->response->content());
+        $data = $r->json();
 
-        $this->assertEquals(false, $data->responses);
-        $this->assertEquals(true, $data->demands);
+        $this->assertEquals(false, $data['responses']);
+        $this->assertEquals(true, $data['demands']);
     }
 
     public function testIndexResponseForTimestampNull()
@@ -73,14 +73,14 @@ class UpdatesTest extends TestCase
             'token' => $this->token
         ]);
         $r = $this->get('/api/updates?' . $data);
-        $r->seeStatusCode('200');
-        $r->seeJsonStructure([
+        $r->assertStatus(200);
+        $r->assertJsonStructure([
             'demands', 'responses', 'timestamp'
         ]);
-        $data = json_decode($r->response->content());
+        $data = $r->json();
 
-        $this->assertEquals(true, $data->responses);
-        $this->assertEquals(false, $data->demands);
+        $this->assertEquals(true, $data['responses']);
+        $this->assertEquals(false, $data['demands']);
     }
 
     public function testIndexNullForTimestamp()
@@ -106,11 +106,11 @@ class UpdatesTest extends TestCase
             'token' => $this->token
         ]);
         $r = $this->get('/api/updates?' . $data);
-        $r->seeStatusCode('200');
-        $data = json_decode($r->response->content());
+        $r->assertStatus(200);
+        $data = $r->json();
 
-        $this->assertEquals(false, $data->responses);
-        $this->assertEquals(false, $data->demands);
+        $this->assertEquals(false, $data['responses']);
+        $this->assertEquals(false, $data['demands']);
     }
 
     public function testIndexDemandForTimestamp()
@@ -131,11 +131,11 @@ class UpdatesTest extends TestCase
             'token' => $this->token
         ]);
         $r = $this->get('/api/updates?' . $data);
-        $r->seeStatusCode('200');
-        $data = json_decode($r->response->content());
+        $r->assertStatus(200);
+        $data = $r->json();
 
-        $this->assertEquals(false, $data->responses);
-        $this->assertEquals(true, $data->demands);
+        $this->assertEquals(false, $data['responses']);
+        $this->assertEquals(true, $data['demands']);
 
     }
 
@@ -160,14 +160,14 @@ class UpdatesTest extends TestCase
             'token' => $this->token
         ]);
         $r = $this->get('/api/updates?' . $data);
-        $r->seeStatusCode('200');
-        $r->seeJsonStructure([
+        $r->assertStatus(200);
+        $r->assertJsonStructure([
             'demands', 'responses'
         ]);
-        $data = json_decode($r->response->content());
+        $data = $r->json();
 
-        $this->assertEquals(true, $data->responses);
-        $this->assertEquals(false, $data->demands);
+        $this->assertEquals(true, $data['responses']);
+        $this->assertEquals(false, $data['demands']);
 
     }
 
@@ -192,11 +192,11 @@ class UpdatesTest extends TestCase
             'token' => $this->token
         ]);
         $r = $this->get('/api/updates?' . $data);
-        $r->seeStatusCode('200');
-        $data = json_decode($r->response->content());
+        $r->assertStatus(200);
+        $data = $r->json();
 
-        $this->assertEquals(false, $data->responses);
-        $this->assertEquals(true, $data->demands);
+        $this->assertEquals(false, $data['responses']);
+        $this->assertEquals(true, $data['demands']);
     }
 
 
@@ -220,11 +220,11 @@ class UpdatesTest extends TestCase
             'token' => $this->token
         ]);
         $r = $this->get('/api/updates?' . $data);
-        $r->seeStatusCode('200');
-        $data = json_decode($r->response->content());
+        $r->assertStatus(200);
+        $data = $r->json();
 
-        $this->assertEquals(false, $data->responses);
-        $this->assertEquals(true, $data->demands);
+        $this->assertEquals(false, $data['responses']);
+        $this->assertEquals(true, $data['demands']);
     }
 
     public function testIndexResponseItemsChanges()
@@ -250,11 +250,11 @@ class UpdatesTest extends TestCase
             'token' => $this->token
         ]);
         $r = $this->get('/api/updates?' . $data);
-        $r->seeStatusCode('200');
-        $data = json_decode($r->response->content());
+        $r->assertStatus(200);
+        $data = $r->json();
 
-        $this->assertEquals(true, $data->responses);
-        $this->assertEquals(false, $data->demands);
+        $this->assertEquals(true, $data['responses']);
+        $this->assertEquals(false, $data['demands']);
     }
 
 
@@ -280,11 +280,11 @@ class UpdatesTest extends TestCase
             'token' => $this->token
         ]);
         $r = $this->get('/api/updates?' . $data);
-        $r->seeStatusCode('200');
-        $data = json_decode($r->response->content());
+        $r->assertStatus(200);
+        $data = $r->json();
 
-        $this->assertEquals(true, $data->responses);
-        $this->assertEquals(false, $data->demands);
+        $this->assertEquals(true, $data['responses']);
+        $this->assertEquals(false, $data['demands']);
     }
 
     public function testIndexDemandResponseAdd()
@@ -309,11 +309,11 @@ class UpdatesTest extends TestCase
             'token' => $this->token
         ]);
         $r = $this->get('/api/updates?' . $data);
-        $r->seeStatusCode('200');
-        $data = json_decode($r->response->content());
+        $r->assertStatus(200);
+        $data = $r->json();
 
-        $this->assertEquals(false, $data->responses);
-        $this->assertEquals(true, $data->demands);
+        $this->assertEquals(false, $data['responses']);
+        $this->assertEquals(true, $data['demands']);
     }
 
     public function testIndexDemandInvoiceAdd()
@@ -343,11 +343,11 @@ class UpdatesTest extends TestCase
             'token' => $this->token
         ]);
         $r = $this->get('/api/updates?' . $data);
-        $r->seeStatusCode('200');
-        $data = json_decode($r->response->content());
+        $r->assertStatus(200);
+        $data = $r->json();
 
-        $this->assertEquals(false, $data->responses);
-        $this->assertEquals(true, $data->demands);
+        $this->assertEquals(false, $data['responses']);
+        $this->assertEquals(true, $data['demands']);
     }
 
 
@@ -377,12 +377,12 @@ class UpdatesTest extends TestCase
             'token' => $this->token
         ]);
         $r = $this->get('/api/updates?' . $data);
-        $r->seeStatusCode('200');
-        $data = json_decode($r->response->content());
+        $r->assertStatus(200);
+        $data = $r->json();
 
 
-        $this->assertEquals(true, $data->responses);
-        $this->assertEquals(false, $data->demands);
+        $this->assertEquals(true, $data['responses']);
+        $this->assertEquals(false, $data['demands']);
     }
 
 }

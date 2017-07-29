@@ -25,7 +25,7 @@ class DemandsTest extends TestCase
     public function testDeleteAuth()
     {
         $this->delete('/api/demands/1')
-            ->seeStatusCode(401);
+            ->assertStatus(401);
     }
 
 
@@ -34,7 +34,7 @@ class DemandsTest extends TestCase
         $demand = factory(Demand::class)->create();
 
         $r = $this->delete('/api/demands/' . $demand->id . '?token=' . $this->token)
-            ->seeStatusCode(202);
+            ->assertStatus(202);
     }
 
 
@@ -42,7 +42,7 @@ class DemandsTest extends TestCase
     public function testCreateAuth()
     {
         $this->post('/api/demands')
-            ->seeStatusCode(401);
+            ->assertStatus(401);
     }
 
     public function testCreate()
@@ -75,8 +75,8 @@ class DemandsTest extends TestCase
 
         $this->expectsJobs(\App\Jobs\CreateDraftResponseForDemandJob::class);
         $r = $this->post('/api/demands?token=' . $this->token, $data);
-            $r->seeStatusCode(201)
-            ->seeHeader('location', '/demands/1');
+            $r->assertStatus(201)
+            ->assertHeader('location', '/demands/1');
 
 
 
@@ -113,8 +113,8 @@ class DemandsTest extends TestCase
 
         $this->expectsJobs(\App\Jobs\CreateDraftResponseForDemandJob::class);
         $r = $this->post('/api/demands?token=' . $this->token, $data);
-        $r->seeStatusCode(201)
-            ->seeHeader('location', '/demands/1');
+        $r->assertStatus(201)
+            ->assertHeader('location', '/demands/1');
     }
 
     public function testCreateErrorWithoutDemandItems()
@@ -134,7 +134,7 @@ class DemandsTest extends TestCase
         ];
 
         $this->post('/api/demands?token=' . $this->token, $data)
-            ->seeStatusCode(422);
+            ->assertStatus(422);
     }
 
 
@@ -149,7 +149,7 @@ class DemandsTest extends TestCase
             'status' => \App\Type\DemandStatus::ARCHIVED
         ];
         $r = $this->patch(sprintf('/api/demands/%s?token=%s', $demand->id, $this->token), $data);
-            $r->seeStatusCode(202);
+            $r->assertStatus(202);
 
         $this->assertEquals(\App\Type\DemandStatus::ARCHIVED, Demand::find($demand->id)->status);
     }
@@ -165,7 +165,7 @@ class DemandsTest extends TestCase
             'status' => \App\Type\DemandStatus::ACTIVE
         ];
         $r = $this->patch(sprintf('/api/demands/%s?token=%s', $demand->id, $this->token), $data);
-        $r->seeStatusCode(202);
+        $r->assertStatus(202);
 
         $this->assertEquals(\App\Type\DemandStatus::ACTIVE, Demand::find($demand->id)->status);
     }
@@ -177,7 +177,7 @@ class DemandsTest extends TestCase
             'status' => \App\Type\DemandStatus::ACTIVE
         ];
         $r = $this->patch(sprintf('/api/demands/%s?token=%s', $demandId, $this->token), $data);
-        $r->seeStatusCode(404);
+        $r->assertStatus(404);
     }
 
     public function testUpdateSame()
@@ -191,7 +191,7 @@ class DemandsTest extends TestCase
             'status' => \App\Type\DemandStatus::ACTIVE
         ];
         $r = $this->patch(sprintf('/api/demands/%s?token=%s', $demand->id, $this->token), $data);
-        $r->seeStatusCode(202);
+        $r->assertStatus(202);
 
         $this->assertEquals(\App\Type\DemandStatus::ACTIVE, Demand::find($demand->id)->status);
     }
@@ -208,7 +208,7 @@ class DemandsTest extends TestCase
             'status' => \App\Type\DemandStatus::ARCHIVED
         ];
         $r = $this->patch(sprintf('/api/demands/%s?token=%s', $demand->id, $this->token), $data);
-        $r->seeStatusCode(403);
+        $r->assertStatus(403);
 
         $this->assertEquals(\App\Type\DemandStatus::ACTIVE, Demand::find($demand->id)->status);
     }

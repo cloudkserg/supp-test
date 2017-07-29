@@ -44,8 +44,8 @@ class CompaniesTest extends TestCase
 //        ]);
 //        $r = $this->get('/api/companies/search?token=' . $this->token . '&' . $data);
 //        var_dump($r->response->content());die;
-//            $r->seeStatusCode(200)
-//            ->seeJsonStructure([
+//            $r->assertStatus(200)
+//            ->assertJsonStructure([
 //                'count'
 //            ]);
 //
@@ -58,8 +58,8 @@ class CompaniesTest extends TestCase
 //            'regions' => [$regions[0]->id, $regions[1]->id]
 //        ]);
 //        $r = $this->get('/api/companies/search?token=' . $this->token . '&' . $data)
-//            ->seeStatusCode(200)
-//            ->seeJsonStructure([
+//            ->assertStatus(200)
+//            ->assertJsonStructure([
 //                'count'
 //            ]);
 //
@@ -74,30 +74,30 @@ class CompaniesTest extends TestCase
 //    public function testSearchAuth()
 //    {
 //        $this->get('/api/companies/search')
-//            ->seeStatusCode(401);
+//            ->assertStatus(401);
 //    }
 
 
     public function testIndexNotAuth()
     {
         $this->get('/api/companies/12')
-            ->seeStatusCode(401);
+            ->assertStatus(401);
     }
 
     public function testIndexForeign()
     {
         $company = $this->createCompany();
         $r = $this->get('api/companies/' .  $company->id . '?token=' . $this->token)
-            ->seeStatusCode(403);
+            ->assertStatus(403);
     }
 
 
     public function testIndex()
     {
         $r = $this->get('api/companies/'.  $this->company->id . '?token=' . $this->token);
-        $r->seeStatusCode(200);
+        $r->assertStatus(200);
 
-        $r->seeJsonStructure([
+        $r->assertJsonStructure([
             'id',
             'title',
             'founded',
@@ -119,14 +119,14 @@ class CompaniesTest extends TestCase
     public function testUpdateNotAuth()
     {
         $this->patch('/api/companies/12')
-            ->seeStatusCode(401);
+            ->assertStatus(401);
     }
 
     public function testUpdateForeign()
     {
         $company = $this->createCompany();
         $r = $this->patch('api/companies/' .  $company->id . '?token=' . $this->token)
-            ->seeStatusCode(403);
+            ->assertStatus(403);
     }
 
 
@@ -138,14 +138,14 @@ class CompaniesTest extends TestCase
 
         $data = ['title' => $company->title, 'spheres' => [1], 'regions' => [2]];
         $this->patch('api/companies/' . $this->company->id . '?token=' . $this->token, $data)
-           ->seeStatusCode(422);
+           ->assertStatus(422);
     }
 
     public function testUpdateRequired()
     {
         $data = ['title' => $this->company->title];
         $this->patch('api/companies/' . $this->company->id . '?token=' . $this->token, $data)
-            ->seeStatusCode(422);
+            ->assertStatus(422);
     }
 
 
@@ -165,7 +165,7 @@ class CompaniesTest extends TestCase
         ];
 
         $r = $this->patch(sprintf('/api/companies/%s?token=%s', $this->company->id, $this->token), $data);
-        $r->seeStatusCode(202);
+        $r->assertStatus(202);
 
         $company = \App\Company::query()->find($this->company->id);
         $this->assertEquals($this->company->title, $company->title);
@@ -190,7 +190,7 @@ class CompaniesTest extends TestCase
         ];
 
         $r = $this->patch(sprintf('/api/companies/%s?token=%s', $this->company->id, $this->token), $data);
-        $r->seeStatusCode(202);
+        $r->assertStatus(202);
 
         $company = \App\Company::query()->find($this->company->id);
         $this->assertEquals($this->company->title, $company->title);

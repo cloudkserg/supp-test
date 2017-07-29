@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $demand_id
  * @property string delivery_type
  * @property string $status
- * @property \Carbon\Carbon readed_time
+ * @property \Carbon\Carbon readed
  * @property string $desc
  * @property \Carbon\Carbon updated_at
  *

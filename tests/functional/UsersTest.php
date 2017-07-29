@@ -28,8 +28,8 @@ class UsersTest extends TestCase
                 'spheres' => collect($spheres)->pluck('id')->toArray(),
                 'regions' => collect($regions)->pluck('id')->toArray()
             ])
-            ->seeStatusCode(201)
-            ->seeHeader('location', '/users/1');
+            ->assertStatus(201)
+            ->assertHeader('location', '/users/1');
 
 
         $user = \App\User::find(1);
@@ -54,7 +54,7 @@ class UsersTest extends TestCase
             'password_confirmation' => '123456',
             'name' => 'Test user',
             'compay_title' => 'Test company'
-        ])->seeStatusCode(422);
+        ])->assertStatus(422);
     }
 
     public function testErrorValidationPassword()
@@ -66,7 +66,7 @@ class UsersTest extends TestCase
             'password_confirmation' => '1234567',
             'name' => 'Test user',
             'company_title' => 'Test company'
-        ])->seeStatusCode(422);
+        ])->assertStatus(422);
     }
 
     public function testErrorValidationNotCompany()
@@ -76,7 +76,7 @@ class UsersTest extends TestCase
             'password' => '123456',
             'password_confirmation' => '123456',
             'name' => 'Test user'
-        ])->seeStatusCode(422);
+        ])->assertStatus(422);
     }
 
     public function testErrorValidationNotEmail()
@@ -85,6 +85,6 @@ class UsersTest extends TestCase
             'password' => '123456',
             'password_confirmation' => '123456',
             'name' => 'Test user'
-        ])->seeStatusCode(422);
+        ])->assertStatus(422);
     }
 }

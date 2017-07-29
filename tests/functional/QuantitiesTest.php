@@ -18,15 +18,15 @@ class QuantitiesTest extends TestCase
         $regions = factory(\App\Type\Quantity::class, 4)->create();
 
         $r = $this->get('/api/quantities');
-            $r->seeStatusCode(200)
-            ->seeJsonStructure([
+            $r->assertStatus(200)
+            ->assertJsonStructure([
                     '*' => [
                         'id',
                         'title'
                     ]
             ]);
 
-        $regions = json_decode($r->response->content());
+        $regions = $r->json();
         $this->assertEquals(4, count($regions));
 
     }

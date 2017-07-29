@@ -16,16 +16,16 @@ class SpheresTest extends TestCase
     public function testIndex()
     {
         $spheres = factory(\App\Type\Sphere::class, 4)->create();
-        $r = $this->get('/api/spheres');
-            $r->seeStatusCode(200)
-            ->seeJsonStructure([
+        $r = $this->json('GET', '/api/spheres');
+            $r->assertStatus(200)
+            ->assertJsonStructure([
                     '*' => [
                         'id',
                         'title'
                     ]
             ]);
 
-        $spheres = json_decode($r->response->content());
+        $spheres = $r->json();
         $this->assertEquals(4, count($spheres));
 
     }

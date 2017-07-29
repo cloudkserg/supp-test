@@ -28,6 +28,8 @@ class ResponsesReaded extends Migration
     {
         Schema::table('responses', function (Blueprint $table) {
             $table->dropColumn('readed_time');
+        });
+        Schema::table('responses', function (Blueprint $table) {
             $table->dropColumn('desc');
         });
     }

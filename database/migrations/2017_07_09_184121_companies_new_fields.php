@@ -30,8 +30,14 @@ class CompaniesNewFields extends Migration
     {
         Schema::table('companies', function (Blueprint $table) {
             $table->dropColumn('founded');
+        });
+        Schema::table('companies', function (Blueprint $table) {
             $table->dropColumn('site');
+        });
+        Schema::table('companies', function (Blueprint $table) {
             $table->dropColumn('address');
+        });
+        Schema::table('companies', function (Blueprint $table) {
             $table->dropColumn('desc');
         });
     }

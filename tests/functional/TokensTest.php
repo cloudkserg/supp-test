@@ -40,12 +40,12 @@ class TokensTest extends TestCase
                 'email' => $this->user->email,
                 'password' => self::PASSWORD
             ])
-            ->seeStatusCode(201)
-            ->seeJsonStructure([
+            ->assertStatus(201)
+            ->assertJsonStructure([
                 'token'
             ]);
 
-        $token = json_decode($r->response->content())->token;
+        $token = $r->json()['token'];
         $payload = JWTAuth::setToken($token)->getPayload();
         $this->assertEquals($this->user->id, $payload->get('id'));
         $this->assertEquals($this->user->company->title, $payload->get('company_title'));
@@ -57,7 +57,7 @@ class TokensTest extends TestCase
         $this->post('/api/tokens', [
             'email' => $this->user->email
         ])
-            ->seeStatusCode(422);
+            ->assertStatus(422);
     }
 
     public function testErrorWithoutEmail()
@@ -65,7 +65,7 @@ class TokensTest extends TestCase
         $this->post('/api/tokens', [
                 'password' => self::PASSWORD
         ])
-            ->seeStatusCode(422);
+            ->assertStatus(422);
     }
 
     public function testErrorWithNotRight()
@@ -74,7 +74,7 @@ class TokensTest extends TestCase
             'email' => $this->user->email,
             'password' => '1234567'
         ])
-            ->seeStatusCode(401);
+            ->assertStatus(401);
     }
 
     public function testErrorConfirm()
@@ -83,7 +83,7 @@ class TokensTest extends TestCase
             'email' => $this->confirmUser->email,
             'password' => self::PASSWORD
         ])
-            ->seeStatusCode(401);
+            ->assertStatus(401);
     }
 
 
@@ -93,10 +93,10 @@ class TokensTest extends TestCase
             'email' => $this->user->email,
             'password' => self::PASSWORD
         ]);
-        $token = json_decode($r->response->content())->token;
+        $token = $r->json()['token'];
 
         $this->get('/api/tokens/test?token=' . $token)
-            ->seeStatusCode(204);
+            ->assertStatus(204);
 
     }
 
@@ -105,14 +105,14 @@ class TokensTest extends TestCase
         $token = str_random(7);
 
         $this->get('/api/tokens/test?token=' . $token)
-            ->seeStatusCode(401);
+            ->assertStatus(401);
 
     }
 
     public function testNotAuthEmpty()
     {
         $this->get('/api/tokens/test')
-            ->seeStatusCode(401);
+            ->assertStatus(401);
     }
 
     public function testUpdate()
@@ -121,10 +121,10 @@ class TokensTest extends TestCase
             'email' => $this->user->email,
             'password' => self::PASSWORD
         ]);
-        $token = json_decode($r->response->content())->token;
+        $token = $r->json()['token'];
         $this->put('/api/tokens?token=' . $token)
-            ->seeStatusCode(202)
-            ->seeJsonStructure([
+            ->assertStatus(202)
+            ->assertJsonStructure([
                 'token'
             ]);
     }
@@ -133,14 +133,14 @@ class TokensTest extends TestCase
     {
         $token =  str_random(7);
         $this->put('/api/tokens?token=' . $token)
-            ->seeStatusCode(403);
+            ->assertStatus(403);
     }
 
     public function testUpdateErrorEmpty()
     {
         $token =  str_random(7);
         $this->put('/api/tokens')
-            ->seeStatusCode(400);
+            ->assertStatus(400);
     }
 
 
@@ -148,7 +148,7 @@ class TokensTest extends TestCase
     {
         $token = 'adasdas';
         $r = $this->delete('/api/tokens/' . $token . '?token=' . $token)
-            ->seeStatusCode(401);
+            ->assertStatus(401);
     }
 
     public function testDelete()
@@ -157,18 +157,18 @@ class TokensTest extends TestCase
             'email' => $this->user->email,
             'password' => self::PASSWORD
         ])
-            ->seeStatusCode(201)
-            ->seeJsonStructure([
+            ->assertStatus(201)
+            ->assertJsonStructure([
                 'token'
             ]);
 
-        $token = json_decode($r->response->content())->token;
+        $token = $r->json()['token'];
 
         $r = $this->delete('/api/tokens/' . $token . '?token=' . $token)
-            ->seeStatusCode(202);
+            ->assertStatus(202);
 
 //        $this->get('/api/demands?token=' . $token)
-//            ->seeStatusCode(401);
+//            ->assertStatus(401);
     }
 
 }

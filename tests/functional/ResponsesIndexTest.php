@@ -32,7 +32,7 @@ class ResponsesIndexTest extends TestCase
     public function testIndexAuth()
     {
         $this->get('/api/responses')
-            ->seeStatusCode(401);
+            ->assertStatus(401);
     }
 
     public function testIndexActiveDraft()
@@ -73,18 +73,18 @@ class ResponsesIndexTest extends TestCase
             'token' => $this->token
         ]);
         $r = $this->get('/api/responses?' . $data);
-        $r->seeStatusCode('200');
-        $r->seeJsonStructure($this->getJsonStructure());
-        $data = json_decode($r->response->content());
+        $r->assertStatus(200);
+        $r->assertJsonStructure($this->getJsonStructure());
+        $data = $r->json();
 
         //only 3
         $this->assertCount(2, $data);
 
         //first - my draft
-        $this->assertEquals($this->company->id, $data[0]->company->id);
+        $this->assertEquals($this->company->id, $data[0]['company']['id']);
 
         //second - my active
-        $this->assertEquals($this->company->id, $data[1]->company->id);
+        $this->assertEquals($this->company->id, $data[1]['company']['id']);
     }
 
 

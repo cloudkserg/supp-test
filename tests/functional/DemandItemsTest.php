@@ -24,7 +24,7 @@ class DemandsItemsTest extends TestCase
         $demandItem = $demand->demandItems[0];
 
         $this->patch('/api/demandItems/' . $demandItem->id)
-            ->seeStatusCode(401);
+            ->assertStatus(401);
     }
 
 
@@ -43,7 +43,7 @@ class DemandsItemsTest extends TestCase
 
         $r = $this->patch('/api/demandItems/' . $demandItem->id . '?token=' . $this->token,
             $data);
-        $r->seeStatusCode('202');
+        $r->assertStatus(202);
 
         $newItem = \App\Demand\DemandItem::find($demandItem->id);
         $this->assertEquals($responseItem->id, $newItem->response_item_id);
@@ -63,7 +63,7 @@ class DemandsItemsTest extends TestCase
 
         $r = $this->patch('/api/demandItems/' . $demandItem->id . '?token=' . $this->token,
             $data);
-        $r->seeStatusCode('403');
+        $r->assertStatus(403);
 
         $newItem = \App\Demand\DemandItem::find($demandItem->id);
         $this->assertTrue(!isset($newItem->response_item_id));
@@ -84,7 +84,7 @@ class DemandsItemsTest extends TestCase
 
         $r = $this->patch('/api/demandItems/' . $demandItem->id . '?token=' . $this->token,
             $data);
-        $r->seeStatusCode('202');
+        $r->assertStatus(202);
 
         $newItem = \App\Demand\DemandItem::find($demandItem->id);
         $this->assertTrue(!isset($newItem->responseItem));
