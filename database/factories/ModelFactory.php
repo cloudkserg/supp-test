@@ -77,6 +77,13 @@ $factory->define(\App\Type\Sphere::class, function (Faker\Generator $faker) {
     ];
 });
 
+$factory->define(\App\Message::class, function (\Faker\Generator $faker) {
+   return [
+        'text' => $faker->title,
+        'status' => \App\Type\MessageStatus::ACTIVE
+   ];
+});
+
 /**
  * Demand
  */

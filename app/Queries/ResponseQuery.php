@@ -14,7 +14,7 @@ use App\Demand\Response;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 
-class ResponseQuery extends DemandQuery
+class ResponseQuery extends DemandQuery  implements Query
 {
 
     /**

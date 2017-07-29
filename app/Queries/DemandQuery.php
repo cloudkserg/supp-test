@@ -13,7 +13,7 @@ use App\Demand\Demand;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 
-class DemandQuery
+class DemandQuery  implements Query
 {
 
     /**

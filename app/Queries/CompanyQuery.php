@@ -13,7 +13,7 @@ use App\Company;
 use App\Demand\Demand;
 use Illuminate\Database\Eloquent\Builder;
 
-class CompanyQuery
+class CompanyQuery implements Query
 {
 
     /**

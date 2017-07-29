@@ -534,6 +534,101 @@
                 ]
             }
         },
+        "/messages": {
+            "get": {
+                "tags": [
+                    "message"
+                ],
+                "summary": "Get my messages",
+                "description": "",
+                "operationId": "getMessages",
+                "parameters": [
+                    {
+                        "name": "demand_id",
+                        "in": "query",
+                        "description": "demand_id",
+                        "type": "integer"
+                    },
+                    {
+                        "name": "status",
+                        "in": "query",
+                        "description": "filtered Status [or array of status]",
+                        "type": "string",
+                        "enum": [
+                            "active",
+                            "archived"
+                        ]
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/MessageModel"
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/responses/NotFoundResponse"
+                    },
+                    "401": {
+                        "$ref": "#/responses/NotAuthResponse"
+                    },
+                    "default": {
+                        "$ref": "#/responses/DefaultErrorResponse"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "message"
+                ],
+                "summary": "Create message",
+                "description": "",
+                "operationId": "createMessages",
+                "parameters": [
+                    {
+                        "name": "Message",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/CreateMessageRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "successful operation",
+                        "headers": {
+                            "location": {
+                                "description": "/messages/1",
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/responses/NotFoundResponse"
+                    },
+                    "401": {
+                        "$ref": "#/responses/NotAuthResponse"
+                    },
+                    "default": {
+                        "$ref": "#/responses/DefaultErrorResponse"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
         "/quantities": {
             "get": {
                 "tags": [
@@ -1161,6 +1256,26 @@
                 }
             }
         },
+        "CreateMessageRequest": {
+            "properties": {
+                "text": {
+                    "description": "text",
+                    "type": "string"
+                },
+                "to_company_id": {
+                    "description": "to company id",
+                    "type": "integer"
+                },
+                "demand_id": {
+                    "description": "demand",
+                    "type": "integer"
+                },
+                "desc": {
+                    "description": "description of demand",
+                    "type": "string"
+                }
+            }
+        },
         "UpdateCompanyRequest": {
             "required": [
                 "title"
@@ -1491,6 +1606,35 @@
                     "type": "string"
                 }
             }
+        },
+        "MessageModel": {
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "text": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "created": {
+                    "type": "string"
+                },
+                "readed": {
+                    "type": "string"
+                },
+                "from_company_id": {
+                    "type": "integer"
+                },
+                "to_company_id": {
+                    "type": "integer"
+                },
+                "demand_id": {
+                    "type": "integer"
+                }
+            },
+            "type": "object"
         },
         "QuantityModel": {
             "properties": {
