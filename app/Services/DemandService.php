@@ -12,6 +12,7 @@ namespace App\Services;
 
 use App\Events\Demand\ArchiveDemandEvent;
 use App\Events\Demand\DeleteDemandEvent;
+use App\Http\Requests\UpdateDemandRequest;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use App\Queries\DemandQuery;
@@ -56,6 +57,19 @@ class DemandService
     }
 
 
+    /**
+     * @param int $companyId
+     * @return int
+     */
+    private function generateNumber($companyId)
+    {
+
+        $numberString = $this->repo->findLastNumberForCompanyId($companyId);
+        $number = filter_var($numberString, FILTER_SANITIZE_NUMBER_INT);
+        return ++$number;
+    }
+
+
 
     public function addItem($companyId, CreateDemandRequest $createRequest)
     {
@@ -64,6 +78,9 @@ class DemandService
         $item->delivery_date = $createRequest->getDeliveryDate();
         $item->company_id = $companyId;
         $item->status = DemandStatus::ACTIVE;
+        if (empty($item->number)) {
+            $item->number = $this->generateNumber($companyId);
+        }
         $item->saveOrFail();
 
 
@@ -84,14 +101,16 @@ class DemandService
 
     /**
      * @param Demand $item
-     * @param $status
+     * @param UpdateDemandRequest $request
+     * @internal param $status
      */
-    public function changeStatus(Demand $item, $status)
+    public function changeItem(Demand $item, UpdateDemandRequest $request)
     {
-        if ($item->status !== $status) {
-            $item->status = $status;
-            $item->saveOrFail();
+        $item->number = $request->get('number');
+        if ($item->status !== $request->get('status')) {
+            $item->status = $request->get('status');
         }
+        $item->saveOrFail();
     }
 
     /**

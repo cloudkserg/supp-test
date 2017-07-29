@@ -90,6 +90,17 @@ class DemandsTest extends TestCase
 
     }
 
+    private function createCompany()
+    {
+        $company = new \App\Company();
+        $company->title = 'abba';
+        $company->save();
+
+        return $company;
+    }
+
+
+
     public function testMiniCreate()
     {
         $faker = Faker\Factory::create();

@@ -57,6 +57,19 @@ class ResponseService
 
 
     /**
+     * @param int $companyId
+     * @return int
+     */
+    private function generateNumber($companyId)
+    {
+
+        $numberString = $this->repo->findLastNumberForCompanyId($companyId);
+        $number = filter_var($numberString, FILTER_SANITIZE_NUMBER_INT);
+        return ++$number;
+    }
+
+
+    /**
      * @param $companyId
      * @param $demandId
      * @return Response
@@ -67,7 +80,9 @@ class ResponseService
         $item->company_id = $companyId;
         $item->demand_id = $demandId;
         $item->status = ResponseStatus::DRAFT;
+        $item->number = $this->generateNumber($companyId);
         $item->saveOrFail();
+
         return $item;
     }
 

@@ -23,6 +23,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  *      required={"responseItems"},
  *      @SWG\Property(property="status", type="string", enum={"active","draft","cancel","archived"}),
  *      @SWG\Property(property="delivery_type", type="string"),
+ *      @SWG\Property(property="number", type="string"),
  *      @SWG\Property(property="readed", type="string", description="datetime"),
  *      @SWG\Property(property="desc", type="string"),
  *      @SWG\Property(
@@ -87,6 +88,7 @@ class UpdateResponseRequest extends ApiRequest
         $rules = [
             'status' => 'string',
             'readed' => 'date',
+            'number' => 'string',
             'delivery_type' => 'string',
             'desc' => 'string',
 

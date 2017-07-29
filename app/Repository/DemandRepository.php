@@ -11,6 +11,7 @@ use App\Demand\Demand;
 use App\Type\DemandStatus;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class DemandRepository
 {
@@ -37,6 +38,21 @@ class DemandRepository
         return $builder->count();
     }
 
+
+    /**
+     * @param int $companyId
+     * @return string|null
+     */
+    public function findLastNumberForCompanyId($companyId)
+    {
+        $item = Demand::whereCompanyId($companyId)
+            ->orderBy('id','DESC')
+            ->first();
+        if (!isset($item)) {
+            return null;
+        }
+        return $item->number;
+    }
 
 
     /**

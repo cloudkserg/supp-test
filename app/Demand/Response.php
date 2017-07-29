@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string delivery_type
  * @property string $status
  * @property \Carbon\Carbon readed
+ * @property string $number
  * @property string $desc
  * @property \Carbon\Carbon updated_at
  *
@@ -32,7 +33,7 @@ class Response extends Model
     ];
 
     protected $fillable = [
-        'delivery_type', 'status', 'desc'
+        'delivery_type', 'status', 'desc', 'number'
     ];
 
     /**

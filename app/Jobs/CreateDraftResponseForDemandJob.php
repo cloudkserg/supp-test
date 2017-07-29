@@ -49,10 +49,9 @@ class CreateDraftResponseForDemandJob extends Job implements ShouldQueue
      */
     public function handle()
     {
-
         $this->companyService->findAvailableResponseCompanies($this->demand)
             ->each(function (Company $company) {
-                $this->responseService->addItem($company->id, $this->demand->id);
+                $response = $this->responseService->addItem($company->id, $this->demand->id);
             });
     }
 }

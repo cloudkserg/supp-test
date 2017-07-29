@@ -40,6 +40,20 @@ class ResponseRepository
         return $builder->count();
     }
 
+    /**
+     * @param int $companyId
+     * @return string|null
+     */
+    public function findLastNumberForCompanyId($companyId)
+    {
+        $item = Response::whereCompanyId($companyId)
+            ->orderBy('id', 'DESC')
+            ->first();
+        if (!isset($item)) {
+            return null;
+        }
+        return $item->number;
+    }
 
 
 }

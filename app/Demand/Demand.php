@@ -15,6 +15,7 @@ use Carbon\Carbon;
  *
  * @property int $id
  * @property string $title
+ * @property string $number
  * @property string $desc
  * @property string address
  * @property Carbon delivery_date
@@ -41,7 +42,7 @@ class Demand extends Model
     ];
 
     protected $fillable = [
-        'title', 'desc',
+        'title', 'desc', 'number',
         'address',
         'addition_emails'
     ];

@@ -86,6 +86,7 @@ $factory->define(App\Demand\Demand::class, function (Faker\Generator $faker) {
        'title' => $faker->optional()->title,
        'desc' => $faker->text,
        'address' => $faker->address,
+       'number' => $faker->randomDigit,
        'status' => DemandStatus::ACTIVE,
        'delivery_date' => Carbon::parse($faker->date),
        'company_id' => $faker->randomElement(\App\Company::pluck('id')->toArray()),
@@ -109,6 +110,7 @@ $factory->define(\App\Demand\DemandItem::class, function (Faker\Generator $faker
 
 $factory->define(App\Demand\Response::class, function (Faker\Generator $faker) {
     return [
+        'number' => $faker->randomDigit,
         'status' => $faker->randomElement((new \App\Type\ResponseStatus())->getValues()),
         'company_id' => $faker->randomElement(\App\Company::pluck('id')->toArray()),
         'demand_id' => $faker->randomElement(\App\Demand\Demand::pluck('id')->toArray()),

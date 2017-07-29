@@ -25,6 +25,11 @@ use Swagger\Annotations as SWG;
  *         type="string",
  *      ),
  *      @SWG\Property(
+ *         property="number",
+ *         description="number demand",
+ *         type="string",
+ *      ),
+ *      @SWG\Property(
  *         property="address",
  *         description="address demand",
  *         type="string",
@@ -96,6 +101,7 @@ class CreateDemandRequest extends ApiRequest
         return [
             'title' => 'string',
             'address' => 'string',
+            'number' => 'string',
             'desc' => 'string',
             'delivery_date' => 'date',
             'addition_emails' => 'array',

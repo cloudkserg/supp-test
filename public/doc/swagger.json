@@ -1081,6 +1081,10 @@
                     "description": "title demand",
                     "type": "string"
                 },
+                "number": {
+                    "description": "number demand",
+                    "type": "string"
+                },
                 "address": {
                     "description": "address demand",
                     "type": "string"
@@ -1220,6 +1224,10 @@
                         "active",
                         "archived"
                     ]
+                },
+                "number": {
+                    "description": "number demand",
+                    "type": "string"
                 }
             }
         },
@@ -1248,6 +1256,9 @@
                     ]
                 },
                 "delivery_type": {
+                    "type": "string"
+                },
+                "number": {
                     "type": "string"
                 },
                 "readed": {

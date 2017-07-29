@@ -18,6 +18,11 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  *      definition="UpdateDemandRequest",
  *      required={"status"},
  *      @SWG\Property(property="status", type="string", enum={"active","archived"}),
+ *      @SWG\Property(
+ *         property="number",
+ *         description="number demand",
+ *         type="string",
+ *      )
  * )
  * Class UpdateDemandRequest
  * @package App\Http\Requests
@@ -59,6 +64,7 @@ class UpdateDemandRequest extends ApiRequest
     public function rules()
     {
         return [
+            'number' => 'string',
             'status' => 'string|required'
         ];
     }
