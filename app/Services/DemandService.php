@@ -102,7 +102,6 @@ class DemandService
     /**
      * @param Demand $item
      * @param UpdateDemandRequest $request
-     * @internal param $status
      */
     public function changeItem(Demand $item, UpdateDemandRequest $request)
     {

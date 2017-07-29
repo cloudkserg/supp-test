@@ -45,8 +45,6 @@ class DemandsIndexTest extends TestCase
                         'count',
                         'title',
                     ]
-                ],
-                'responses' => [
                 ]
             ]
         ];
@@ -150,7 +148,8 @@ class DemandsIndexTest extends TestCase
     private function createResponseWithOneItem(Demand $demand)
     {
         $response = $this->createResponseWithItems(1, [
-            'demand_id' => $demand->id
+            'demand_id' => $demand->id,
+            'status' => \App\Type\ResponseStatus::ACTIVE
         ]);
         $response->responseItems[0]->demand_item_id = $demand->demandItems[0]->id;
         return $response;
@@ -159,7 +158,8 @@ class DemandsIndexTest extends TestCase
     private function createResponseWithTwoItems(Demand $demand)
     {
         $response = $this->createResponseWithItems(2, [
-            'demand_id' => $demand->id
+            'demand_id' => $demand->id,
+            'status' => \App\Type\ResponseStatus::ACTIVE
         ]);
         $response->responseItems[0]->demand_item_id = $demand->demandItems[0]->id;
         $response->responseItems[1]->demand_item_id = $demand->demandItems[1]->id;
@@ -185,7 +185,7 @@ class DemandsIndexTest extends TestCase
             'status' => \App\Type\DemandStatus::ARCHIVED
         ]);
         $r = $this->get('/api/demands?' . $data);
-            $r->assertStatus(200);
+        $r->assertStatus(200);
             $r->assertJsonStructure($this->getInvoiceJsonStructure());
 
         $data = $r->json();

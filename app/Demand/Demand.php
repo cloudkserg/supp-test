@@ -6,6 +6,7 @@ use App\Collections\DemandCollection;
 use App\Company;
 use App\Type\DemandStatus;
 use App\Type\Region;
+use App\Type\ResponseStatus;
 use App\Type\Sphere;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
@@ -71,6 +72,16 @@ class Demand extends Model
     {
         return $this->belongsToMany(Sphere::class, 'demand_spheres');
     }
+    /**
+    * @return \Illuminate\Database\Eloquent\Relations\HasMany
+    */
+    public function activeResponses()
+    {
+        return $this->hasMany(Response::class)->whereIn('responses.status', [
+            ResponseStatus::ACTIVE,
+            ResponseStatus::ARCHIVED
+        ]);
+    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -79,6 +90,7 @@ class Demand extends Model
     {
         return $this->hasMany(Response::class);
     }
+
 
 
     /**

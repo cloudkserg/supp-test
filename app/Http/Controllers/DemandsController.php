@@ -108,7 +108,7 @@ class DemandsController extends Controller
         );
         return $this->response->collection(
             $items,
-            (new DemandTransformer())->addResponses()
+            (new DemandTransformer())->addActiveResponses()
         );
 
     }

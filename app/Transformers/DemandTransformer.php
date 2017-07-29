@@ -122,7 +122,7 @@ class DemandTransformer extends TransformerAbstract
 
     public function includeResponses(Demand $demand)
     {
-        return $this->collection($demand->responses, new ResponseTransformer());
+        return $this->collection($demand->activeResponses, new ResponseTransformer());
     }
 
 
@@ -130,7 +130,7 @@ class DemandTransformer extends TransformerAbstract
      *
      * @return $this
      */
-    public function addResponses()
+    public function addActiveResponses()
     {
         $this->defaultIncludes[] = 'responses';
         return $this;
