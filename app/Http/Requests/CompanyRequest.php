@@ -49,7 +49,7 @@ class CompanyRequest extends ApiRequest
      */
     public function authorize()
     {
-        return $this->user()->can('update', $this->getCompany());
+        return true;
     }
 
     /**
