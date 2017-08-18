@@ -127,7 +127,7 @@ class ResponseTransformer extends TransformerAbstract
             'status' => $response->status,
             'delivery_type' => $response->delivery_type,
             'desc' => $response->desc,
-            'readed' => isset($response->readed_time) ? $response->readed_time : Carbon::parse($response->readed_time)->toDateTimeString()
+            'readed' => empty($response->readed_time) ? $response->readed_time : Carbon::parse($response->readed_time)->toDateTimeString()
         ];
     }
 
