@@ -70,6 +70,10 @@ use Swagger\Annotations as SWG;
  *          type="string"
  *      ),
  *      @SWG\Property(
+ *          property="number",
+ *          type="string"
+ *      ),
+ *      @SWG\Property(
  *          property="desc",
  *          type="string"
  *      ),
