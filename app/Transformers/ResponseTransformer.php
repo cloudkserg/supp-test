@@ -28,6 +28,10 @@ use Swagger\Annotations as SWG;
  *          type="integer"
  *      ),
  *      @SWG\Property(
+ *          property="number",
+ *          type="string"
+ *      ),
+ *      @SWG\Property(
  *          property="delivery_type",
  *          type="string"
  *      ),
@@ -114,6 +118,7 @@ class ResponseTransformer extends TransformerAbstract
     {
         return [
             'id' => (int)$response->id,
+            'number' => $response->number,
             'demand_id' => (int)$response->demand_id,
             'status' => $response->status,
             'delivery_type' => $response->delivery_type,

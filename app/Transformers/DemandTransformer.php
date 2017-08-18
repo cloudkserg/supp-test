@@ -64,6 +64,10 @@ use Swagger\Annotations as SWG;
  *          type="integer"
  *      ),
  *      @SWG\Property(
+ *          property="number",
+ *          type="string"
+ *      ),
+ *      @SWG\Property(
  *          property="title",
  *          type="string"
  *      ),
@@ -104,6 +108,7 @@ class DemandTransformer extends TransformerAbstract
             'title' => $demand->title,
             'status' => $demand->status,
             'created' => $demand->created_at->toDateTimeString(),
+            'number' => $demand->number,
             'desc' => $demand->desc,
             'address' => $demand->address,
             'delivery_date' => !empty($demand->delivery_date) ? $demand->delivery_date->toDateTimeString() : ''
