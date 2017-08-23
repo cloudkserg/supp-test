@@ -34,6 +34,7 @@ class CompanyService
     {
         $company = new Company();
         $company->title = $request->company_title;
+        $company->email = $request->email;
         $company->saveOrFail();
 
         $company->regions()->sync($request->get('regions'));

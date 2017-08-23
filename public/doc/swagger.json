@@ -1302,6 +1302,10 @@
                     "description": "address",
                     "type": "string"
                 },
+                "email": {
+                    "description": "email",
+                    "type": "string"
+                },
                 "regions": {
                     "description": "regions",
                     "type": "array",
@@ -1487,6 +1491,9 @@
                     "type": "string"
                 },
                 "desc": {
+                    "type": "string"
+                },
+                "email": {
                     "type": "string"
                 },
                 "regions": {

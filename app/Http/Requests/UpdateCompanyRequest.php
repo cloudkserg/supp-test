@@ -22,6 +22,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  *      @SWG\Property(property="founded", type="string", description="founded string" ),
  *      @SWG\Property(property="site", type="string", description="site" ),
  *      @SWG\Property(property="address", type="string", description="address" ),
+ *      @SWG\Property(property="email", type="string", description="email" ),
  *      @SWG\Property(
  *         property="regions",
  *         description="regions",
@@ -91,6 +92,7 @@ class UpdateCompanyRequest extends ApiRequest
             'founded' => 'string',
             'site' => 'string',
             'desc' => 'string',
+            'email' => 'email',
             'address' => 'string',
             'regions' => 'array|required',
             'regions.*' => 'integer',
