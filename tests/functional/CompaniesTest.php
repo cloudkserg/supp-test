@@ -84,12 +84,6 @@ class CompaniesTest extends TestCase
             ->assertStatus(401);
     }
 
-    public function testIndexForeign()
-    {
-        $company = $this->createCompany();
-        $r = $this->get('api/companies/' .  $company->id . '?token=' . $this->token)
-            ->assertStatus(403);
-    }
 
 
     public function testIndex()
@@ -102,6 +96,8 @@ class CompaniesTest extends TestCase
             'title',
             'founded',
             'desc',
+            'email',
+            'phone',
             'address'
         ]);
     }
@@ -160,6 +156,8 @@ class CompaniesTest extends TestCase
             'desc' => 'bbb',
             'site' => 'anok',
             'address' => 'givens',
+            'email' => 'email@ecample.com',
+            'phone' => 'phone',
             'regions' => collect($regions)->pluck('id')->toArray(),
             'spheres' => collect($spheres)->pluck('id')->toArray()
         ];
@@ -173,6 +171,8 @@ class CompaniesTest extends TestCase
         $this->assertEquals($data['desc'], $company->desc);
         $this->assertEquals($data['site'], $company->site);
         $this->assertEquals($data['address'], $company->address);
+        $this->assertEquals($data['email'], $company->email);
+        $this->assertEquals($data['phone'], $company->phone);
         $this->assertCount(2, $company->regions);
         $this->assertCount(2, $company->spheres);
     }

@@ -38,6 +38,7 @@ class UsersTest extends TestCase
         $this->assertInstanceOf(\App\Company::class, $company);
         $this->assertCount(2, $company->regions);
         $this->assertCount(2, $company->spheres);
+        $this->assertEquals('abba@mail.ru', $company->email);
         $this->assertEquals($spheres[0]->id, $company->spheres[0]->id);
         $this->assertEquals($spheres[1]->id, $company->spheres[1]->id);
         $this->assertEquals($regions[1]->id, $company->regions[1]->id);

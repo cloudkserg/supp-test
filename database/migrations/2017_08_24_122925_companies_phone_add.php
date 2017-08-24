@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CompaniesEmailAdd extends Migration
+class CompaniesPhoneAdd extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,7 @@ class CompaniesEmailAdd extends Migration
     public function up()
     {
         Schema::table('companies', function (Blueprint $table) {
-            $table->string('email')->nullable();
+            $table->string('phone')->nullable();
         });
     }
 
@@ -26,7 +26,7 @@ class CompaniesEmailAdd extends Migration
     public function down()
     {
         Schema::table('companies', function (Blueprint $table) {
-            $table->dropColumn('email');
+            $table->dropColumn('phone');
         });
     }
 }

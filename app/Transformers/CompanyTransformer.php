@@ -22,6 +22,7 @@ use Swagger\Annotations as SWG;
  *      @SWG\Property(property="founded", type="string"),
  *      @SWG\Property(property="desc", type="string"),
  *      @SWG\Property(property="email", type="string"),
+ *      @SWG\Property(property="phone", type="string"),
  *      @SWG\Property(
  *          property="regions",
  *          type="array",
@@ -77,6 +78,7 @@ class CompanyTransformer extends TransformerAbstract
             'site' => $company->site,
             'address' => $company->address,
             'email' => $company->email,
+            'phone' => $company->phone,
             'desc' => $company->desc
         ];
     }

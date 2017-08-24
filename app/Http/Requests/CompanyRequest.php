@@ -17,7 +17,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  *
  *
  *
- * Class UpdateCompanyRequest
+ * Class CompanyRequest
  * @package App\Http\Requests
  *
  *

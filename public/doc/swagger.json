@@ -826,6 +826,50 @@
                 ]
             }
         },
+        "/responses/{id}/readed": {
+            "patch": {
+                "tags": [
+                    "response"
+                ],
+                "summary": "Update readed response",
+                "description": "",
+                "operationId": "updateResponses",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "Response",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/UpdateReadedResponseRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "202": {
+                        "description": "successful operation"
+                    },
+                    "404": {
+                        "$ref": "#/responses/NotFoundResponse"
+                    },
+                    "401": {
+                        "$ref": "#/responses/NotAuthResponse"
+                    },
+                    "default": {
+                        "$ref": "#/responses/DefaultErrorResponse"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
         "/responses/{id}": {
             "patch": {
                 "tags": [
@@ -1269,10 +1313,6 @@
                 "demand_id": {
                     "description": "demand",
                     "type": "integer"
-                },
-                "desc": {
-                    "description": "description of demand",
-                    "type": "string"
                 }
             }
         },
@@ -1346,6 +1386,14 @@
                 },
                 "number": {
                     "description": "number demand",
+                    "type": "string"
+                }
+            }
+        },
+        "UpdateReadedResponseRequest": {
+            "properties": {
+                "readed": {
+                    "description": "readed datetime",
                     "type": "string"
                 }
             }
@@ -1494,6 +1542,9 @@
                     "type": "string"
                 },
                 "email": {
+                    "type": "string"
+                },
+                "phone": {
                     "type": "string"
                 },
                 "regions": {

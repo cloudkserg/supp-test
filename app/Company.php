@@ -18,6 +18,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $address
  * @property string $desc
  * @property string $email
+ * @property string $phone
  *
  * @property Sphere[] $spheres
  * @property Region[] $regions
@@ -33,7 +34,7 @@ class Company extends Model
      * @var array
      */
     protected $fillable = [
-        'title', 'desc', 'address', 'site', 'founded', 'email'
+        'title', 'desc', 'address', 'site', 'founded', 'email', 'phone'
     ];
 
     /**
