@@ -45,6 +45,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  * @property string $company_title
  * @property string $name
  * @property string $email
+ * @property string $phone
  * @property string $password
  * @property int[] $spheres
  * @property int[] $regions
@@ -93,6 +94,7 @@ class UpdateCompanyRequest extends ApiRequest
             'site' => 'string',
             'desc' => 'string',
             'email' => 'email',
+            'phone' => 'string',
             'address' => 'string',
             'regions' => 'array|required',
             'regions.*' => 'integer',

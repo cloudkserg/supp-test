@@ -18,30 +18,20 @@ use Swagger\Annotations as SWG;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
+ *
  * @SWG\Definition(
- *      definition="UpdateResponseRequest",
- *      required={"responseItems"},
- *      @SWG\Property(property="status", type="string", enum={"active","draft","cancel","archived"}),
- *      @SWG\Property(property="delivery_type", type="string"),
- *      @SWG\Property(property="number", type="string"),
- *      @SWG\Property(property="readed", type="string", description="datetime"),
- *      @SWG\Property(property="desc", type="string"),
+ *      definition="UpdateReadedResponseRequest",
  *      @SWG\Property(
- *          property="responseItems",
- *          type="array",
- *          @SWG\Items(
- *              type="object",
- *              required={"demand_item_id", "price"},
- *              @SWG\Property(property="id", type="integer", description="id for change and null for new"),
- *              @SWG\Property(property="demand_item_id", type="integer"),
- *              @SWG\Property(property="price", type="number")
- *          )
- *      )
- * )
+ *         property="readed",
+ *         description="readed datetime",
+ *         type="string",
+ *      ),
+ *  )
+ *
  * Class UpdateResponseRequest
  * @package App\Http\Requests
  */
-class UpdateResponseRequest extends ApiRequest
+class UpdateReadedResponseRequest extends ApiRequest
 {
     /**
      * @var Response
@@ -71,44 +61,13 @@ class UpdateResponseRequest extends ApiRequest
 
 
     /**
-     * @return bool
-     */
-    private function isDemandActive()
-    {
-        return ($this->get('status') == 'ACTIVE' or $this->getResponse()->status == ResponseStatus::ACTIVE);
-    }
-
-    /**
      * Get the validation rules that apply to the request.
      *
      * @return array
      */
     public function rules()
     {
-        $rules = [
-            'status' => 'string',
-            'readed' => 'date',
-            'number' => 'string',
-            'delivery_type' => 'string',
-            'desc' => 'string',
-
-            'responseItems' => 'array',
-            'responseItems.*.id' => 'integer',
-            'responseItems.*.demand_item_id' => 'integer',
-            'responseItems.*.price' => 'numeric'
-        ];
-
-        if ($this->isDemandActive()) {
-            $rules = array_merge($rules, [
-                'responseItems' => 'array|required',
-                'responseItems.0' => 'required',
-                'responseItems.*.id' => 'integer',
-                'responseItems.*.demand_item_id' => 'integer|required',
-                'responseItems.*.price' => 'numeric|required'
-            ]);
-        }
-
-        return $rules;
+        return ['readed' => 'date|required'];
     }
 
     /**

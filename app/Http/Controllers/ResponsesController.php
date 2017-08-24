@@ -104,6 +104,48 @@ class ResponsesController extends Controller
         );
     }
 
+
+    /**
+     * @SWG\Patch(
+     *     path="/responses/{id}/readed",
+     *     summary="Update readed response",
+     *     tags={"response"},
+     *     description="",
+     *     operationId="updateResponses",
+     *     @SWG\Parameter(name="id", in="path", required=true, type="integer"),
+     *     @SWG\Parameter(
+     *          name="Response",
+     *          in="body",
+     *          @SWG\Schema(ref="#/definitions/UpdateReadedResponseRequest")
+     *      ),
+     *     @SWG\Response(
+     *         response=202,
+     *         description="successful operation",
+     *     ),
+     *     @SWG\Response(
+     *         response=404,
+     *         ref="#/responses/NotFoundResponse"
+     *     ),
+     *     @SWG\Response(
+     *         response=401,
+     *         ref="#/responses/NotAuthResponse"
+     *     ),
+     *     @SWG\Response(
+     *         response="default",
+     *         ref="#/responses/DefaultErrorResponse"
+     *     ),
+     *
+     *     security={{ "token": {} }}
+     * )
+     */
+    public function updateReaded(Requests\UpdateReadedResponseRequest $request)
+    {
+        $unChangeResponse = $request->getResponse();
+        $response = $this->responseService->setReadedItem($unChangeResponse, $request->getReaded());
+        return $this->response->accepted();
+
+    }
+
     /**
      * @SWG\Patch(
      *     path="/responses/{id}",

@@ -44,6 +44,7 @@ $api->group(['middleware' => 'api.auth'], function ($api) {
 
     // status=archive, active responseItems + data
     $api->patch('/responses/{id}', 'ResponsesController@update');
+    $api->post('/responses/{id}/readed', 'ResponsesController@updateReaded');
 
     // price
     $api->patch('/responseItems/{id}', 'ResponseItemsController@update');

@@ -16,6 +16,7 @@ use App\Events\Response\ArchiveResponseEvent;
 use App\Events\Response\CancelResponseEvent;
 use App\Events\Response\ChangeResponseEvent;
 use App\Events\Response\CreateResponseEvent;
+use App\Http\Requests\UpdateReadedResponseRequest;
 use App\Http\Requests\UpdateResponseRequest;
 use App\Queries\ResponseQuery;
 use App\Repository\ResponseRepository;
@@ -103,7 +104,18 @@ class ResponseService
     public function changeItem(Response $item, UpdateResponseRequest $request)
     {
         $item->fill($request->all());
-        $item->readed_time = $request->getReaded();
+        $item->saveOrFail();
+        return $item;
+    }
+
+    /**
+     * @param Response $item
+     * @param Carbon $time
+     * @return Response
+     */
+    public function setReadedItem(Response $item, Carbon $time)
+    {
+        $item->readed_time = $time;
         $item->saveOrFail();
         return $item;
     }

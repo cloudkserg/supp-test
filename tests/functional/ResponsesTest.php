@@ -127,7 +127,14 @@ class ResponsesTest extends TestCase
     }
 
 
-    public function testUpdateReadedDesc()
+
+    public function testUpdateReadedAuth()
+    {
+        $this->post('/api/responses/1/readed')
+            ->assertStatus(401);
+    }
+
+    public function testUpdateReaded()
     {
         //createDemand
         $this->createBeforeDemand();
@@ -136,21 +143,86 @@ class ResponsesTest extends TestCase
         //createResponse
         $response = $this->createResponseWithItems(0, [
             'company_id' => $this->company->id,
-            'status' => \App\Type\ResponseStatus::DRAFT,
+            'status' => \App\Type\ResponseStatus::CANCEL,
             'demand_id' => $demand->id
         ]);
 
-        $data = [
-            'readed' => \Carbon\Carbon::create()->toDateTimeString(),
-            'desc' => 'sfsdfsd'
-        ];
+        $date = \Carbon\Carbon::create();
+        $data = ['readed' => $date->format('d.m.Y H:i:s')];
 
-        $r = $this->patch(sprintf('/api/responses/%s?token=%s', $response->id, $this->token), $data);
-        $r->assertStatus(202);
+        $r = $this->post(sprintf('/api/responses/%s/readed?token=%s', $response->id, $this->token), $data);
+            $r->assertStatus(202);
 
-        $response = Response::find($response->id);
-        $this->assertNotEmpty($response->readed_time);
-        $this->assertEquals($data['desc'], $response->desc);
+        $responses = Response::all();
+        $this->assertCount(1, $responses);
+
+        $response = $responses[0];
+        /***
+         * @var Response $response
+         */
+        $this->assertEquals(\App\Type\ResponseStatus::CANCEL, $response->status);
+        $this->assertEquals($this->company->id, $response->company_id);
+        $this->assertTrue($response->readed_time->equalTo($date));
+    }
+
+
+    public function testUpdateReadedWithoudData()
+    {
+        //createDemand
+        $this->createBeforeDemand();
+        $demand = $this->createDemandWithItems(1);
+
+        //createResponse
+        $response = $this->createResponseWithItems(0, [
+            'company_id' => $this->company->id,
+            'status' => \App\Type\ResponseStatus::CANCEL,
+            'demand_id' => $demand->id
+        ]);
+
+        $r = $this->post(sprintf('/api/responses/%s/readed?token=%s', $response->id, $this->token));
+        $r->assertStatus(422);
+    }
+
+    public function testUpdateReadedWrongData()
+    {
+        //createDemand
+        $this->createBeforeDemand();
+        $demand = $this->createDemandWithItems(1);
+
+        //createResponse
+        $response = $this->createResponseWithItems(0, [
+            'company_id' => $this->company->id,
+            'status' => \App\Type\ResponseStatus::CANCEL,
+            'demand_id' => $demand->id
+        ]);
+
+        $data = ['readed' => '20178989'];
+        $r = $this->post(sprintf('/api/responses/%s/readed?token=%s', $response->id, $this->token), $data);
+        $r->assertStatus(422);
+    }
+
+    public function testUpdateReadedNotMyResponse()
+    {
+        //createDemand
+        $this->createBeforeDemand();
+        $demand = $this->createDemandWithItems(1);
+
+        //createResponse
+        $anotherCompany = new \App\Company();
+        $anotherCompany->title = 'abba';
+        $anotherCompany->save();
+
+        $response = $this->createResponseWithItems(0, [
+            'company_id' => $anotherCompany->id,
+            'status' => \App\Type\ResponseStatus::CANCEL,
+            'demand_id' => $demand->id
+        ]);
+
+        $date = \Carbon\Carbon::create();
+        $data = ['readed' => $date->format('d.m.Y H:i:s')];
+
+        $r = $this->post(sprintf('/api/responses/%s/readed?token=%s', $response->id, $this->token), $data);
+        $r->assertStatus(403);
     }
 
 

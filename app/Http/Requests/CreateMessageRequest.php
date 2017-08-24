@@ -36,11 +36,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  *         description="demand",
  *         type="integer",
  *      ),
- *      @SWG\Property(
- *         property="desc",
- *         description="description of demand",
- *         type="string",
- *      ),
  *  )
  * Class CreateMessageRequest
  * @package App\Http\Requests
