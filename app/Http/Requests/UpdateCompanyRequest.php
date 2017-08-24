@@ -23,6 +23,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  *      @SWG\Property(property="site", type="string", description="site" ),
  *      @SWG\Property(property="address", type="string", description="address" ),
  *      @SWG\Property(property="email", type="string", description="email" ),
+ *      @SWG\Property(property="phone", type="string", description="phone" ),
  *      @SWG\Property(
  *         property="regions",
  *         description="regions",

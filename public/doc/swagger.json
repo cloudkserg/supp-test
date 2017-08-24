@@ -1346,6 +1346,10 @@
                     "description": "email",
                     "type": "string"
                 },
+                "phone": {
+                    "description": "phone",
+                    "type": "string"
+                },
                 "regions": {
                     "description": "regions",
                     "type": "array",
