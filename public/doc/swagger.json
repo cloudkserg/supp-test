@@ -827,7 +827,7 @@
             }
         },
         "/responses/{id}/readed": {
-            "patch": {
+            "post": {
                 "tags": [
                     "response"
                 ],

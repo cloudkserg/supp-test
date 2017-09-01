@@ -106,7 +106,7 @@ class ResponsesController extends Controller
 
 
     /**
-     * @SWG\Patch(
+     * @SWG\Post(
      *     path="/responses/{id}/readed",
      *     summary="Update readed response",
      *     tags={"response"},
