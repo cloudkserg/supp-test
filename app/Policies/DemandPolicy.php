@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Company;
 use App\Demand\Demand;
 use App\Demand\Response;
 use App\User;
@@ -18,16 +19,25 @@ class DemandPolicy
     }
 
 
-    public function message(User $user, Demand $demand)
+    public function message(User $user, Demand $demand, $anotherCompanyId)
     {
         return  (
-            $user->company_id == $demand->company_id or
-            $this->companyInResponses($demand->responses, $user->company_id)
+            (
+                $this->isHisDemand($demand, $user->company_id) and $this->isCompanyInResponses($demand->responses, $anotherCompanyId)
+
+            ) or (
+                $this->isHisDemand($demand, $anotherCompanyId) and $this->isCompanyInResponses($demand->responses, $user->company_id)
+            )
         );
     }
 
 
-    private function companyInResponses(Collection $responses, $companyId)
+    private function isHisDemand(Demand $demand, $companyId)
+    {
+        return $demand->company_id == $companyId;
+    }
+
+    private function isCompanyInResponses(Collection $responses, $companyId)
     {
         return $responses
             ->filter(function (Response $response) use ($companyId) {

@@ -65,7 +65,7 @@ class CreateMessageRequest extends ApiRequest
      */
     public function authorize()
     {
-        return $this->user()->can('message', $this->getDemand());
+        return $this->user()->can('message', [$this->getDemand(), $this->get('toCompanyId')]);
     }
 
     /**

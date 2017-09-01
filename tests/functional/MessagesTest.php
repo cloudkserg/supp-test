@@ -299,7 +299,7 @@ class MessagesTest extends TestCase
             'demandId' => $demand->id,
             'text' => 'bla1'
         ]);
-        $r->assertStatus(422);
+        $r->assertStatus(403);
     }
 
     public function testStoreNotText()
@@ -307,6 +307,10 @@ class MessagesTest extends TestCase
         $foreignCompany = factory(\App\Company::class)->create();
         $demand = factory(\App\Demand\Demand::class)->create([
             'company_id' => $this->company->id
+        ]);
+        $this->createResponseWithItems(0, [
+            'demand_id' => $demand->id,
+            'company_id' => $foreignCompany->id
         ]);
 
         $r = $this->post('/api/messages?token=' . $this->token, [
@@ -386,8 +390,6 @@ class MessagesTest extends TestCase
 
         $r->assertStatus(201);
     }
-
-
 
 
 
