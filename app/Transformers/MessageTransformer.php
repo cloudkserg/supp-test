@@ -39,15 +39,15 @@ use Swagger\Annotations as SWG;
  *          type="string"
  *      ),
  *      @SWG\Property(
- *          property="from_company_id",
+ *          property="fromCompanyId",
  *          type="integer"
  *      ),
  *      @SWG\Property(
- *          property="to_company_id",
+ *          property="toСompanyId",
  *          type="integer"
  *      ),
  *      @SWG\Property(
- *          property="demand_id",
+ *          property="demandId",
  *          type="integer"
  *      ),
  * )
@@ -61,9 +61,9 @@ class MessageTransformer extends TransformerAbstract
     {
         return [
             'id' => (int)$message->id,
-            'demand_id' => (int)$message->demand_id,
-            'from_company_id' => (int)$message->to_company_id,
-            'to_company_id' => (int)$message->from_company_id,
+            'demandId' => (int)$message->demand_id,
+            'fromCompanyId' => (int)$message->to_company_id,
+            'toCompanyId' => (int)$message->from_company_id,
             'status' => $message->status,
             'created' => $message->created_at->toDateTimeString(),
             'readed' => (!empty($message->readed_time) ? $message->readed_time->toDateTimeString() : null),

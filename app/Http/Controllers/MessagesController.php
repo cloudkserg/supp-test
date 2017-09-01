@@ -54,7 +54,7 @@ class MessagesController extends Controller
      *     description="",
      *     operationId="getMessages",
      *      @SWG\Parameter(
-     *         name="demand_id",
+     *         name="demandId",
      *         in="query",
      *         type="integer",
      *         description="demand_id"
@@ -99,7 +99,7 @@ class MessagesController extends Controller
     public function index(Requests\IndexMessagesRequest $request)
     {
         $items = $this->messageService->getItemsByDemandAndStatus(
-            $this->getCompany()->id, $request->getStatus(), $request->demand_id
+            $this->getCompany()->id, $request->getStatus(), $request->demandId
         );
         return $this->response->collection(
             $items,
@@ -145,7 +145,7 @@ class MessagesController extends Controller
     {
         $message = $this->messageService->createMessage(
             $this->getCompany(), $createRequest->getDemand(),
-            $createRequest->to_company_id, $createRequest->text
+            $createRequest->toCompanyId, $createRequest->text
         );
 
         return $this->response->created('/messages/' . $message->id);

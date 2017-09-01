@@ -75,7 +75,7 @@ class UpdateResponseRequest extends ApiRequest
      */
     private function isDemandActive()
     {
-        return ($this->get('status') == 'ACTIVE' or $this->getResponse()->status == ResponseStatus::ACTIVE);
+        return ($this->get('status') == 'ACTIVE');
     }
 
     /**

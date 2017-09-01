@@ -34,7 +34,7 @@ class ResponsesTest extends TestCase
 
         $data = [
             'delivery_type' => 'sfsdfsd',
-            'status' => \App\Type\ResponseStatus::ARCHIVED,
+            'status' => \App\Type\ResponseStatus::ACTIVE,
             'responseItems' => [
                 [
                     'demand_item_id' => 1,
@@ -69,19 +69,12 @@ class ResponsesTest extends TestCase
         //createResponse
         $response = $this->createResponseWithItems(2, [
             'company_id' => $this->company->id,
-            'status' => \App\Type\ResponseStatus::CANCEL,
+            'status' => \App\Type\ResponseStatus::ACTIVE,
             'demand_id' => $demand->id
         ]);
 
         $data = [
-            'delivery_type' => 'sfsdfsd',
-            'status' => \App\Type\ResponseStatus::ARCHIVED,
-            'responseItems' => [
-                [
-                    'demand_item_id' => 1,
-                    'price' => 23
-                ]
-            ]
+            'status' => \App\Type\ResponseStatus::ARCHIVED
         ];
 
         $r = $this->patch(sprintf('/api/responses/%s?token=%s', $response->id, $this->token), $data);
@@ -94,6 +87,38 @@ class ResponsesTest extends TestCase
         $this->assertEquals(\App\Type\ResponseStatus::ARCHIVED, $response->status);
         $this->assertEquals($this->company->id, $response->company_id);
         $this->assertCount(1, $response->responseItems);
+    }
+
+    public function testUpdateNotActiveResponseItems()
+    {
+        //createDemand
+        $this->createBeforeDemand();
+        $demand = $this->createDemandWithItems(1);
+
+        //createResponse
+        $company = factory(\App\Company::class)->create();
+        $response = $this->createResponseWithItems(1, [
+            'status' => \App\Type\ResponseStatus::
+            'company_id' => $company->id,
+            'demand_id' => $demand->id
+        ]);
+
+        $data = [
+            'status' => \App\Type\ResponseStatus::ARCHIVED,
+            'delivery_type' => 'sfsdfsd',
+            'responseItems' => [
+                [
+                    'demand_item_id' => 1,
+                    'price' => 23
+                ], [
+                    'demand_item_id' => 1,
+                    'price' => 23
+                ]
+            ]
+        ];
+
+        $r = $this->patch(sprintf('/api/responses/%s?token=%s', $response->id, $this->token), $data);
+        $r->assertStatus(403);
     }
 
     public function testUpdateNotForeign()

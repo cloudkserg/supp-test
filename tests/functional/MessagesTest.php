@@ -27,7 +27,7 @@ class MessagesTest extends TestCase
         $this->createBeforeDemand();
         $demand = $this->createDemandWithItems(1);
 
-        $r = $this->get('/api/messages?demand_id=' . $demand->id . '&token=' . $this->token);
+        $r = $this->get('/api/messages?demandId=' . $demand->id . '&token=' . $this->token);
         $r->assertStatus(200);
 
         $messages = $r->json();
@@ -62,14 +62,14 @@ class MessagesTest extends TestCase
             'text' => 'bla3'
         ]);
 
-        $r = $this->get('/api/messages?demand_id=' . $demand1->id . '&token=' . $this->token);
+        $r = $this->get('/api/messages?demandId=' . $demand1->id . '&token=' . $this->token);
         $r->assertStatus(200)
             ->assertJsonStructure([
                 '*' => [
                     'id',
-                    'demand_id',
-                    'from_company_id',
-                    'to_company_id',
+                    'demandId',
+                    'fromCompanyId',
+                    'toCompanyId',
                     'text',
                     'readed',
                     'status',
@@ -111,7 +111,7 @@ class MessagesTest extends TestCase
             'text' => 'bla3'
         ]);
 
-        $r = $this->get('/api/messages?demand_id=' . $demand1->id . '&token=' . $this->token);
+        $r = $this->get('/api/messages?demandId=' . $demand1->id . '&token=' . $this->token);
         $r->assertStatus(200);
 
         $messages = $r->json();
@@ -143,7 +143,7 @@ class MessagesTest extends TestCase
             'text' => 'bla1'
         ]);
 
-        $r = $this->get('/api/messages?demand_id=' . $demand->id . '&token=' . $this->token);
+        $r = $this->get('/api/messages?demandId=' . $demand->id . '&token=' . $this->token);
         $messages = $r->json();
         $this->assertCount(1, $messages);
 
@@ -172,7 +172,7 @@ class MessagesTest extends TestCase
             'text' => 'bla1'
         ]);
 
-        $r = $this->get('/api/messages?demand_id=' . $demand->id . '&token=' . $this->token);
+        $r = $this->get('/api/messages?demandId=' . $demand->id . '&token=' . $this->token);
         $messages = $r->json();
         $this->assertCount(1, $messages);
 
@@ -200,7 +200,7 @@ class MessagesTest extends TestCase
             'text' => 'bla1'
         ]);
 
-        $r = $this->get('/api/messages?demand_id=' . $demand->id . '&token=' . $this->token . '&status=' . \App\Type\MessageStatus::ARCHIVED);
+        $r = $this->get('/api/messages?demandId=' . $demand->id . '&token=' . $this->token . '&status=' . \App\Type\MessageStatus::ARCHIVED);
         $messages = $r->json();
         $this->assertCount(1, $messages);
 
@@ -230,7 +230,7 @@ class MessagesTest extends TestCase
             'text' => 'bla1'
         ]);
 
-        $r = $this->get('/api/messages?demand_id=' . $demand->id . '&token=' . $this->token);
+        $r = $this->get('/api/messages?demandId=' . $demand->id . '&token=' . $this->token);
         $messages = $r->json();
         $this->assertCount(1, $messages);
 
@@ -260,8 +260,8 @@ class MessagesTest extends TestCase
         ]);
 
         $r = $this->post('/api/messages?token=' . $this->token, [
-            'demand_id' => $demand->id,
-            'to_company_id' => $foreignCompany->id,
+            'demandId' => $demand->id,
+            'toCompanyId' => $foreignCompany->id,
             'text' => 'bla1'
         ]);
         $r->assertStatus(201)
@@ -283,7 +283,7 @@ class MessagesTest extends TestCase
 
 
         $r = $this->post('/api/messages?token=' . $this->token, [
-            'to_company_id' => $foreignCompany->id,
+            'toCompanyId' => $foreignCompany->id,
             'text' => 'bla1'
         ]);
         $r->assertStatus(404);
@@ -296,7 +296,7 @@ class MessagesTest extends TestCase
         ]);
 
         $r = $this->post('/api/messages?token=' . $this->token, [
-            'demand_id' => $demand->id,
+            'demandId' => $demand->id,
             'text' => 'bla1'
         ]);
         $r->assertStatus(422);
@@ -310,8 +310,8 @@ class MessagesTest extends TestCase
         ]);
 
         $r = $this->post('/api/messages?token=' . $this->token, [
-            'demand_id' => $demand->id,
-            'to_company_id' => $foreignCompany->id
+            'demandId' => $demand->id,
+            'toCompanyId' => $foreignCompany->id
         ]);
         $r->assertStatus(422);
     }
@@ -328,9 +328,9 @@ class MessagesTest extends TestCase
         ]);
 
         $r = $this->post('/api/messages?token=' . $this->token, [
-            'demand_id' => $demand->id,
+            'demandId' => $demand->id,
             'text' => 'bla1',
-            'to_company_id' => $foreignCompany->id
+            'toCompanyId' => $foreignCompany->id
         ]);
         $r->assertStatus(201);
     }
@@ -344,9 +344,9 @@ class MessagesTest extends TestCase
         ]);
 
         $r = $this->post('/api/messages?token=' . $this->token, [
-            'demand_id' => $demand->id,
+            'demandId' => $demand->id,
             'text' => 'bla1',
-            'to_company_id' => $foreignCompany2->id
+            'toCompanyId' => $foreignCompany2->id
         ]);
         $r->assertStatus(403);
     }
@@ -359,9 +359,9 @@ class MessagesTest extends TestCase
         ]);
 
         $r = $this->post('/api/messages?token=' . $this->token, [
-            'demand_id' => $demand->id,
+            'demandId' => $demand->id,
             'text' => 'bla1',
-            'to_company_id' => $foreignCompany->id
+            'toCompanyId' => $foreignCompany->id
         ]);
         $r->assertStatus(403);
     }
@@ -373,13 +373,25 @@ class MessagesTest extends TestCase
             'status' => \App\Type\DemandStatus::ARCHIVED,
             'company_id' => $foreignCompany->id
         ]);
+        $this->createResponseWithItems(0, [
+            'demand_id' => $demand->id,
+            'company_id' => $this->company->id
+        ]);
 
         $r = $this->post('/api/messages?token=' . $this->token, [
-            'demand_id' => $demand->id,
+            'demandId' => $demand->id,
             'text' => 'bla1',
-            'to_company_id' => $foreignCompany->id
+            'toCompanyId' => $foreignCompany->id
         ]);
-        $r->assertStatus(403);
+
+        $r->assertStatus(201);
     }
+
+
+
+
+
+
+
 
 }

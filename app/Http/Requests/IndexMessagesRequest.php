@@ -35,7 +35,7 @@ class IndexMessagesRequest extends ApiRequest
     {
 
         return [
-            'demand_id' => 'integer',
+            'demandId' => 'integer',
             'status' => 'string'
         ];
     }

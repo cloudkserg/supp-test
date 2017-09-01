@@ -31,6 +31,7 @@ class AuthServiceProvider extends ServiceProvider
         ResponseItem::class => ResponseItemPolicy::class,
         Invoice::class => InvoicePolicy::class,
         Company::class => CompanyPolicy::class
+        //Message::class => MessagePolicy::class
     ];
 
     /**

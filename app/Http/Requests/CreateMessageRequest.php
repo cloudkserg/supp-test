@@ -27,12 +27,12 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  *         type="string",
  *      ),
  *      @SWG\Property(
- *         property="to_company_id",
+ *         property="toCompanyId",
  *         description="to company id",
  *         type="integer",
  *      ),
  *      @SWG\Property(
- *         property="demand_id",
+ *         property="demandId",
  *         description="demand",
  *         type="integer",
  *      ),
@@ -77,8 +77,8 @@ class CreateMessageRequest extends ApiRequest
     {
         return [
             'text' => 'string|required',
-            'to_company_id' => 'integer|required',
-            'demand_id' => 'integer|required'
+            'toCompanyId' => 'integer|required',
+            'demandId' => 'integer|required'
         ];
     }
 
@@ -88,7 +88,7 @@ class CreateMessageRequest extends ApiRequest
     public function getDemand()
     {
         if (!isset($this->item)) {
-            $this->item = $this->demandService->findItem((int)$this->get('demand_id'));
+            $this->item = $this->demandService->findItem((int)$this->get('demandId'));
             if (!isset($this->item)) {
                 throw new NotFoundHttpException('Not found item');
             }

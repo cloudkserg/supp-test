@@ -35,21 +35,6 @@ class MessageService
 
 
     /**
-     * @param Demand $demand
-     * @param $toCompanyId
-     * @return bool
-     */
-    private function checkToCompanyId(Demand $demand, $toCompanyId)
-    {
-        if ($demand->company_id == $toCompanyId) {
-            return true;
-        }
-        return collect($demand->responses)->filter(function (Response $response) use ($toCompanyId) {
-            return $response->company_id == $toCompanyId;
-        })->isNotEmpty();
-    }
-
-    /**
      * @param Company $company
      * @param Demand $demand
      * @param $toCompanyId
@@ -58,10 +43,6 @@ class MessageService
      */
     public function createMessage(Company $company, Demand $demand, $toCompanyId, $text)
     {
-        if (!$this->checkToCompanyId($demand, $toCompanyId)) {
-            throw new NotFoundHttpException('Компания которой отправляете сообщение нет в этом запросе');
-        }
-
         $item = new Message();
         $item->from_company_id = $company->id;
         $item->to_company_id = $toCompanyId;
