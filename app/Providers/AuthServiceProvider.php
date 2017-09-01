@@ -8,9 +8,11 @@ use App\Demand\DemandItem;
 use App\Demand\Invoice;
 use App\Demand\Response;
 use App\Demand\ResponseItem;
+use App\Message;
 use App\Policies\CompanyPolicy;
 use App\Policies\DemandPolicy;
 use App\Policies\DemandItemPolicy;
+use App\Policies\MessagePolicy;
 use App\Policies\ResponsePolicy;
 use App\Policies\ResponseItemPolicy;
 use App\Policies\InvoicePolicy;
@@ -30,8 +32,8 @@ class AuthServiceProvider extends ServiceProvider
         Response::class => ResponsePolicy::class,
         ResponseItem::class => ResponseItemPolicy::class,
         Invoice::class => InvoicePolicy::class,
-        Company::class => CompanyPolicy::class
-        //Message::class => MessagePolicy::class
+        Company::class => CompanyPolicy::class,
+        Message::class => MessagePolicy::class
     ];
 
     /**

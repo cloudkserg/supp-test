@@ -33,6 +33,8 @@ use App\Demand\Demand;
 class Message  extends Model
 {
 
+    protected $dates = ['readed_time'];
+
     /**
      * The attributes that are mass assignable.
      *

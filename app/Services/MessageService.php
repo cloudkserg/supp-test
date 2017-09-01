@@ -16,6 +16,7 @@ use App\Message;
 use App\Queries\MessageQuery;
 use App\Repository\MessageRepository;
 use App\Type\MessageStatus;
+use Carbon\Carbon;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class MessageService
@@ -53,6 +54,27 @@ class MessageService
         return $item;
     }
 
+    /**
+     * @param int $id
+     * @return Message
+     */
+    public function findItem($id)
+    {
+        return Message::whereId($id)->first();
+    }
+
+
+    /**
+     * @param Message $item
+     * @param Carbon $time
+     * @return Message
+     */
+    public function setReadedItem(Message $item, Carbon $time)
+    {
+        $item->readed_time = $time;
+        $item->saveOrFail();
+        return $item;
+    }
 
     /**
      * @param $companyId

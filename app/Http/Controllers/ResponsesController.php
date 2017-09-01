@@ -111,12 +111,12 @@ class ResponsesController extends Controller
      *     summary="Update readed response",
      *     tags={"response"},
      *     description="",
-     *     operationId="updateResponses",
+     *     operationId="updateReadedResponse",
      *     @SWG\Parameter(name="id", in="path", required=true, type="integer"),
      *     @SWG\Parameter(
      *          name="Response",
      *          in="body",
-     *          @SWG\Schema(ref="#/definitions/UpdateReadedResponseRequest")
+     *          @SWG\Schema(ref="#/definitions/CreateReadedResponseRequest")
      *      ),
      *     @SWG\Response(
      *         response=202,
@@ -138,7 +138,7 @@ class ResponsesController extends Controller
      *     security={{ "token": {} }}
      * )
      */
-    public function updateReaded(Requests\UpdateReadedResponseRequest $request)
+    public function updateReaded(Requests\CreateReadedResponseRequest $request)
     {
         $unChangeResponse = $request->getResponse();
         $response = $this->responseService->setReadedItem($unChangeResponse, $request->getReaded());
@@ -183,8 +183,9 @@ class ResponsesController extends Controller
     {
         $unChangeResponse = $request->getResponse();
         $response = $this->responseService->changeItem($unChangeResponse, $request);
-
-        $this->responseItemService->createItemsForResponse($response, $request);
+        if (!empty($request->get('responseItems'))) {
+            $this->responseItemService->createItemsForResponse($response, $request);
+        }
         return $this->response->accepted();
 
     }

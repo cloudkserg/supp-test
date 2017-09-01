@@ -89,7 +89,7 @@ class ResponseService
 
     /**
      * @param int $id
-     * @return Demand
+     * @return Response
      */
     public function findItem($id)
     {

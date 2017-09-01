@@ -18,7 +18,7 @@ class MessageRepository
      */
     public function findAll(Builder $builder, $limit)
     {
-        return $builder->orderBy('created_at', 'DESC')
+        return $builder->orderBy('created_at', 'ASC')
             ->limit($limit)
             ->get();
     }

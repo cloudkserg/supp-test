@@ -393,6 +393,77 @@ class MessagesTest extends TestCase
 
 
 
+    public function testUpdateReadedAuth()
+    {
+        $this->post('/api/messages/1/readed')
+            ->assertStatus(401);
+    }
+
+    private function createMessage($fromCompanyId, $toCompanyId)
+    {
+        $this->createBeforeDemand();
+        $this->createDemandWithItems(0);
+        return factory(\App\Message::class)->create([
+            'from_company_id' => $fromCompanyId,
+            'to_company_id' => $toCompanyId,
+        ]);
+    }
+
+    public function testUpdateReadedRight()
+    {
+        //createMessage
+        $anotherCompany = factory(\App\Company::class)->create();
+        $message = $this->createMessage($anotherCompany->id, $this->company->id);
+
+        $date = \Carbon\Carbon::create();
+        $data = ['readed' => $date->format('d.m.Y H:i:s')];
+
+        $r = $this->post(sprintf('/api/messages/%s/readed?token=%s', $message->id, $this->token), $data);
+        $r->assertStatus(202);
+
+        $message = \App\Message::get()->first();
+        /***
+         * @var \App\Message $response
+         */
+        $this->assertTrue($message->readed_time->equalTo($date));
+    }
+
+
+    public function testUpdateReadedWithoudData()
+    {
+        //createMessage
+        $anotherCompany = factory(\App\Company::class)->create();
+        $message = $this->createMessage($anotherCompany->id, $this->company->id);
+
+        $r = $this->post(sprintf('/api/messages/%s/readed?token=%s', $message->id, $this->token), []);
+
+        $r->assertStatus(422);
+    }
+
+    public function testUpdateReadedWrongData()
+    {
+        //createMessage
+        $anotherCompany = factory(\App\Company::class)->create();
+        $message = $this->createMessage($anotherCompany->id, $this->company->id);
+
+        $data = ['readed' => '20178989'];
+
+        $r = $this->post(sprintf('/api/messages/%s/readed?token=%s', $message->id, $this->token), $data);
+        $r->assertStatus(422);
+    }
+
+    public function testUpdateReadedNotMyResponse()
+    {
+        //createMessage
+        $anotherCompany = factory(\App\Company::class)->create();
+        $message = $this->createMessage($this->company->id, $anotherCompany->id);
+
+        $data = ['readed' => \Carbon\Carbon::create()->toDateTimeString()];
+
+        $r = $this->post(sprintf('/api/messages/%s/readed?token=%s', $message->id, $this->token), $data);
+        $r->assertStatus(403);
+    }
+
 
 
 

@@ -544,7 +544,7 @@
                 "operationId": "getMessages",
                 "parameters": [
                     {
-                        "name": "demand_id",
+                        "name": "demandId",
                         "in": "query",
                         "description": "demand_id",
                         "type": "integer"
@@ -611,6 +611,50 @@
                                 "type": "string"
                             }
                         }
+                    },
+                    "404": {
+                        "$ref": "#/responses/NotFoundResponse"
+                    },
+                    "401": {
+                        "$ref": "#/responses/NotAuthResponse"
+                    },
+                    "default": {
+                        "$ref": "#/responses/DefaultErrorResponse"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
+        "/messages/{id}/readed": {
+            "post": {
+                "tags": [
+                    "message"
+                ],
+                "summary": "Update readed message",
+                "description": "",
+                "operationId": "updateReadedMessage",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "Message",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/CreateReadedMessageRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "202": {
+                        "description": "successful operation"
                     },
                     "404": {
                         "$ref": "#/responses/NotFoundResponse"
@@ -833,7 +877,7 @@
                 ],
                 "summary": "Update readed response",
                 "description": "",
-                "operationId": "updateResponses",
+                "operationId": "updateReadedResponse",
                 "parameters": [
                     {
                         "name": "id",
@@ -845,7 +889,7 @@
                         "name": "Response",
                         "in": "body",
                         "schema": {
-                            "$ref": "#/definitions/UpdateReadedResponseRequest"
+                            "$ref": "#/definitions/CreateReadedResponseRequest"
                         }
                     }
                 ],
@@ -1306,13 +1350,29 @@
                     "description": "text",
                     "type": "string"
                 },
-                "to_company_id": {
+                "toCompanyId": {
                     "description": "to company id",
                     "type": "integer"
                 },
-                "demand_id": {
+                "demandId": {
                     "description": "demand",
                     "type": "integer"
+                }
+            }
+        },
+        "CreateReadedMessageRequest": {
+            "properties": {
+                "readed": {
+                    "description": "readed datetime",
+                    "type": "string"
+                }
+            }
+        },
+        "CreateReadedResponseRequest": {
+            "properties": {
+                "readed": {
+                    "description": "readed datetime",
+                    "type": "string"
                 }
             }
         },
@@ -1689,13 +1749,13 @@
                 "readed": {
                     "type": "string"
                 },
-                "from_company_id": {
+                "fromCompanyId": {
                     "type": "integer"
                 },
-                "to_company_id": {
+                "to\u0421ompanyId": {
                     "type": "integer"
                 },
-                "demand_id": {
+                "demandId": {
                     "type": "integer"
                 }
             },

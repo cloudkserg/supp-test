@@ -140,3 +140,11 @@ $factory->define(\App\Demand\Invoice::class, function (Faker\Generator $faker) {
         'response_id' => $faker->randomElement(\App\Demand\Response::pluck('id')->toArray())
     ];
 });
+
+$factory->define(\App\Message::class, function (Faker\Generator $faker) {
+    return [
+        'status' => \App\Type\MessageStatus::ACTIVE,
+        'demand_id' => $faker->randomElement(\App\Demand\Demand::pluck('id')->toArray()),
+        'text' => $faker->text
+    ];
+});

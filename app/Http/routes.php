@@ -76,4 +76,6 @@ $api->group(['middleware' => 'api.auth'], function ($api) {
 
     $api->get('/messages', 'MessagesController@index');
     $api->post('/messages', 'MessagesController@store');
+    $api->post('/messages/{id}/readed', 'MessagesController@updateReaded');
+
 });

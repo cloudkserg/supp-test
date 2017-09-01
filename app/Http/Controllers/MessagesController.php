@@ -151,4 +151,45 @@ class MessagesController extends Controller
         return $this->response->created('/messages/' . $message->id);
     }
 
+    /**
+     * @SWG\Post(
+     *     path="/messages/{id}/readed",
+     *     summary="Update readed message",
+     *     tags={"message"},
+     *     description="",
+     *     operationId="updateReadedMessage",
+     *     @SWG\Parameter(name="id", in="path", required=true, type="integer"),
+     *     @SWG\Parameter(
+     *          name="Message",
+     *          in="body",
+     *          @SWG\Schema(ref="#/definitions/CreateReadedMessageRequest")
+     *      ),
+     *     @SWG\Response(
+     *         response=202,
+     *         description="successful operation",
+     *     ),
+     *     @SWG\Response(
+     *         response=404,
+     *         ref="#/responses/NotFoundResponse"
+     *     ),
+     *     @SWG\Response(
+     *         response=401,
+     *         ref="#/responses/NotAuthResponse"
+     *     ),
+     *     @SWG\Response(
+     *         response="default",
+     *         ref="#/responses/DefaultErrorResponse"
+     *     ),
+     *
+     *     security={{ "token": {} }}
+     * )
+     */
+    public function updateReaded(Requests\CreateReadedMessageRequest $request)
+    {
+        $unChangeMessage = $request->getMessage();
+        $response = $this->messageService->setReadedItem($unChangeMessage, $request->getReaded());
+        return $this->response->accepted();
+
+    }
+
 }

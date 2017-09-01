@@ -53,7 +53,7 @@ class ResponsesTest extends TestCase
         $this->assertCount(1, $responses);
 
         $response = $responses[0];
-        $this->assertEquals(\App\Type\ResponseStatus::ARCHIVED, $response->status);
+        $this->assertEquals(\App\Type\ResponseStatus::ACTIVE, $response->status);
         $this->assertEquals($this->company->id, $response->company_id);
         $this->assertCount(2, $response->responseItems);
     }
@@ -86,7 +86,7 @@ class ResponsesTest extends TestCase
         $response = $responses[0];
         $this->assertEquals(\App\Type\ResponseStatus::ARCHIVED, $response->status);
         $this->assertEquals($this->company->id, $response->company_id);
-        $this->assertCount(1, $response->responseItems);
+        $this->assertCount(2, $response->responseItems);
     }
 
     public function testUpdateNotActiveResponseItems()
@@ -98,7 +98,7 @@ class ResponsesTest extends TestCase
         //createResponse
         $company = factory(\App\Company::class)->create();
         $response = $this->createResponseWithItems(1, [
-            'status' => \App\Type\ResponseStatus::
+            'status' => \App\Type\ResponseStatus::ARCHIVED,
             'company_id' => $company->id,
             'demand_id' => $demand->id
         ]);
