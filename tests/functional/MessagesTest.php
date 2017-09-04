@@ -81,6 +81,9 @@ class MessagesTest extends TestCase
         $this->assertCount(2, $messages);
 
         $this->assertEquals($originMessages[0]->text, $messages[0]['text']);
+        $this->assertEquals($originMessages[0]->to_company_id, $messages[0]['toCompanyId']);
+        $this->assertEquals($originMessages[0]->from_company_id, $messages[0]['fromCompanyId']);
+        $this->assertEquals($originMessages[0]->demand_id, $messages[0]['demandId']);
     }
 
     public function testIndexOnlyThisDemandAndOrder()

@@ -62,8 +62,8 @@ class MessageTransformer extends TransformerAbstract
         return [
             'id' => (int)$message->id,
             'demandId' => (int)$message->demand_id,
-            'fromCompanyId' => (int)$message->to_company_id,
-            'toCompanyId' => (int)$message->from_company_id,
+            'fromCompanyId' => (int)$message->from_company_id,
+            'toCompanyId' => (int)$message->to_company_id,
             'status' => $message->status,
             'created' => $message->created_at->toDateTimeString(),
             'readed' => (!empty($message->readed_time) ? $message->readed_time->toDateTimeString() : null),
