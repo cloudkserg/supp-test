@@ -12,6 +12,7 @@ namespace App\Services;
 
 use App\Events\Demand\ArchiveDemandEvent;
 use App\Events\Demand\DeleteDemandEvent;
+use App\Helpers\ModelHelper;
 use App\Http\Requests\UpdateDemandRequest;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
@@ -70,14 +71,16 @@ class DemandService
     }
 
 
-
     public function addItem($companyId, CreateDemandRequest $createRequest)
     {
         $item = new Demand();
         $item->fill($createRequest->all());
-        $item->delivery_date = $createRequest->getDeliveryDate();
-        $item->company_id = $companyId;
-        $item->status = DemandStatus::ACTIVE;
+        (new ModelHelper())->copyParams($item, [
+            'addition_emails' => $createRequest->additionEmails,
+            'delivery_date' => $createRequest->getDeliveryDate(),
+            'company_id' => $companyId,
+            'status' => DemandStatus::ACTIVE
+        ]);
         if (empty($item->number)) {
             $item->number = $this->generateNumber($companyId);
         }

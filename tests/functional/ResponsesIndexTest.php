@@ -98,7 +98,7 @@ class ResponsesIndexTest extends TestCase
             '*' => [
                 'id',
                 'status',
-                'delivery_type',
+                'deliveryType',
                 'company' => [
                     'id',
                     'title'
@@ -108,7 +108,7 @@ class ResponsesIndexTest extends TestCase
                         'id',
                         'price',
                         'status',
-                        'demand_item_id',
+                        'demandItemId',
                     ]
                 ],
                 'demand' => [

@@ -16,7 +16,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 /**
  * @SWG\Definition(
  *      definition="UpdateDemandItemRequest",
- *      @SWG\Property(property="response_item_id", type="integer", description="select or unselect(null)")
+ *      @SWG\Property(property="responseItemId", type="integer", description="select or unselect(null)")
  * )
  * Class UpdateDemandItemRequest
  * @package App\Http\Requests
@@ -58,7 +58,7 @@ class UpdateDemandItemRequest extends ApiRequest
     public function rules()
     {
         return [
-            'response_item_id' => 'int'
+            'responseItemId' => 'int'
         ];
     }
 

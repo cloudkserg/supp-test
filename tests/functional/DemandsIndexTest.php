@@ -32,7 +32,7 @@ class DemandsIndexTest extends TestCase
                 'desc',
                 'created',
                 'address',
-                'delivery_date',
+                'deliveryDate',
                 'company' => [
                     'id',
                     'title'
@@ -196,7 +196,7 @@ class DemandsIndexTest extends TestCase
         $this->assertCount(1, $jsonResponse['invoices']);
 
         //responseItem link to invoice_id
-        $this->assertEquals($invoice->id, $jsonResponse['responseItems'][0]['invoice_id']);
+        $this->assertEquals($invoice->id, $jsonResponse['responseItems'][0]['invoiceId']);
     }
 
     public function testIndexWithResponse()
@@ -238,7 +238,7 @@ class DemandsIndexTest extends TestCase
             '*' => [
                 'id',
                 'status',
-                'delivery_type',
+                'deliveryType',
                 'company' => [
                     'id',
                     'title'
@@ -248,7 +248,7 @@ class DemandsIndexTest extends TestCase
                         'id',
                         'status',
                         'price',
-                        'demand_item_id'
+                        'demandItemId'
                     ]
                 ]
             ]

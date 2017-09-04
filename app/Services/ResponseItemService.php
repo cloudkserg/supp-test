@@ -25,32 +25,41 @@ class ResponseItemService
      */
     public function createItemsForResponse(Response $response, UpdateResponseRequest $request)
     {
-        $responseItemData = collect($request->responseItems);
-        $this->deleteNonExistantItems(
-            $response->responseItems,
-            $responseItemData->pluck('id')->toArray()
-        );
+        $newResponseItems = collect($request->responseItems);
+        $oldResponseItems = $response->responseItems;
 
-        return $responseItemData->map(function ($data) use ($response) {
-            $item = isset($data['id']) ? $this->findItem($data['id']) : new ResponseItem();
-
-            $item->price = $data['price'];
-            $item->demand_item_id = $data['demand_item_id'];
-            $response->responseItems()->save($item);
-
-            return $item;
+        $this->deleteNonExistantItems($oldResponseItems, $newResponseItems);
+        return  $newResponseItems->map(function ($newItemData) use ($response) {
+            return $this->createNewItem($newItemData, $response);
         });
     }
 
     /**
-     * @param Collection $items
-     * @param array $ids
+     * @param array $newItemData
+     * @param Response $response
+     * @return ResponseItem
      */
-    private function deleteNonExistantItems(Collection $items, array $ids)
+    private function createNewItem(array $newItemData, Response $response)
     {
-        $items->each(function(ResponseItem $item) use ($ids) {
-            if (!in_array($item->id, $ids)) {
-                $item->delete();
+        $item = isset($newItemData['id']) ? $this->findItem($newItemData['id']) : new ResponseItem();
+
+        $item->price = $newItemData['price'];
+        $item->demand_item_id = $newItemData['demandItemId'];
+        $response->responseItems()->save($item);
+
+        return $item;
+    }
+
+    /**
+     * @param Collection $oldItems
+     * @param Collection $newItems
+     */
+    private function deleteNonExistantItems(Collection $oldItems, Collection $newItems)
+    {
+        $newIds = $newItems->pluck('id')->toArray();
+        $oldItems->each(function(ResponseItem $oldItem) use ($newIds) {
+            if (!in_array($oldItem->id, $newIds)) {
+                $oldItem->delete();
             }
         });
     }

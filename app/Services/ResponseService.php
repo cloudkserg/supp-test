@@ -103,6 +103,7 @@ class ResponseService
      */
     public function changeItem(Response $item, UpdateResponseRequest $request)
     {
+        $item->delivery_type = $request->deliveryType;
         $item->fill($request->all());
         $item->saveOrFail();
         return $item;

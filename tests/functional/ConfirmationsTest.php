@@ -30,7 +30,7 @@ class ConfirmationsTest extends TestCase
         $r = $this->post(
             'api/users/confirmations',
             [
-                'confirmation_code' => $this->confirmatingUser->confirmation_code
+                'confirmationCode' => $this->confirmatingUser->confirmation_code
             ]
         )
             ->assertStatus(201)
@@ -42,7 +42,7 @@ class ConfirmationsTest extends TestCase
         $this->post(
             'api/users/confirmations',
             [
-                'confirmation_code' => $this->user->confirmation_code
+                'confirmationCode' => $this->user->confirmation_code
             ]
         )
             ->assertStatus(422);
@@ -63,7 +63,7 @@ class ConfirmationsTest extends TestCase
         $this->post(
             'api/users/confirmations',
             [
-                'confirmation_code' => str_random(30)
+                'confirmationCode' => str_random(30)
             ]
         )
             ->assertStatus(500);

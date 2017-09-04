@@ -42,7 +42,7 @@ class DemandsAutoNumberTest extends TestCase
                 [
                     'title' => $faker->title,
                     'count' => $faker->randomFloat(),
-                    'quantity_id' => $faker->randomElement($this->quantities)
+                    'quantityId' => $faker->randomElement($this->quantities)
                 ]
             ]
         ];
@@ -53,6 +53,10 @@ class DemandsAutoNumberTest extends TestCase
         $demand = Demand::find(2);
         $this->assertEquals($data['title'], $demand->title);
         $this->assertEquals(3, $demand->number);
+
+        $this->assertEquals($data['demandItems'][0]['title'], $demand->demandItems[0]->title);
+        $this->assertEquals($data['demandItems'][0]['count'], $demand->demandItems[0]->count);
+        $this->assertEquals($data['demandItems'][0]['quantityId'], $demand->demandItems[0]->quantity_id);
     }
 
     public function testCreateDemandFieldNumberAutoNext()
@@ -77,7 +81,7 @@ class DemandsAutoNumberTest extends TestCase
                 [
                     'title' => $faker->title,
                     'count' => $faker->randomFloat(),
-                    'quantity_id' => $faker->randomElement($this->quantities)
+                    'quantityId' => $faker->randomElement($this->quantities)
                 ]
             ]
         ];
@@ -102,7 +106,7 @@ class DemandsAutoNumberTest extends TestCase
                 [
                     'title' => $faker->title,
                     'count' => $faker->randomFloat(),
-                    'quantity_id' => $faker->randomElement($this->quantities)
+                    'quantityId' => $faker->randomElement($this->quantities)
                 ]
             ]
         ];

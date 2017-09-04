@@ -18,7 +18,7 @@ use Swagger\Annotations as SWG;
  *      definition="DemandItemModel",
  *      @SWG\Property(property="id",type="integer"),
  *      @SWG\Property(property="status",type="string"),
- *      @SWG\Property(property="demand_id",type="integer"),
+ *      @SWG\Property(property="demandId",type="integer"),
  *      @SWG\Property(property="quantityTitle", type="string", description="string or null"),
  *      @SWG\Property(property="count", type="number"),
  *      @SWG\Property(property="title", type="string")
@@ -36,7 +36,7 @@ class DemandItemTransformer extends TransformerAbstract
         return [
             'id' => (int)$item->id,
             'status' => $item->status,
-            'demand_id' => $item->demand_id,
+            'demandId' => $item->demand_id,
             'quantityTitle' => isset($item->quantity) ? $item->quantity->title : null,
             'count' => (float)$item->count,
             'title' => $item->title

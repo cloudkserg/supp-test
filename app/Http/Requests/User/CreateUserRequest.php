@@ -9,12 +9,12 @@ use Swagger\Annotations as SWG;
 /**
  * @SWG\Definition(
  *      definition="CreateUserRequest",
- *      required={"company_title", "name", "email", "password"},
- *      @SWG\Property(property="company_title", type="string", maxLength=255, description="title unique for company"),
+ *      required={"companyTitle", "name", "email", "password"},
+ *      @SWG\Property(property="companyTitle", type="string", maxLength=255, description="title unique for company"),
  *      @SWG\Property(property="name", type="string", maxLength=255, description="user name"),
  *      @SWG\Property(property="email", type="string", description="email unique for users" ),
  *      @SWG\Property(property="password", type="string", minLength=6, description="password, check for confirm"),
- *      @SWG\Property(property="password_confirmation", type="string", minLength=6, description="confirmation with pass"),
+ *      @SWG\Property(property="passwordConfirmation", type="string", minLength=6, description="confirmation with pass"),
  *      @SWG\Property(
  *         property="regions",
  *         description="regions",
@@ -62,10 +62,12 @@ class CreateUserRequest extends ApiRequest
     public function rules()
     {
         return [
-            'company_title' => 'required|max:255|unique:companies,title',
+            'companyTitle' => 'required|max:255|unique:companies,title',
+
             'name' => 'required|max:255',
             'email' => 'required|email|unique:users',
-            'password' => 'required|min:6|confirmed',
+            'password' => 'required|min:6|same:passwordConfirmation',
+
             'regions' => 'array|required',
             'regions.*' => 'integer',
             'spheres' => 'array|required',

@@ -52,8 +52,8 @@ class DemandsTest extends TestCase
         $data = [
             'title' => $faker->title,
             'desc' => $faker->text,
-            'delivery_date' => $faker->date('d.m.Y H:i'),
-            'addition_emails' => [
+            'deliveryDate' => $faker->date('d.m.Y H:i'),
+            'additionEmails' => [
                 $faker->safeEmail,
                 $faker->safeEmail
             ],
@@ -63,12 +63,12 @@ class DemandsTest extends TestCase
                 [
                     'title' => $faker->title,
                     'count' => $faker->randomFloat(),
-                    'quantity_id' => $faker->randomElement($this->quantities)
+                    'quantityId' => $faker->randomElement($this->quantities)
                 ],
                 [
                     'title' => $faker->title,
                     'count' => $faker->randomFloat(),
-                    'quantity_id' => $faker->randomElement($this->quantities)
+                    'quantityId' => $faker->randomElement($this->quantities)
                 ],
             ]
         ];
@@ -77,7 +77,6 @@ class DemandsTest extends TestCase
         $r = $this->post('/api/demands?token=' . $this->token, $data);
             $r->assertStatus(201)
             ->assertHeader('location', '/demands/1');
-
 
 
         $demand = Demand::find(1);
@@ -112,12 +111,12 @@ class DemandsTest extends TestCase
                 [
                     'title' => $faker->title,
                     'count' => $faker->randomFloat(),
-                    'quantity_id' => $faker->randomElement($this->quantities)
+                    'quantityId' => $faker->randomElement($this->quantities)
                 ],
                 [
                     'title' => $faker->title,
                     'count' => $faker->randomFloat(),
-                    'quantity_id' => $faker->randomElement($this->quantities)
+                    'quantityId' => $faker->randomElement($this->quantities)
                 ],
             ]
         ];
@@ -135,8 +134,8 @@ class DemandsTest extends TestCase
         $data = [
             'title' => $faker->title,
             'desc' => $faker->text,
-            'delivery_date' => $faker->date('d.m.Y H:i'),
-            'addition_emails' => [
+            'deliveryDate' => $faker->date('d.m.Y H:i'),
+            'additionEmails' => [
                 $faker->safeEmail,
                 $faker->safeEmail
             ],

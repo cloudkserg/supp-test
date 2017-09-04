@@ -22,7 +22,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  *      definition="UpdateResponseRequest",
  *      required={"responseItems"},
  *      @SWG\Property(property="status", type="string", enum={"active","draft","cancel","archived"}),
- *      @SWG\Property(property="delivery_type", type="string"),
+ *      @SWG\Property(property="deliveryType", type="string"),
  *      @SWG\Property(property="number", type="string"),
  *      @SWG\Property(property="readed", type="string", description="datetime"),
  *      @SWG\Property(property="desc", type="string"),
@@ -31,9 +31,9 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  *          type="array",
  *          @SWG\Items(
  *              type="object",
- *              required={"demand_item_id", "price"},
+ *              required={"demandItemId", "price"},
  *              @SWG\Property(property="id", type="integer", description="id for change and null for new"),
- *              @SWG\Property(property="demand_item_id", type="integer"),
+ *              @SWG\Property(property="demandItemId", type="integer"),
  *              @SWG\Property(property="price", type="number")
  *          )
  *      )
@@ -87,14 +87,13 @@ class UpdateResponseRequest extends ApiRequest
     {
         $rules = [
             'status' => 'string',
-            'readed' => 'date',
             'number' => 'string',
-            'delivery_type' => 'string',
+            'deliveryType' => 'string',
             'desc' => 'string',
 
             'responseItems' => 'array',
             'responseItems.*.id' => 'integer',
-            'responseItems.*.demand_item_id' => 'integer',
+            'responseItems.*.demandItemId' => 'integer',
             'responseItems.*.price' => 'numeric'
         ];
 
@@ -103,7 +102,7 @@ class UpdateResponseRequest extends ApiRequest
                 'responseItems' => 'array|required',
                 'responseItems.0' => 'required',
                 'responseItems.*.id' => 'integer',
-                'responseItems.*.demand_item_id' => 'integer|required',
+                'responseItems.*.demandItemId' => 'integer|required',
                 'responseItems.*.price' => 'numeric|required'
             ]);
         }

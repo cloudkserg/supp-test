@@ -33,7 +33,7 @@ class CompanyService
     public function createCompany(CreateUserRequest $request)
     {
         $company = new Company();
-        $company->title = $request->company_title;
+        $company->title = $request->companyTitle;
         $company->email = $request->email;
         $company->saveOrFail();
 

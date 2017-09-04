@@ -38,7 +38,7 @@ class DemandsItemsTest extends TestCase
         $responseItem = $response->responseItems[0];
 
         $data = [
-            'response_item_id' => $responseItem->id
+            'responseItemId' => $responseItem->id
         ];
 
         $r = $this->patch('/api/demandItems/' . $demandItem->id . '?token=' . $this->token,
@@ -58,7 +58,7 @@ class DemandsItemsTest extends TestCase
         $demandItem = $demand->demandItems[0];
         $response = $this->createResponseWithItems(1);
         $data = [
-            'response_item_id' => $response->responseItems[0]->id
+            'responseItemId' => $response->responseItems[0]->id
         ];
 
         $r = $this->patch('/api/demandItems/' . $demandItem->id . '?token=' . $this->token,
@@ -66,7 +66,7 @@ class DemandsItemsTest extends TestCase
         $r->assertStatus(403);
 
         $newItem = \App\Demand\DemandItem::find($demandItem->id);
-        $this->assertTrue(!isset($newItem->response_item_id));
+        $this->assertTrue(!isset($newItem->responseItemId));
     }
 
     public function testUpdateUnselect()

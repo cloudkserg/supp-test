@@ -58,7 +58,7 @@ class ConfirmationsController extends Controller
      */
     public function store(ConfirmationRequest $request)
     {
-        $user = $this->userService->confirmUser($request->get('confirmation_code'));
+        $user = $this->userService->confirmUser($request->get('confirmationCode'));
         return $this->response->created('/users/' . $user->id);
     }
 

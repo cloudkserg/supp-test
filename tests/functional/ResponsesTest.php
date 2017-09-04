@@ -33,14 +33,14 @@ class ResponsesTest extends TestCase
         ]);
 
         $data = [
-            'delivery_type' => 'sfsdfsd',
+            'deliveryType' => 'sfsdfsd',
             'status' => \App\Type\ResponseStatus::ACTIVE,
             'responseItems' => [
                 [
-                    'demand_item_id' => 1,
+                    'demandItemId' => 1,
                     'price' => 23
                 ], [
-                    'demand_item_id' => 1,
+                    'demandItemId' => 1,
                     'price' => 23
                 ]
             ]
@@ -105,13 +105,13 @@ class ResponsesTest extends TestCase
 
         $data = [
             'status' => \App\Type\ResponseStatus::ARCHIVED,
-            'delivery_type' => 'sfsdfsd',
+            'deliveryType' => 'sfsdfsd',
             'responseItems' => [
                 [
-                    'demand_item_id' => 1,
+                    'demandItemId' => 1,
                     'price' => 23
                 ], [
-                    'demand_item_id' => 1,
+                    'demandItemId' => 1,
                     'price' => 23
                 ]
             ]
@@ -135,13 +135,13 @@ class ResponsesTest extends TestCase
         ]);
 
         $data = [
-            'delivery_type' => 'sfsdfsd',
+            'deliveryType' => 'sfsdfsd',
             'responseItems' => [
                 [
-                    'demand_item_id' => 1,
+                    'demandItemId' => 1,
                     'price' => 23
                 ], [
-                    'demand_item_id' => 1,
+                    'demandItemId' => 1,
                     'price' => 23
                 ]
             ]

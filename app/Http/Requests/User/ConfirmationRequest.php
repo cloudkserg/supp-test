@@ -16,8 +16,8 @@ use Swagger\Annotations as SWG;
 /**
  * @SWG\Definition(
  *      definition="ConfirmationRequest",
- *      required={"confirmation_code"},
- *      @SWG\Property(property="confirmation_code", type="string", maxLength=255, description="code confirm from email")
+ *      required={"confirmationCode"},
+ *      @SWG\Property(property="confirmationCode", type="string", maxLength=255, description="code confirm from email")
  * )
  * Class ConfirmationRequest
  * @package App\Http\Requests\User
@@ -45,7 +45,7 @@ class ConfirmationRequest extends ApiRequest
     public function rules()
     {
         return [
-            'confirmation_code' => 'required|max:255'
+            'confirmationCode' => 'required|max:255'
         ];
     }
 

@@ -19,17 +19,17 @@ class UsersTest extends TestCase
         $spheres = \App\Type\Sphere::take(2)->get();
         $regions = \App\Type\Region::take(2)->get();
 
-        $this->post('/api/users', [
+        $r = $this->post('/api/users', [
                 'email' => 'abba@mail.ru',
                 'password' => '123456',
-                'password_confirmation' => '123456',
+                'passwordConfirmation' => '123456',
                 'name' => 'Test user',
-                'company_title' => 'Test company',
+                'companyTitle' => 'Test company',
                 'spheres' => collect($spheres)->pluck('id')->toArray(),
                 'regions' => collect($regions)->pluck('id')->toArray()
-            ])
-            ->assertStatus(201)
-            ->assertHeader('location', '/users/1');
+            ]);
+            $r->assertStatus(201)
+                ->assertHeader('location', '/users/1');
 
 
         $user = \App\User::find(1);
@@ -38,11 +38,25 @@ class UsersTest extends TestCase
         $this->assertInstanceOf(\App\Company::class, $company);
         $this->assertCount(2, $company->regions);
         $this->assertCount(2, $company->spheres);
+        $this->assertEquals('Test company', $company->title);
         $this->assertEquals('abba@mail.ru', $company->email);
         $this->assertEquals($spheres[0]->id, $company->spheres[0]->id);
         $this->assertEquals($spheres[1]->id, $company->spheres[1]->id);
         $this->assertEquals($regions[1]->id, $company->regions[1]->id);
         $this->assertEquals($regions[1]->id, $company->regions[1]->id);
+        $this->assertEquals(0, $user->confirmed);
+
+        //confirm user
+        $user->confirmed = true;
+        $user->save();
+
+        //check auth
+        $r = $this->post('/api/tokens', [
+            'email' => $user->email,
+            'password' => '123456'
+        ]);
+        $token = $r->json()['token'];
+        $this->assertNotEmpty($token);
 
     }
 
@@ -52,9 +66,9 @@ class UsersTest extends TestCase
         $this->post('/api/users', [
             'email' => 'abba@mail.ru',
             'password' => '123456',
-            'password_confirmation' => '123456',
+            'passwordConfirmation' => '123456',
             'name' => 'Test user',
-            'compay_title' => 'Test company'
+            'companyTitle' => 'Test company'
         ])->assertStatus(422);
     }
 
@@ -64,9 +78,9 @@ class UsersTest extends TestCase
         $this->post('/api/users', [
             'email' => 'abba@mail.ru',
             'password' => '123456',
-            'password_confirmation' => '1234567',
+            'passwordConfirmation' => '1234567',
             'name' => 'Test user',
-            'company_title' => 'Test company'
+            'companyTitle' => 'Test company'
         ])->assertStatus(422);
     }
 
@@ -75,7 +89,7 @@ class UsersTest extends TestCase
         $this->post('/api/users', [
             'email' => 'abba@mail.ru',
             'password' => '123456',
-            'password_confirmation' => '123456',
+            'passwordConfirmation' => '123456',
             'name' => 'Test user'
         ])->assertStatus(422);
     }
@@ -84,7 +98,7 @@ class UsersTest extends TestCase
     {
         $this->post('/api/users', [
             'password' => '123456',
-            'password_confirmation' => '123456',
+            'passwordConfirmation' => '123456',
             'name' => 'Test user'
         ])->assertStatus(422);
     }

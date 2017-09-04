@@ -43,7 +43,7 @@ use Swagger\Annotations as SWG;
  *          type="string"
  *      ),
  *      @SWG\Property(
- *          property="delivery_date",
+ *          property="deliveryDate",
  *          type="string"
  *      ),
  *      @SWG\Property(
@@ -111,7 +111,7 @@ class DemandTransformer extends TransformerAbstract
             'number' => $demand->number,
             'desc' => $demand->desc,
             'address' => $demand->address,
-            'delivery_date' => !empty($demand->delivery_date) ? $demand->delivery_date->toDateTimeString() : ''
+            'deliveryDate' => !empty($demand->delivery_date) ? $demand->delivery_date->toDateTimeString() : ''
         ];
     }
 

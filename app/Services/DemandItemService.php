@@ -24,7 +24,11 @@ class DemandItemService
     public function addItems(Demand $demand, CreateDemandRequest $createRequest)
     {
         foreach ($createRequest->demandItems as $demandItemData) {
-            $demandItem = new DemandItem($demandItemData);
+            $demandItem = new DemandItem();
+            $demandItem->title = $demandItemData['title'];
+            $demandItem->count = $demandItemData['count'];
+            $demandItem->quantity_id = $demandItemData['quantityId'];
+
             $demandItem->demand_id = $demand->id;
             $demandItem->saveOrFail();
         }

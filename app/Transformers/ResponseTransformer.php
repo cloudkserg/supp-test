@@ -24,7 +24,7 @@ use Swagger\Annotations as SWG;
  *          type="integer"
  *      ),
  *      @SWG\Property(
- *          property="demand_id",
+ *          property="demandId",
  *          type="integer"
  *      ),
  *      @SWG\Property(
@@ -32,7 +32,7 @@ use Swagger\Annotations as SWG;
  *          type="string"
  *      ),
  *      @SWG\Property(
- *          property="delivery_type",
+ *          property="deliveryType",
  *          type="string"
  *      ),
  *      @SWG\Property(
@@ -62,11 +62,11 @@ use Swagger\Annotations as SWG;
  *          type="integer"
  *      ),
  *      @SWG\Property(
- *          property="demand_id",
+ *          property="demandId",
  *          type="integer"
  *      ),
  *      @SWG\Property(
- *          property="delivery_type",
+ *          property="deliveryType",
  *          type="string"
  *      ),
  *      @SWG\Property(
@@ -123,9 +123,9 @@ class ResponseTransformer extends TransformerAbstract
         return [
             'id' => (int)$response->id,
             'number' => $response->number,
-            'demand_id' => (int)$response->demand_id,
+            'demandId' => (int)$response->demand_id,
             'status' => $response->status,
-            'delivery_type' => $response->delivery_type,
+            'deliveryType' => $response->delivery_type,
             'desc' => $response->desc,
             'readed' => empty($response->readed_time) ? $response->readed_time : Carbon::parse($response->readed_time)->toDateTimeString()
         ];

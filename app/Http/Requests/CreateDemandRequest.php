@@ -16,6 +16,8 @@ use Swagger\Annotations as SWG;
 
 /**
  *
+ *
+ * @property array $additionEmails
  * @SWG\Definition(
  *      definition="CreateDemandRequest",
  *      required={"demandItems"},
@@ -40,12 +42,12 @@ use Swagger\Annotations as SWG;
  *         type="string",
  *      ),
  *      @SWG\Property(
- *         property="delivery_date",
+ *         property="deliveryDate",
  *         description="date delivery of demand(dd.mm.YYYY)",
  *         type="string",
  *      ),
  *      @SWG\Property(
- *         property="addition_emails",
+ *         property="additionEmails",
  *         description="addition emails",
  *         type="array",
  *         @SWG\Items(type="string", description="email")
@@ -68,11 +70,11 @@ use Swagger\Annotations as SWG;
  *         type="array",
  *         @SWG\Items(
  *              type="object",
- *              required={"title", "count", "quantity_id"},
+ *              required={"title", "count", "quantityId"},
  *              description="demandItem",
  *              @SWG\Property(property="title", type="string"),
  *              @SWG\Property(property="count", type="number"),
- *              @SWG\Property(property="quantity_id", type="integer"),
+ *              @SWG\Property(property="quantityId", type="integer"),
  *          )
  *      ),
  *  )
@@ -103,9 +105,9 @@ class CreateDemandRequest extends ApiRequest
             'address' => 'string',
             'number' => 'string',
             'desc' => 'string',
-            'delivery_date' => 'date',
-            'addition_emails' => 'array',
-            'addition_emails.*' => 'email',
+            'deliveryDate' => 'date',
+            'additionEmails' => 'array',
+            'additionEmails.*' => 'email',
             'regions' => 'array',
             'regions.*' => 'integer',
             'spheres' => 'array',
@@ -113,7 +115,7 @@ class CreateDemandRequest extends ApiRequest
             'demandItems' => 'array|required',
             'demandItems.*.title' => 'string|required',
             'demandItems.*.count' => 'numeric|required',
-            'demandItems.*.quantity_id' => 'integer|required'
+            'demandItems.*.quantityId' => 'integer|required'
         ];
     }
 
@@ -122,10 +124,10 @@ class CreateDemandRequest extends ApiRequest
      */
     public function getDeliveryDate()
     {
-        if (!isset($this->delivery_date)) {
+        if (!isset($this->deliveryDate)) {
             return null;
         }
-        return Carbon::parse($this->delivery_date);
+        return Carbon::parse($this->deliveryDate);
     }
 }
 

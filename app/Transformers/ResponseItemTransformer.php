@@ -22,7 +22,7 @@ use Swagger\Annotations as SWG;
  *          type="integer"
  *      ),
  *      @SWG\Property(
- *          property="response_id",
+ *          property="responseId",
  *          type="integer"
  *      ),
  *      @SWG\Property(
@@ -38,11 +38,11 @@ use Swagger\Annotations as SWG;
  *          type="boolean"
  *      ),
  *      @SWG\Property(
- *          property="invoice_id",
+ *          property="invoiceId",
  *          type="integer"
  *      ),
  *      @SWG\Property(
- *          property="demand_item_id",
+ *          property="demandItemId",
  *          type="integer"
  *      ),
  * )
@@ -61,9 +61,9 @@ class ResponseItemTransformer extends TransformerAbstract
             'price' => $item->price,
             'status' => $item->status,
             'selected' => (bool)$item->isSelected(),
-            'response_id' => (int)$item->response_id,
-            'demand_item_id' => (int)$item->demand_item_id,
-            'invoice_id' => isset($item->invoice_id) ? (int)$item->invoice_id : null
+            'responseId' => (int)$item->response_id,
+            'demandItemId' => (int)$item->demand_item_id,
+            'invoiceId' => isset($item->invoice_id) ? (int)$item->invoice_id : null
         ];
     }
 

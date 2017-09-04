@@ -44,7 +44,7 @@ class InvoiceTransformer extends TransformerAbstract
     {
         return [
             'id' => (int)$invoice->id,
-            'response_id' => (int)$invoice->response_id,
+            'responseId' => (int)$invoice->response_id,
             'status' => $invoice->status,
             'file' => $invoice->file
         ];
