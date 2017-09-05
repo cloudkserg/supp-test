@@ -1276,11 +1276,11 @@
                     "description": "description of demand",
                     "type": "string"
                 },
-                "delivery_date": {
+                "deliveryDate": {
                     "description": "date delivery of demand(dd.mm.YYYY)",
                     "type": "string"
                 },
-                "addition_emails": {
+                "additionEmails": {
                     "description": "addition emails",
                     "type": "array",
                     "items": {
@@ -1312,7 +1312,7 @@
                         "required": [
                             "title",
                             "count",
-                            "quantity_id"
+                            "quantityId"
                         ],
                         "properties": {
                             "title": {
@@ -1321,7 +1321,7 @@
                             "count": {
                                 "type": "number"
                             },
-                            "quantity_id": {
+                            "quantityId": {
                                 "type": "integer"
                             }
                         },
@@ -1430,7 +1430,7 @@
         },
         "UpdateDemandItemRequest": {
             "properties": {
-                "response_item_id": {
+                "responseItemId": {
                     "description": "select or unselect(null)",
                     "type": "integer"
                 }
@@ -1486,7 +1486,7 @@
                         "archived"
                     ]
                 },
-                "delivery_type": {
+                "deliveryType": {
                     "type": "string"
                 },
                 "number": {
@@ -1503,7 +1503,7 @@
                     "type": "array",
                     "items": {
                         "required": [
-                            "demand_item_id",
+                            "demandItemId",
                             "price"
                         ],
                         "properties": {
@@ -1511,7 +1511,7 @@
                                 "description": "id for change and null for new",
                                 "type": "integer"
                             },
-                            "demand_item_id": {
+                            "demandItemId": {
                                 "type": "integer"
                             },
                             "price": {
@@ -1525,10 +1525,10 @@
         },
         "ConfirmationRequest": {
             "required": [
-                "confirmation_code"
+                "confirmationCode"
             ],
             "properties": {
-                "confirmation_code": {
+                "confirmationCode": {
                     "description": "code confirm from email",
                     "type": "string",
                     "maxLength": 255
@@ -1537,13 +1537,13 @@
         },
         "CreateUserRequest": {
             "required": [
-                "company_title",
+                "companyTitle",
                 "name",
                 "email",
                 "password"
             ],
             "properties": {
-                "company_title": {
+                "companyTitle": {
                     "description": "title unique for company",
                     "type": "string",
                     "maxLength": 255
@@ -1562,7 +1562,7 @@
                     "type": "string",
                     "minLength": 6
                 },
-                "password_confirmation": {
+                "passwordConfirmation": {
                     "description": "confirmation with pass",
                     "type": "string",
                     "minLength": 6
@@ -1633,7 +1633,7 @@
                 "status": {
                     "type": "string"
                 },
-                "demand_id": {
+                "demandId": {
                     "type": "integer"
                 },
                 "quantityTitle": {
@@ -1668,7 +1668,7 @@
                 "address": {
                     "type": "string"
                 },
-                "delivery_date": {
+                "deliveryDate": {
                     "type": "string"
                 },
                 "company": {
@@ -1786,7 +1786,7 @@
                 "id": {
                     "type": "integer"
                 },
-                "response_id": {
+                "responseId": {
                     "type": "integer"
                 },
                 "price": {
@@ -1798,10 +1798,10 @@
                 "selected": {
                     "type": "boolean"
                 },
-                "invoice_id": {
+                "invoiceId": {
                     "type": "integer"
                 },
-                "demand_item_id": {
+                "demandItemId": {
                     "type": "integer"
                 }
             }
@@ -1812,7 +1812,7 @@
                     "description": "/**",
                     "type": "integer"
                 },
-                "demand_id": {
+                "demandId": {
                     "description": "/**",
                     "type": "integer"
                 },
@@ -1820,7 +1820,7 @@
                     "description": "/**",
                     "type": "string"
                 },
-                "delivery_type": {
+                "deliveryType": {
                     "description": "/**",
                     "type": "string"
                 },
@@ -1855,11 +1855,11 @@
                     "description": "/**",
                     "type": "integer"
                 },
-                "demand_id": {
+                "demandId": {
                     "description": "/**",
                     "type": "integer"
                 },
-                "delivery_type": {
+                "deliveryType": {
                     "description": "/**",
                     "type": "string"
                 },
