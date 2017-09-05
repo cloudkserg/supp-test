@@ -17,8 +17,10 @@ use Swagger\Annotations as SWG;
  */
 class DemandStatus extends ConstType
 {
+    const DRAFT = 'draft';
     const ACTIVE = 'active';
-    const ARCHIVED = 'archived';
+    const CANCEL = 'cancel';
+    const DONE = 'done';
     const DELETED = 'deleted';
 
     /**
@@ -27,9 +29,11 @@ class DemandStatus extends ConstType
     public function getTitles()
     {
         return [
+            self::DRAFT => 'Ожидает ответа',
             self::ACTIVE => 'Создан',
-            self::ARCHIVED => 'Архив',
-            self::DELETED => 'Удалено'
+            self::CANCEL => 'Отклонен',
+            self::DELETED => 'Удалено',
+            self::DONE => 'Завершено'
         ];
     }
 

@@ -7,7 +7,6 @@
  */
 
 use Illuminate\Support\Facades\Event;
-use App\Events\Demand\ArchiveDemandEvent;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class GenerateDemandEventsTest extends \TestCase
@@ -37,10 +36,10 @@ class GenerateDemandEventsTest extends \TestCase
 
         Event::fake();
 
-        $this->demand->status = \App\Type\DemandStatus::ARCHIVED;
+        $this->demand->status = \App\Type\DemandStatus::DELETED;
         $this->demand->save();
 
-        Event::assertFired(ArchiveDemandEvent::class, function ($e)  {
+        Event::assertFired(\App\Events\Demand\DeleteDemandEvent::class, function ($e)  {
             return (
                 $e->item->id == $this->demand->id
             );
@@ -50,7 +49,7 @@ class GenerateDemandEventsTest extends \TestCase
     public function testNotUpdated()
     {
         Event::fake();
-        $this->demand->status = \App\Type\DemandStatus::ARCHIVED;
+        $this->demand->status = \App\Type\DemandStatus::DELETED;
         $this->demand->save();
 
         Event::fake();
@@ -58,7 +57,7 @@ class GenerateDemandEventsTest extends \TestCase
         $this->demand->status = \App\Type\DemandStatus::ACTIVE;
         $this->demand->save();
 
-        Event::assertNotFired(ArchiveDemandEvent::class);
+        Event::assertNotFired(\App\Events\Demand\DeleteDemandEvent::class);
     }
 
 }

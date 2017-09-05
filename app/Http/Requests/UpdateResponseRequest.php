@@ -21,10 +21,8 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  * @SWG\Definition(
  *      definition="UpdateResponseRequest",
  *      required={"responseItems"},
- *      @SWG\Property(property="status", type="string", enum={"active","draft","cancel","archived"}),
  *      @SWG\Property(property="deliveryType", type="string"),
  *      @SWG\Property(property="number", type="string"),
- *      @SWG\Property(property="readed", type="string", description="datetime"),
  *      @SWG\Property(property="desc", type="string"),
  *      @SWG\Property(
  *          property="responseItems",
@@ -71,14 +69,6 @@ class UpdateResponseRequest extends ApiRequest
 
 
     /**
-     * @return bool
-     */
-    private function isDemandActive()
-    {
-        return ($this->get('status') == 'ACTIVE');
-    }
-
-    /**
      * Get the validation rules that apply to the request.
      *
      * @return array
@@ -86,7 +76,6 @@ class UpdateResponseRequest extends ApiRequest
     public function rules()
     {
         $rules = [
-            'status' => 'string',
             'number' => 'string',
             'deliveryType' => 'string',
             'desc' => 'string',
@@ -97,28 +86,7 @@ class UpdateResponseRequest extends ApiRequest
             'responseItems.*.price' => 'numeric'
         ];
 
-        if ($this->isDemandActive()) {
-            $rules = array_merge($rules, [
-                'responseItems' => 'array|required',
-                'responseItems.0' => 'required',
-                'responseItems.*.id' => 'integer',
-                'responseItems.*.demandItemId' => 'integer|required',
-                'responseItems.*.price' => 'numeric|required'
-            ]);
-        }
-
         return $rules;
-    }
-
-    /**
-     * @return Carbon
-     */
-    public function getReaded()
-    {
-        if ($this->get('readed') === null) {
-            return null;
-        }
-        return Carbon::parse($this->get('readed'));
     }
 
 

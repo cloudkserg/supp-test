@@ -18,7 +18,8 @@ class ResponseStatus extends ConstType
     const DRAFT = 'draft';
     const ACTIVE = 'active';
     const CANCEL = 'cancel';
-    const ARCHIVED = 'archived';
+    const DONE = 'done';
+    const DELETED = 'deleted';
 
     /**
      * @return array
@@ -29,7 +30,8 @@ class ResponseStatus extends ConstType
             self::DRAFT => 'Ожидает ответа',
             self::ACTIVE => 'Создан',
             self::CANCEL => 'Отклонен',
-            self::ARCHIVED => 'Архив'
+            self::DELETED => 'Удалено',
+            self::DONE => 'Завершено'
         ];
     }
 

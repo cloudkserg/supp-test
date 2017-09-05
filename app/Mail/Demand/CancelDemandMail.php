@@ -9,7 +9,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class ArchiveDemandMail extends Mailable
+class CancelDemandMail extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -36,6 +36,6 @@ class ArchiveDemandMail extends Mailable
      */
     public function build()
     {
-        return $this->view('emails.demand.archive');
+        return $this->view('emails.demand.cancel');
     }
 }

@@ -115,6 +115,47 @@ class DemandsController extends Controller
 
     /**
      * @SWG\Post(
+     *     path="/demands/active",
+     *     summary="Active demand",
+     *     tags={"demand"},
+     *     description="",
+     *     operationId="activeDemands",
+     *     @SWG\Parameter(
+     *          name="Demand",
+     *          in="body",
+     *          @SWG\Schema(ref="#/definitions/StatusDemandRequest")
+     *      ),
+     *     @SWG\Response(
+     *         response=202,
+     *         description="successful operation",
+     *     ),
+     *     @SWG\Response(
+     *         response=404,
+     *         ref="#/responses/NotFoundResponse"
+     *     ),
+     *     @SWG\Response(
+     *         response=401,
+     *         ref="#/responses/NotAuthResponse"
+     *     ),
+     *     @SWG\Response(
+     *         response="default",
+     *         ref="#/responses/DefaultErrorResponse"
+     *     ),
+     *
+     *     security={{ "token": {} }}
+     * )
+     */
+    public function storeActive(Requests\Demand\ActiveDemandRequest $activeRequest)
+    {
+        $demand = $activeRequest->getDemand();
+        $this->demandService->activeItem($demand);
+
+        dispatch(new CreateDraftResponseForDemandJob($demand));
+        return $this->response->accepted();
+    }
+
+    /**
+     * @SWG\Post(
      *     path="/demands",
      *     summary="Create demand",
      *     tags={"demand"},
@@ -169,9 +210,8 @@ class DemandsController extends Controller
      *          @SWG\Schema(ref="#/definitions/UpdateDemandRequest")
      *      ),
      *     @SWG\Response(
-     *         response=201,
+     *         response=202,
      *         description="successful operation",
-     *         @SWG\Header(header="location", type="string", description="/demands/1")
      *     ),
      *     @SWG\Response(
      *         response=404,

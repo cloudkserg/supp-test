@@ -133,8 +133,7 @@ class DemandsAutoNumberTest extends TestCase
         ]);
 
         $data = [
-            'number' => 'silicium',
-            'status' => \App\Type\DemandStatus::ACTIVE
+            'number' => 'silicium'
         ];
         $r = $this->patch(sprintf('/api/demands/%s?token=%s', $demand->id, $this->token), $data);
         $r->assertStatus(202);

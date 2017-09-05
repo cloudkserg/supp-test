@@ -5,6 +5,7 @@ namespace App\Policies;
 use App\Company;
 use App\Demand\Demand;
 use App\Demand\Response;
+use App\Type\DemandStatus;
 use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Database\Eloquent\Collection;
@@ -16,6 +17,17 @@ class DemandPolicy
     public function update(User $user, Demand $demand)
     {
         return $user->company_id == $demand->company_id;
+    }
+
+    public function active(User $user, Demand $demand)
+    {
+        return (
+            $this->update($user, $demand) and
+            $demand->status == DemandStatus::DRAFT and
+            $demand->demandItems->isNotEmpty() and
+            $demand->regions->isNotEmpty() and
+            $demand->spheres->isNotEmpty()
+        );
     }
 
 

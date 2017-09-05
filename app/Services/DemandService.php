@@ -92,6 +92,12 @@ class DemandService
         return $item;
     }
 
+    public function activeItem(Demand $demand)
+    {
+        $demand->status  = DemandStatus::ACTIVE;
+        $demand->saveOrFail();
+    }
+
 
     /**
      * @param $id
@@ -153,8 +159,8 @@ class DemandService
 
     public function onUpdate(Demand $item)
     {
-        if ($item->isDirty('status') and $item->status == DemandStatus::ARCHIVED) {
-            event(new ArchiveDemandEvent($item));
+        if ($item->isDirty('status') and $item->status == DemandStatus::CANCEL) {
+            event(new CancelDemandEvent($item));
         }
         if ($item->isDirty('status') and $item->status == DemandStatus::DELETED) {
             event(new DeleteDemandEvent($item));

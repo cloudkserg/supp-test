@@ -35,6 +35,8 @@ class DemandsTest extends TestCase
 
         $r = $this->delete('/api/demands/' . $demand->id . '?token=' . $this->token)
             ->assertStatus(202);
+
+        $this->assertEquals(\App\Type\DemandStatus::DELETED, Demand::find($demand->id)->status);
     }
 
 
@@ -147,84 +149,118 @@ class DemandsTest extends TestCase
             ->assertStatus(422);
     }
 
-
-    public function testUpdateArchived()
+    private function checkDemandStatus($demandId, $demandStatus)
     {
-        $demand = $this->createDemandWithItems(1, [
-            'company_id' => $this->company->id,
-            'status' => \App\Type\DemandStatus::ACTIVE
-        ]);
-
-        $data = [
-            'status' => \App\Type\DemandStatus::ARCHIVED
-        ];
-        $r = $this->patch(sprintf('/api/demands/%s?token=%s', $demand->id, $this->token), $data);
-            $r->assertStatus(202);
-
-        $this->assertEquals(\App\Type\DemandStatus::ARCHIVED, Demand::find($demand->id)->status);
+        $updateDemand = Demand::find($demandId);
+        $this->assertEquals($demandStatus, $updateDemand->status);
     }
 
-    public function testUpdateActive()
-    {
-        $demand = $this->createDemandWithItems(1, [
-            'company_id' => $this->company->id,
-            'status' => \App\Type\DemandStatus::ARCHIVED
-        ]);
 
-        $data = [
-            'status' => \App\Type\DemandStatus::ACTIVE
-        ];
-        $r = $this->patch(sprintf('/api/demands/%s?token=%s', $demand->id, $this->token), $data);
-        $r->assertStatus(202);
-
-        $this->assertEquals(\App\Type\DemandStatus::ACTIVE, Demand::find($demand->id)->status);
-    }
-
-    public function testUpdateNotExist()
-    {
-        $demandId = 567;
-        $data = [
-            'status' => \App\Type\DemandStatus::ACTIVE
-        ];
-        $r = $this->patch(sprintf('/api/demands/%s?token=%s', $demandId, $this->token), $data);
-        $r->assertStatus(404);
-    }
-
-    public function testUpdateSame()
-    {
-        $demand = $this->createDemandWithItems(1, [
-            'company_id' => $this->company->id,
-            'status' => \App\Type\DemandStatus::ACTIVE
-        ]);
-
-        $data = [
-            'status' => \App\Type\DemandStatus::ACTIVE
-        ];
-        $r = $this->patch(sprintf('/api/demands/%s?token=%s', $demand->id, $this->token), $data);
-        $r->assertStatus(202);
-
-        $this->assertEquals(\App\Type\DemandStatus::ACTIVE, Demand::find($demand->id)->status);
-    }
-
-    public function testNotRightUpdate()
-    {
-        $company = factory(\App\Company::class)->create();
-        $demand = $this->createDemandWithItems(1, [
+    private function createDemandForStatus(
+            \App\Company $company, $status,
+            $countDemandItems = 1, $regions = null, $spheres = null
+    ) {
+        $this->createBeforeDemand();
+        return $this->createDemandWithItems($countDemandItems,[
+            'status' => $status,
             'company_id' => $company->id,
-            'status' => \App\Type\DemandStatus::ACTIVE
+            'spheres' => isset($spheres) ? $spheres : $this->spheres,
+            'regions' => isset($regions) ? $regions : $this->regions,
         ]);
-
-        $data = [
-            'status' => \App\Type\DemandStatus::ARCHIVED
-        ];
-        $r = $this->patch(sprintf('/api/demands/%s?token=%s', $demand->id, $this->token), $data);
-        $r->assertStatus(403);
-
-        $this->assertEquals(\App\Type\DemandStatus::ACTIVE, Demand::find($demand->id)->status);
     }
 
 
 
+    public function testActiveFromDraft()
+    {
+        $demand = $this->createDemandForStatus(
+            $this->company, \App\Type\DemandStatus::DRAFT, 1
+        );
 
+        $this->expectsJobs(\App\Jobs\CreateDraftResponseForDemandJob::class);
+        $this->post(sprintf('api/demands/active?token=%s', $this->token), ['id' => $demand->id])
+            ->assertStatus(202);
+        $this->checkDemandStatus($demand->id, \App\Type\DemandStatus::ACTIVE);
+    }
+
+    public function testActiveFromCancel()
+    {
+        $demand = $this->createDemandForStatus(
+            $this->company, \App\Type\DemandStatus::CANCEL, 1
+        );
+
+        $this->post(sprintf('api/demands/active?token=%s', $this->token), ['id' => $demand->id])
+            ->assertStatus(403);
+        $this->checkDemandStatus($demand->id, \App\Type\DemandStatus::CANCEL);
+    }
+
+
+
+    public function testActiveNotAuth()
+    {
+        $this->post('/api/demands/active')
+            ->assertStatus(401);
+    }
+
+    public function testActiveNotOwnDemand()
+    {
+        $demand = $this->createDemandForStatus(
+            factory(\App\Company::class)->create(), \App\Type\DemandStatus::DRAFT, 1
+        );
+
+        $this->post(sprintf('api/demands/active?token=%s', $this->token), ['id' => $demand->id])
+            ->assertStatus(403);
+    }
+
+    public function testActiveNotHasDemandItems()
+    {
+        $demand = $this->createDemandForStatus(
+            $this->company, \App\Type\DemandStatus::DRAFT, 0
+        );
+
+        $this->post(sprintf('api/demands/active?token=%s', $this->token), ['id' => $demand->id])
+            ->assertStatus(403);
+    }
+
+    public function testActiveNotHasSpheres()
+    {
+        $demand = $this->createDemandForStatus(
+            $this->company, \App\Type\DemandStatus::DRAFT, 0, null, []
+        );
+
+        $this->post(sprintf('api/demands/active?token=%s', $this->token), ['id' => $demand->id])
+            ->assertStatus(403);
+    }
+
+
+    public function testActiveNotHasRegions()
+    {
+        $demand = $this->createDemandForStatus(
+            $this->company, \App\Type\DemandStatus::DRAFT, 0, [], null
+        );
+
+        $this->post(sprintf('api/demands/active?token=%s', $this->token), ['id' => $demand->id])
+            ->assertStatus(403);
+    }
+
+    public function testActiveFromDone()
+    {
+        $demand = $this->createDemandForStatus(
+            $this->company, \App\Type\DemandStatus::DONE, 1
+        );
+
+        $this->post(sprintf('api/demands/active?token=%s', $this->token), ['id' => $demand->id])
+            ->assertStatus(403);
+    }
+
+    public function testActiveFromDeleted()
+    {
+        $demand = $this->createDemandForStatus(
+            $this->company, \App\Type\DemandStatus::DELETED, 1
+        );
+
+        $this->post(sprintf('api/demands/active?token=%s', $this->token), ['id' => $demand->id])
+            ->assertStatus(403);
+    }
 
 }

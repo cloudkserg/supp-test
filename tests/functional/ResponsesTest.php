@@ -34,7 +34,6 @@ class ResponsesTest extends TestCase
 
         $data = [
             'deliveryType' => 'sfsdfsd',
-            'status' => \App\Type\ResponseStatus::ACTIVE,
             'responseItems' => [
                 [
                     'demandItemId' => 1,
@@ -74,7 +73,18 @@ class ResponsesTest extends TestCase
         ]);
 
         $data = [
-            'status' => \App\Type\ResponseStatus::ARCHIVED
+            'deliveryType' => 'sfsdfsd',
+            'number' => '56',
+            'desc' => 'abba',
+            'responseItems' => [
+                [
+                    'demandItemId' => 1,
+                    'price' => 23
+                ], [
+                    'demandItemId' => 1,
+                    'price' => 23
+                ]
+            ]
         ];
 
         $r = $this->patch(sprintf('/api/responses/%s?token=%s', $response->id, $this->token), $data);
@@ -84,9 +94,20 @@ class ResponsesTest extends TestCase
         $this->assertCount(1, $responses);
 
         $response = $responses[0];
-        $this->assertEquals(\App\Type\ResponseStatus::ARCHIVED, $response->status);
+        $this->assertEquals(\App\Type\ResponseStatus::ACTIVE, $response->status);
         $this->assertEquals($this->company->id, $response->company_id);
+
+        $this->assertEquals($data['deliveryType'], $response->deliveryType);
+        $this->assertEquals($data['number'], $response->deliveryType);
+        $this->assertEquals($data['desc'], $response->desc);
+
         $this->assertCount(2, $response->responseItems);
+
+        $this->assertEquals($data['responseItems'][0]['demandItemId'], $response->responseItems[0]->demand_item_id);
+        $this->assertEquals($data['responseItems'][0]['price'], $response->responseItems[0]->price);
+
+        $this->assertEquals($data['responseItems'][1]['demandItemId'], $response->responseItems[1]->demand_item_id);
+        $this->assertEquals($data['responseItems'][1]['price'], $response->responseItems[1]->price);
     }
 
     public function testUpdateNotActiveResponseItems()
@@ -98,13 +119,13 @@ class ResponsesTest extends TestCase
         //createResponse
         $company = factory(\App\Company::class)->create();
         $response = $this->createResponseWithItems(1, [
-            'status' => \App\Type\ResponseStatus::ARCHIVED,
+            'status' => \App\Type\ResponseStatus::DONE,
             'company_id' => $company->id,
             'demand_id' => $demand->id
         ]);
 
         $data = [
-            'status' => \App\Type\ResponseStatus::ARCHIVED,
+            'status' => \App\Type\ResponseStatus::DONE,
             'deliveryType' => 'sfsdfsd',
             'responseItems' => [
                 [

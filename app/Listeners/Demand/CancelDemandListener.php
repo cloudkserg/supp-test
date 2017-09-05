@@ -10,7 +10,7 @@ use App\Type\ResponseStatus;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class ArchiveDemandListener
+class CancelDemandListener
 {
     /**
      * Create the event listener.
@@ -46,6 +46,6 @@ class ArchiveDemandListener
     {
         $user = $response->company->getAdmin();
         \Mail::to($user->email)
-            ->send(new ArchiveDemandMail($item));
+            ->send(new CancelDemandMail($item));
     }
 }
