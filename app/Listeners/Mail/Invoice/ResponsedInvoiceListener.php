@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Listeners\Invoice;
+namespace App\Listeners\Mail\Invoice;
 
-use App\Events\Invoice\CreateInvoiceEvent;
-use App\Mail\Invoice\CreateInvoiceMail;
+use App\Events\Invoice\ResponsedInvoiceEvent;
+use App\Mail\Invoice\ResponsedInvoiceMail;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class CreateInvoiceListener
+class ResponsedInvoiceListener
 {
     /**
      * Create the event listener.
@@ -22,14 +22,14 @@ class CreateInvoiceListener
     /**
      * Handle the event.
      *
-     * @param  CreateInvoiceEvent  $event
+     * @param  ResponsedInvoiceEvent  $event
      * @return void
      */
-    public function handle(CreateInvoiceEvent $event)
+    public function handle(ResponsedInvoiceEvent $event)
     {
         $item = $event->item;
-        $admin = $item->response->company->getAdmin();
+        $admin = $item->response->demand->company->getAdmin();
         \Mail::to($admin->email)
-            ->send(new CreateInvoiceMail($item));
+            ->send(new ResponsedInvoiceMail($item));
     }
 }

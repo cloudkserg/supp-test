@@ -263,4 +263,72 @@ class DemandsTest extends TestCase
             ->assertStatus(403);
     }
 
+
+
+
+    public function testCancelFromDraft()
+    {
+        $demand = $this->createDemandForStatus(
+            $this->company, \App\Type\DemandStatus::DRAFT, 1
+        );
+
+        $this->expectsJobs(\App\Jobs\CreateDraftResponseForCompanyJob::class);
+        $this->post(sprintf('api/demands/cancel?token=%s', $this->token), ['id' => $demand->id])
+            ->assertStatus(202);
+        $this->checkDemandStatus($demand->id, \App\Type\DemandStatus::CANCEL);
+    }
+
+    public function testCancelFromActive()
+    {
+        $demand = $this->createDemandForStatus(
+            $this->company, \App\Type\DemandStatus::ACTIVE, 1
+        );
+
+        $this->post(sprintf('api/demands/cancel?token=%s', $this->token), ['id' => $demand->id])
+            ->assertStatus(403);
+        $this->checkDemandStatus($demand->id, \App\Type\DemandStatus::CANCEL);
+    }
+
+
+
+    public function testCancelNotAuth()
+    {
+        $this->post('/api/demands/cancel')
+            ->assertStatus(401);
+    }
+
+    public function testCancelNotOwnDemand()
+    {
+        $demand = $this->createDemandForStatus(
+            factory(\App\Company::class)->create(), \App\Type\DemandStatus::DRAFT, 1
+        );
+
+        $this->post(sprintf('api/demands/cancel?token=%s', $this->token), ['id' => $demand->id])
+            ->assertStatus(403);
+    }
+
+    public function testCancelFromDone()
+    {
+        $demand = $this->createDemandForStatus(
+            $this->company, \App\Type\DemandStatus::DONE, 1
+        );
+
+        $this->post(sprintf('api/demands/cancel?token=%s', $this->token), ['id' => $demand->id])
+            ->assertStatus(403);
+    }
+
+
+
+
+    public function testCancelFromDeleted()
+    {
+        $demand = $this->createDemandForStatus(
+            $this->company, \App\Type\DemandStatus::DELETED, 1
+        );
+
+        $this->post(sprintf('api/demands/cancel?token=%s', $this->token), ['id' => $demand->id])
+            ->assertStatus(403);
+    }
+
+
 }

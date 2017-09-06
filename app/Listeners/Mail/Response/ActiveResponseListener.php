@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Listeners\Response;
+namespace App\Listeners\Mail\Response;
 
-use App\Events\Response\CreateResponseEvent;
-use App\Mail\Response\CreateResponseMail;
+use App\Events\Response\ActiveResponseEvent;
+use App\Mail\Response\ActiveResponseMail;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class CreateResponseListener
+class ActiveResponseListener
 {
     /**
      * Create the event listener.
@@ -22,14 +22,14 @@ class CreateResponseListener
     /**
      * Handle the event.
      *
-     * @param  CreateResponseEvent  $event
+     * @param  ActiveResponseEvent  $event
      * @return void
      */
-    public function handle(CreateResponseEvent $event)
+    public function handle(ActiveResponseEvent $event)
     {
         $item = $event->item;
-        $admin = $item->company->getAdmin();
+        $admin = $item->demand->company->getAdmin();
         \Mail::to($admin)
-            ->send(new CreateResponseMail($item->demand));
+            ->send(new ActiveResponseMail($item));
     }
 }

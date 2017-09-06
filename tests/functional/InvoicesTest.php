@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use App\Events\Invoice\CreateInvoiceEvent;
+use Illuminate\Support\Facades\Event;
+use App\Events\Invoice\DeleteInvoiceEvent;
 class InvoicesTest extends TestCase
 {
     use DatabaseMigrations;
@@ -26,8 +29,9 @@ class InvoicesTest extends TestCase
             ->assertStatus(401);
     }
 
-    public function testCreate()
+    public function testCreateRight()
     {
+        Event::fake();
         $data = [
             'responseItems' => [
                 $this->responseModel->responseItems[0]->id,
@@ -39,10 +43,22 @@ class InvoicesTest extends TestCase
             $r->assertStatus(201)
             ->assertHeader('location', '/invoices/1');
 
+
+        //check isset invoice
         $items = $this->responseModel->invoices;
         $this->assertCount(1, $items);
+
+        //check invoice responseItems
         $item = $items[0];
         $this->assertCount(2, $item->responseItems);
+
+        //check invoice event
+        Event::assertDispatched(CreateInvoiceEvent::class, function ($e)  {
+            return (
+                $e->item->exists and
+                count($e->item->responseItems) == 2
+            );
+        });
     }
 
     public function testNotCreateRights()
@@ -125,30 +141,42 @@ class InvoicesTest extends TestCase
 
     public function testUpdateRight()
     {
+        Event::fake();
+        /**
+         * Создаем инвойс с файлом
+         */
         $item = factory(\App\Demand\Invoice::class)->create([
             'response_id' => $this->responseModel->id
         ]);
-
         $path = storage_path('app/tests/report.xls');
         $newPath = storage_path('app/report.xls');
         File::copy($path, $newPath);
 
+        //отправляем файл в инвойс
         $file = new \Illuminate\Http\UploadedFile($newPath, 'file', 'application/excel', 446, null, true);
         $data = [
             'file' => $file
         ];
-
         $r = $this->put('/api/invoices/' . $item->id . '/?token=' . $this->token,
             $data
         );
         $r->assertStatus(202);
 
+        //инвойс создан с этим файлом
         $invoice = \App\Demand\Invoice::first();
         $this->assertEquals('report.xls', $invoice->filename);
         $this->assertTrue(file_exists($invoice->filepath));
 
+        //удаляем инвойс с файлом
         $service = new \App\Services\InvoiceService();
         $service->deleteItem($invoice);
+
+
+        Event::assertDispatched(\App\Events\Invoice\ResponsedInvoiceEvent::class, function ($e) use ($item) {
+            return (
+                $e->item->id == $item->id
+            );
+        });
     }
 
 
@@ -160,6 +188,7 @@ class InvoicesTest extends TestCase
 
     public function testDeleteRight()
     {
+        Event::fake();
         $item = factory(\App\Demand\Invoice::class)->create([
             'response_id' => $this->responseModel->id
         ]);
@@ -168,6 +197,13 @@ class InvoicesTest extends TestCase
         $r->assertStatus(202);
 
         $this->assertEquals(0, \App\Demand\Invoice::count());
+
+        Event::assertDispatched(DeleteInvoiceEvent::class, function ($e) use ($item) {
+
+            return (
+                $e->item->id == $item->id
+            );
+        });
     }
 
     public function testDeleteForeign()

@@ -1,16 +1,18 @@
 <?php
 
-namespace App\Listeners\Demand;
+namespace App\Listeners\Mail\Demand;
 
 use App\Demand\Demand;
 use App\Demand\Response;
 use App\Events\Demand\ArchiveDemandEvent;
+use App\Events\Demand\DeleteDemandEvent;
 use App\Mail\Demand\ArchiveDemandMail;
+use App\Mail\Demand\DeleteDemandMail;
 use App\Type\ResponseStatus;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class CancelDemandListener
+class DeleteDemandListener
 {
     /**
      * Create the event listener.
@@ -25,10 +27,10 @@ class CancelDemandListener
     /**
      * Handle the event.
      *
-     * @param  ArchiveDemandEvent  $event
+     * @param  DeleteDemandEvent  $event
      * @return void
      */
-    public function handle(ArchiveDemandEvent $event)
+    public function handle(DeleteDemandEvent $event)
     {
         $item = $event->item;
         foreach ($item->responses as $response) {
@@ -46,6 +48,6 @@ class CancelDemandListener
     {
         $user = $response->company->getAdmin();
         \Mail::to($user->email)
-            ->send(new CancelDemandMail($item));
+            ->send(new DeleteDemandMail($item));
     }
 }

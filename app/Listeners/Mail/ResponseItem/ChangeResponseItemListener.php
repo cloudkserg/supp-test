@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Listeners\ResponseItem;
+namespace App\Listeners\Mail\ResponseItem;
 
 use App\Events\ResponseItem\ChangeResponseItemEvent;
 use App\Mail\ResponseItem\ChangeResponseItemMail;

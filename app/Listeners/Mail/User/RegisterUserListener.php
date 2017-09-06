@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Listeners;
+namespace App\Listeners\Mail\User;
 
 use App\Events\RegisterUserEvent;
 use App\Mail\RegisterUser;

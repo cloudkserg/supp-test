@@ -11,8 +11,8 @@ namespace App\Bindings;
 use App\Demand\ResponseItem;
 use App\Events\ResponseItem\ChangeResponseItemEvent;
 use App\Events\ResponseItem\DeleteResponseItemEvent;
-use App\Listeners\ResponseItem\ChangeResponseItemListener;
-use App\Listeners\ResponseItem\DeleteResponseItemListener;
+use App\Listeners\Mail\ResponseItem\ChangeResponseItemListener;
+use App\Listeners\Mail\ResponseItem\DeleteResponseItemListener;
 use App\Services\ResponseItemService;
 
 class ResponseItemBinding implements BindingInterface

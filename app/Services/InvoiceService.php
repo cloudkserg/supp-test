@@ -64,6 +64,7 @@ class InvoiceService
         if (isset($item->filename)) {
             $this->removeFile($item->filepath);
         }
+        event(new DeleteInvoiceEvent($item));
         $item->delete();
     }
 
@@ -83,7 +84,19 @@ class InvoiceService
         }
         $this->saveFile($file, $item->getPath());
 
-        $item->filename = $file->getFilename();
+        $this->updateChangeFields($item, $file->getFilename());
+        event(new ResponsedInvoiceEvent($item));
+    }
+
+    /**
+     * @param Invoice $item
+     * @param $filename
+     *
+     */
+    private function updateChangeFields(Invoice $item, $filename)
+    {
+        $item->filename = $filename;
+        $item->status = InvoiceStatus::RESPONSED;
         $item->saveOrFail();
     }
 

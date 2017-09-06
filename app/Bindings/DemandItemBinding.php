@@ -12,8 +12,8 @@ namespace App\Bindings;
 use App\Demand\DemandItem;
 use App\Events\DemandItem\SelectedResponseItemEvent;
 use App\Events\DemandItem\UnselectedResponseItemEvent;
-use App\Listeners\DemandItem\SelectedResponseItemListener;
-use App\Listeners\DemandItem\UnselectedResponseItemListener;
+use App\Listeners\Mail\DemandItem\SelectedResponseItemListener;
+use App\Listeners\Mail\DemandItem\UnselectedResponseItemListener;
 use App\Services\DemandItemService;
 
 class DemandItemBinding implements BindingInterface

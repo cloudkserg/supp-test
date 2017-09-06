@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Listeners\Response;
+namespace App\Listeners\Mail\Response;
 
-use App\Events\Response\CancelResponseEvent;
-use App\Mail\Response\CancelResponseMail;
+use App\Events\Response\CreateResponseEvent;
+use App\Mail\Response\CreateResponseMail;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class CancelResponseListener
+class CreateResponseListener
 {
     /**
      * Create the event listener.
@@ -22,14 +22,14 @@ class CancelResponseListener
     /**
      * Handle the event.
      *
-     * @param  CancelResponseEvent  $event
+     * @param  CreateResponseEvent  $event
      * @return void
      */
-    public function handle(CancelResponseEvent $event)
+    public function handle(CreateResponseEvent $event)
     {
         $item = $event->item;
-        $admin = $item->demand->company->getAdmin();
+        $admin = $item->company->getAdmin();
         \Mail::to($admin)
-            ->send(new CancelResponseMail($item));
+            ->send(new CreateResponseMail($item->demand));
     }
 }

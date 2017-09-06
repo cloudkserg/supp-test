@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Listeners\ResponseItem;
+namespace App\Listeners\Mail\Invoice;
 
-use App\Events\ResponseItem\DeleteResponseItemEvent;
-use App\Mail\ResponseItem\DeleteResponseItemMail;
+use App\Events\Invoice\DeleteInvoiceEvent;
+use App\Mail\Invoice\DeleteInvoiceMail;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class DeleteResponseItemListener
+class DeleteInvoiceListener
 {
     /**
      * Create the event listener.
@@ -22,14 +22,14 @@ class DeleteResponseItemListener
     /**
      * Handle the event.
      *
-     * @param  DeleteResponseItemEvent  $event
+     * @param  DeleteInvoiceEvent  $event
      * @return void
      */
-    public function handle(DeleteResponseItemEvent $event)
+    public function handle(DeleteInvoiceEvent $event)
     {
         $item = $event->item;
         $admin = $item->response->demand->company->getAdmin();
-        \Mail::to($admin)
-            ->send(new DeleteResponseItemMail($item));
+        \Mail::to($admin->email)
+            ->send(new DeleteInvoiceMail($item));
     }
 }

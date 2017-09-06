@@ -9,16 +9,14 @@
 namespace App\Bindings;
 
 use App\Demand\Response;
-use App\Demand\ResponseItem;
 use App\Events\Response\ActiveResponseEvent;
 use App\Events\Response\CancelResponseEvent;
 use App\Events\Response\ChangeResponseEvent;
 use App\Events\Response\CreateResponseEvent;
-use App\Listeners\Response\ActiveResponseListener;
-use App\Listeners\Response\CancelResponseListener;
-use App\Listeners\Response\ChangeResponseListener;
-use App\Listeners\Response\CreateResponseListener;
-use App\Services\ResponseItemService;
+use App\Listeners\Mail\Response\ActiveResponseListener;
+use App\Listeners\Mail\Response\CancelResponseListener;
+use App\Listeners\Mail\Response\ChangeResponseListener;
+use App\Listeners\Mail\Response\CreateResponseListener;
 use App\Services\ResponseService;
 
 class ResponseBinding implements BindingInterface

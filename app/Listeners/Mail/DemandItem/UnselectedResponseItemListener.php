@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Listeners\DemandItem;
+namespace App\Listeners\Mail\DemandItem;
 
 use App\Events\DemandItem\UnselectedResponseItemEvent;
 use App\Mail\DemandItem\UnselectedResponseItemMail;

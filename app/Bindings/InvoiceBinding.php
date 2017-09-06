@@ -13,9 +13,9 @@ use App\Demand\Invoice;
 use App\Events\Invoice\CreateInvoiceEvent;
 use App\Events\Invoice\DeleteInvoiceEvent;
 use App\Events\Invoice\ResponsedInvoiceEvent;
-use App\Listeners\Invoice\CreateInvoiceListener;
-use App\Listeners\Invoice\DeleteInvoiceListener;
-use App\Listeners\Invoice\ResponsedInvoiceListener;
+use App\Listeners\Mail\Invoice\CreateInvoiceListener;
+use App\Listeners\Mail\Invoice\DeleteInvoiceListener;
+use App\Listeners\Mail\Invoice\ResponsedInvoiceListener;
 use App\Services\InvoiceService;
 
 class InvoiceBinding implements BindingInterface
