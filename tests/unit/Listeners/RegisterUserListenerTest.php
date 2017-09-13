@@ -25,7 +25,7 @@ class RegisterUserListenerTest extends TestCase
         $event = new RegisterUserEvent($user);
 
         Mail::fake();
-        $listener = new \App\Listeners\RegisterUserListener();
+        $listener = new \App\Listeners\Mail\User\RegisterUserListener();
         $listener->handle($event);
 
         Mail::assertSent(RegisterUser::class, function ($mail) use ($user) {

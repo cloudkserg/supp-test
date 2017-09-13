@@ -5,7 +5,9 @@ namespace App\Listeners\Mail\Demand;
 use App\Demand\Demand;
 use App\Demand\Response;
 use App\Events\Demand\ArchiveDemandEvent;
+use App\Events\Demand\CancelDemandEvent;
 use App\Mail\Demand\ArchiveDemandMail;
+use App\Mail\Demand\CancelDemandMail;
 use App\Type\ResponseStatus;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -25,10 +27,10 @@ class CancelDemandListener
     /**
      * Handle the event.
      *
-     * @param  ArchiveDemandEvent  $event
+     * @param  CancelDemandEvent  $event
      * @return void
      */
-    public function handle(ArchiveDemandEvent $event)
+    public function handle(CancelDemandEvent $event)
     {
         $item = $event->item;
         foreach ($item->responses as $response) {

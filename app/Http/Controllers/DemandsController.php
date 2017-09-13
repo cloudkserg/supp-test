@@ -115,6 +115,46 @@ class DemandsController extends Controller
 
     /**
      * @SWG\Post(
+     *     path="/demands/cancel",
+     *     summary="Cancel demand",
+     *     tags={"demand"},
+     *     description="",
+     *     operationId="cancelDemands",
+     *     @SWG\Parameter(
+     *          name="Demand",
+     *          in="body",
+     *          @SWG\Schema(ref="#/definitions/StatusDemandRequest")
+     *      ),
+     *     @SWG\Response(
+     *         response=202,
+     *         description="successful operation",
+     *     ),
+     *     @SWG\Response(
+     *         response=404,
+     *         ref="#/responses/NotFoundResponse"
+     *     ),
+     *     @SWG\Response(
+     *         response=401,
+     *         ref="#/responses/NotAuthResponse"
+     *     ),
+     *     @SWG\Response(
+     *         response="default",
+     *         ref="#/responses/DefaultErrorResponse"
+     *     ),
+     *
+     *     security={{ "token": {} }}
+     * )
+     */
+    public function storeCancel(Requests\Demand\CancelDemandRequest $cancelRequest)
+    {
+        $demand = $cancelRequest->getDemand();
+        $this->demandService->cancelItem($demand);
+
+        return $this->response->accepted();
+    }
+
+    /**
+     * @SWG\Post(
      *     path="/demands/active",
      *     summary="Active demand",
      *     tags={"demand"},

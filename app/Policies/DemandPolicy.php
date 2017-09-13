@@ -16,20 +16,27 @@ class DemandPolicy
 
     public function update(User $user, Demand $demand)
     {
-        return $user->company_id == $demand->company_id;
+        return $demand->isOwner($user);
     }
 
     public function active(User $user, Demand $demand)
     {
         return (
-            $this->update($user, $demand) and
-            $demand->status == DemandStatus::DRAFT and
+            $demand->isOwner($user) and
+            $demand->isDraft() and
             $demand->demandItems->isNotEmpty() and
             $demand->regions->isNotEmpty() and
             $demand->spheres->isNotEmpty()
         );
     }
 
+    public function cancel(User $user, Demand $demand)
+    {
+        return (
+            $demand->isOwner($user) and
+            $demand->isCancelled()
+        );
+    }
 
     public function message(User $user, Demand $demand, $anotherCompanyId)
     {

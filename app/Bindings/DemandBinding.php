@@ -19,14 +19,14 @@ class DemandBinding implements BindingInterface
 {
     public function generateEventBindings()
     {
-        Demand::updated(function (Demand $item) {
-            (new DemandService())->onUpdate($item);
-        });
+        // TODO: Implement generateEventBindings() method.
     }
+
 
     public function generateListenerBindings()
     {
         \Event::listen(CancelDemandEvent::class, CancelDemandListener::class);
+        \Event::listen(CancelDemandEvent::class, \App\Listeners\Response\CancelDemandListener::class);
         \Event::listen(DeleteDemandEvent::class, DeleteDemandListener::class);
 
     }

@@ -2,6 +2,7 @@
 
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use App\Demand\Demand;
+use \App\Events\Demand\CancelDemandEvent;
 class DemandsTest extends TestCase
 {
     use DatabaseMigrations;
@@ -268,24 +269,33 @@ class DemandsTest extends TestCase
 
     public function testCancelFromDraft()
     {
+        Event::fake();
         $demand = $this->createDemandForStatus(
             $this->company, \App\Type\DemandStatus::DRAFT, 1
         );
 
-        $this->expectsJobs(\App\Jobs\CreateDraftResponseForCompanyJob::class);
+
         $this->post(sprintf('api/demands/cancel?token=%s', $this->token), ['id' => $demand->id])
             ->assertStatus(202);
         $this->checkDemandStatus($demand->id, \App\Type\DemandStatus::CANCEL);
+        Event::assertDispatched(CancelDemandEvent::class, function (CancelDemandEvent $event) use ($demand) {
+            return $event->item->id == $demand->id;
+        });
     }
 
     public function testCancelFromActive()
     {
+        Event::fake();
         $demand = $this->createDemandForStatus(
             $this->company, \App\Type\DemandStatus::ACTIVE, 1
         );
 
+
         $this->post(sprintf('api/demands/cancel?token=%s', $this->token), ['id' => $demand->id])
-            ->assertStatus(403);
+            ->assertStatus(202);
+        Event::assertDispatched(CancelDemandEvent::class, function (CancelDemandEvent $event) use ($demand) {
+            return $event->item->id == $demand->id;
+        });
         $this->checkDemandStatus($demand->id, \App\Type\DemandStatus::CANCEL);
     }
 
@@ -326,7 +336,7 @@ class DemandsTest extends TestCase
             $this->company, \App\Type\DemandStatus::DELETED, 1
         );
 
-        $this->post(sprintf('api/demands/cancel?token=%s', $this->token), ['id' => $demand->id])
+        $r = $this->post(sprintf('api/demands/cancel?token=%s', $this->token), ['id' => $demand->id])
             ->assertStatus(403);
     }
 

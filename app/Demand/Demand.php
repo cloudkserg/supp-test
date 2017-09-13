@@ -8,6 +8,7 @@ use App\Type\DemandStatus;
 use App\Type\Region;
 use App\Type\ResponseStatus;
 use App\Type\Sphere;
+use App\User;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 
@@ -125,6 +126,31 @@ class Demand extends Model
     public function isActive()
     {
         return $this->status == DemandStatus::ACTIVE;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isDraft()
+    {
+        return $this->status == DemandStatus::DRAFT;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isCancelled()
+    {
+        return in_array($this->status, [DemandStatus::DRAFT, DemandStatus::ACTIVE]);
+    }
+
+    /**
+     * @param User $user
+     * @return bool
+     */
+    public function isOwner(User $user)
+    {
+        return ($this->company_id == $user->company_id);
     }
 
 

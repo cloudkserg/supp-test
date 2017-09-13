@@ -111,6 +111,19 @@ class ResponseService
 
     /**
      * @param Response $item
+     * @return Response
+     */
+    public function cancelItem(Response $item)
+    {
+        $item->status = ResponseStatus::CANCEL;
+        $item->saveOrFail();
+
+        event(new CancelResponseEvent($item));
+        return $item;
+    }
+
+    /**
+     * @param Response $item
      * @param Carbon $time
      * @return Response
      */

@@ -270,6 +270,82 @@
                 ]
             }
         },
+        "/demands/cancel": {
+            "post": {
+                "tags": [
+                    "demand"
+                ],
+                "summary": "Cancel demand",
+                "description": "",
+                "operationId": "cancelDemands",
+                "parameters": [
+                    {
+                        "name": "Demand",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/StatusDemandRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "202": {
+                        "description": "successful operation"
+                    },
+                    "404": {
+                        "$ref": "#/responses/NotFoundResponse"
+                    },
+                    "401": {
+                        "$ref": "#/responses/NotAuthResponse"
+                    },
+                    "default": {
+                        "$ref": "#/responses/DefaultErrorResponse"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
+        "/demands/active": {
+            "post": {
+                "tags": [
+                    "demand"
+                ],
+                "summary": "Active demand",
+                "description": "",
+                "operationId": "activeDemands",
+                "parameters": [
+                    {
+                        "name": "Demand",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/StatusDemandRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "202": {
+                        "description": "successful operation"
+                    },
+                    "404": {
+                        "$ref": "#/responses/NotFoundResponse"
+                    },
+                    "401": {
+                        "$ref": "#/responses/NotAuthResponse"
+                    },
+                    "default": {
+                        "$ref": "#/responses/DefaultErrorResponse"
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
         "/demands/{id}": {
             "delete": {
                 "tags": [
@@ -335,14 +411,8 @@
                     }
                 ],
                 "responses": {
-                    "201": {
-                        "description": "successful operation",
-                        "headers": {
-                            "location": {
-                                "description": "/demands/1",
-                                "type": "string"
-                            }
-                        }
+                    "202": {
+                        "description": "successful operation"
                     },
                     "404": {
                         "$ref": "#/responses/NotFoundResponse"
@@ -1376,6 +1446,14 @@
                 }
             }
         },
+        "StatusDemandRequest": {
+            "properties": {
+                "id": {
+                    "description": "id demand",
+                    "type": "int"
+                }
+            }
+        },
         "UpdateCompanyRequest": {
             "required": [
                 "title"
@@ -1437,17 +1515,7 @@
             }
         },
         "UpdateDemandRequest": {
-            "required": [
-                "status"
-            ],
             "properties": {
-                "status": {
-                    "type": "string",
-                    "enum": [
-                        "active",
-                        "archived"
-                    ]
-                },
                 "number": {
                     "description": "number demand",
                     "type": "string"
@@ -1477,23 +1545,10 @@
                 "responseItems"
             ],
             "properties": {
-                "status": {
-                    "type": "string",
-                    "enum": [
-                        "active",
-                        "draft",
-                        "cancel",
-                        "archived"
-                    ]
-                },
                 "deliveryType": {
                     "type": "string"
                 },
                 "number": {
-                    "type": "string"
-                },
-                "readed": {
-                    "description": "datetime",
                     "type": "string"
                 },
                 "desc": {

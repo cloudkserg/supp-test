@@ -11,6 +11,7 @@ namespace App\Services;
 
 
 use App\Events\Demand\ArchiveDemandEvent;
+use App\Events\Demand\CancelDemandEvent;
 use App\Events\Demand\DeleteDemandEvent;
 use App\Helpers\ModelHelper;
 use App\Http\Requests\UpdateDemandRequest;
@@ -98,6 +99,14 @@ class DemandService
         $demand->saveOrFail();
     }
 
+    public function cancelItem(Demand $demand)
+    {
+        $demand->status = DemandStatus::CANCEL;
+        $demand->saveOrFail();
+
+        event(new CancelDemandEvent($demand));
+    }
+
 
     /**
      * @param $id
@@ -128,6 +137,8 @@ class DemandService
     {
         $item->status = DemandStatus::DELETED;
         $item->saveOrFail();
+
+        event(new DeleteDemandEvent($item));
     }
 
     /**
@@ -156,15 +167,5 @@ class DemandService
         return $this->repo->count($query->getBuilder()) > 0;
     }
 
-
-    public function onUpdate(Demand $item)
-    {
-        if ($item->isDirty('status') and $item->status == DemandStatus::CANCEL) {
-            event(new CancelDemandEvent($item));
-        }
-        if ($item->isDirty('status') and $item->status == DemandStatus::DELETED) {
-            event(new DeleteDemandEvent($item));
-        }
-    }
 
 }
