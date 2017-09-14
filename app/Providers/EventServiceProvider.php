@@ -11,7 +11,7 @@ use App\Bindings\ResponseItemBinding;
 
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use App\Events\RegisterUserEvent;
-use App\Listeners\RegisterUserListener;
+use App\Listeners\Mail\User\RegisterUserListener;
 
 class EventServiceProvider extends ServiceProvider
 {
