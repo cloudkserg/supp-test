@@ -34,6 +34,7 @@ class ResponsedInvoiceMail extends Mailable
      */
     public function build()
     {
-        return $this->view('emails.invoice.responsed');
+        return $this->view('emails.invoice.responsed')
+        ->subject('Компания ' . $this->item->response->company->title . ' загрузила счет');
     }
 }

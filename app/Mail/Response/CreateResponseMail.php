@@ -35,6 +35,6 @@ class CreateResponseMail extends Mailable
     public function build()
     {
         return $this->view('emails.response.create')
-            ->subject('Создан запрос от компании ' . $this->item->title);
+            ->subject('Новая заявка от ' . $this->item->company->title);
     }
 }

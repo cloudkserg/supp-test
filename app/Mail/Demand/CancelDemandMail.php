@@ -36,6 +36,7 @@ class CancelDemandMail extends Mailable
      */
     public function build()
     {
-        return $this->view('emails.demand.cancel');
+        return $this->view('emails.demand.cancel')
+            ->subject('Компания ' . $this->item->company->title . ' отменила заказ');
     }
 }

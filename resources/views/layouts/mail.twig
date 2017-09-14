@@ -23,8 +23,8 @@
                       <tr>
                           <td align="left" valign="top">
                             <div style="height: 30px; line-height: 30px; font-size: 28px;">&nbsp;</div>
-                            <a href="{{ get_env('APP_FRONTEND_NAME') }}" target="_blank" style="display: block; max-width: 90px;">
-                              <img src="img/logo.png" alt="{{ get_env('APP_NAME') }}" width="90" border="0" style="display: block; width: 90px;" />
+                            <a href="{{ get_env('APP_FRONTEND_NAME') }}" target="_blank" style="display: block; max-width: 90px; text-decoration: none;">
+                              <img src="{{ message.embed(assets_path('img/logo.png')) }}" alt="{{ get_env('APP_NAME') }}" width="90" border="0" style="display: block; width: 90px;" />
                             </a>
                             <div style="height: 22px; line-height: 22px; font-size: 20px;">&nbsp;</div>
                           </td>

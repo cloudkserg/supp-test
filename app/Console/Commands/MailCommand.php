@@ -6,6 +6,7 @@ use App\Demand\Demand;
 use App\Demand\DemandItem;
 use App\Demand\Response;
 use App\Demand\ResponseItem;
+use App\Demand\Invoice;
 use App\User;
 use Illuminate\Console\Command;
 use Illuminate\Foundation\Inspiring;
@@ -43,6 +44,9 @@ class MailCommand extends Command
                 break;
             case 'demandItem':
                 $itemValue =  DemandItem::find($value);
+                break;
+            case 'invoice':
+                $itemValue =  Invoice::find($value);
                 break;
             case 'user':
                 $itemValue =  User::find($value);

@@ -1,0 +1,18 @@
+{% extends 'layouts.mail.twig' %}
+
+{% block content %}
+  <table cellpadding="0" cellspacing="0" border="0" width="90%" style="width: 90% !important; min-width: 90%; max-width: 90%; background: #ffffff; border-radius: 6px; border-width: 1px; border-style: solid; border-color: #e9e9e9; box-shadow: 0px 2px 9px rgba(0, 0, 0, 0.1);">
+    <tr>
+      <td width="24" style="width: 24px; max-width: 24px; min-width: 24px; border-width: 1px; border-style: solid; border-color: #f9f9f9; border-top: none; border-left: none; border-right: none;">&nbsp;</td>
+      <td align="left" valign="top" style="border-width: 1px; border-style: solid; border-color: #f9f9f9; border-top: none; border-left: none; border-right: none;">
+        <div style="height: 37px; line-height: 37px; font-size: 35px;">&nbsp;</div>
+        <span style="font-family: Helvetica, Arial, sans-serif; color: #000000; font-size: 28px; line-height: 34px; font-weight: bold;">Поставщик загрузил счет</span>
+        <div style="height: 13px; line-height: 23px; font-size: 21px;">&nbsp;</div>
+        <span style="font-family: Helvetica, Arial, sans-serif; color: #000000; font-size: 16px; line-height: 22px;">Компания <a href="{{ get_env('APP_FRONTEND_NAME') }}/company/{{ item.response.company.id }}" target="_blank" style="font-family: Helvetica, Arial, sans-serif; color: #e3e8fd; text-decoration: underline;"><span style="font-family: Helvetica, Arial, sans-serif; color: #1d45ea; text-decoration: none;">{{ item.response.company.title }}</span></a> загрузила счет по заявке <span style="font-weight: 700;">{{ item.response.demand.title }}&nbsp;№{{ item.response.demand.number }}</span>.</span>
+        <div style="height: 30px; line-height: 30px; font-size: 28px;">&nbsp;</div>
+      </td>
+      <td width="24" style="width: 24px; max-width: 24px; min-width: 24px; border-width: 1px; border-style: solid; border-color: #f9f9f9; border-top: none; border-left: none; border-right: none;">&nbsp;</td>
+    </tr>
+    {% include 'partials.help.twig' %}
+</table>
+{% endblock %}

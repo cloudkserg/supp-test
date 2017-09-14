@@ -34,6 +34,7 @@ class CancelResponseMail extends Mailable
      */
     public function build()
     {
-        return $this->view('emails.response.cancel');
+        return $this->view('emails.response.cancel')
+            ->subject('Поставщик ' . $this->item->company->title . ' отменил свое предложение');
     }
 }

@@ -35,6 +35,6 @@ class RegisterUser extends Mailable
     public function build()
     {
         return $this->view('auth.emails.confirmation')
-            ->subject('Регистрация на сайте ' . env('APP_NAME'));
+            ->subject('Регистрация на сайте supp-energy.ru' . env('APP_NAME'));
     }
 }

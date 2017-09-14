@@ -34,6 +34,7 @@ class CreateInvoiceMail extends Mailable
      */
     public function build()
     {
-        return $this->view('emails.invoice.create');
+        return $this->view('emails.invoice.create')
+            ->subject('Компания запросила счет');;
     }
 }
