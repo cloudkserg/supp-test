@@ -2,7 +2,7 @@
 
 ## 1. Set rights for folder
 ```bash
-chown -R 777 storage/ bootstrap/cache
+chmod -R 777 storage/ bootstrap/cache
 ```
 
 ## 2. Install dependencies
