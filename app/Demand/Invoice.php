@@ -3,6 +3,7 @@
 namespace App\Demand;
 
 use App\Company;
+use App\Type\InvoiceStatus;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\File;
 /**
@@ -15,11 +16,12 @@ use Illuminate\Support\Facades\File;
  * @property string $filename
  * @property string $filepath
  *
- * @property \Illuminate\Database\Eloquent\Collection $responseItems
+ * @property \Illuminate\Database\Eloquent\Collection|ResponseItem[] $responseItems
  * @property Response $response
  */
 class Invoice extends Model
 {
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
@@ -54,4 +56,19 @@ class Invoice extends Model
         return $this->getPath() . '/' . $this->filename;
     }
 
+    /**
+     * @return bool
+     */
+    public function isResponsed()
+    {
+        return $this->status == InvoiceStatus::RESPONSED;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isRequested()
+    {
+        return $this->status == InvoiceStatus::REQUESTED;
+    }
 }

@@ -3,6 +3,7 @@
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use App\Demand\Demand;
 use \App\Events\Demand\CancelDemandEvent;
+use App\Events\Demand\DoneDemandEvent;
 class DemandsTest extends TestCase
 {
     use DatabaseMigrations;
@@ -337,6 +338,114 @@ class DemandsTest extends TestCase
         );
 
         $r = $this->post(sprintf('api/demands/cancel?token=%s', $this->token), ['id' => $demand->id])
+            ->assertStatus(403);
+    }
+
+    public function testDoneFromDraft()
+    {
+        $demand = $this->createDemandForStatus(
+            $this->company, \App\Type\DemandStatus::DRAFT, 1
+        );
+
+
+        $this->post(sprintf('api/demands/done?token=%s', $this->token), ['id' => $demand->id])
+            ->assertStatus(403);
+    }
+
+    public function testDoneFromActiveWithInvoiceNotResponded()
+    {
+        $demand = $this->createDemandForStatus(
+            $this->company, \App\Type\DemandStatus::ACTIVE, 1
+        );
+        $response = $this->createResponseWithItems(1, [
+            'demand_id' => $demand->id
+        ]);
+        $invoice = factory(\App\Demand\Invoice::class)->create([
+            'response_id' => $response->id,
+            'status' => \App\Type\InvoiceStatus::REQUESTED
+        ]);
+
+        $this->post(sprintf('api/demands/done?token=%s', $this->token), ['id' => $demand->id])
+            ->assertStatus(403);
+
+
+    }
+
+    public function testDoneRightFromActive()
+    {
+        Event::fake();
+        $demand = $this->createDemandForStatus(
+            $this->company, \App\Type\DemandStatus::ACTIVE, 1
+        );
+        $response = $this->createResponseWithItems(1, [
+            'demand_id' => $demand->id
+        ]);
+        $invoice = factory(\App\Demand\Invoice::class)->create([
+            'response_id' => $response->id,
+            'status' => \App\Type\InvoiceStatus::RESPONSED
+        ]);
+
+        $r = $this->post(sprintf('api/demands/done?token=%s', $this->token), ['id' => $demand->id])
+            ->assertStatus(202);
+        Event::assertDispatched(DoneDemandEvent::class, function (DoneDemandEvent $event) use ($demand) {
+            return $event->item->id == $demand->id;
+        });
+        $this->checkDemandStatus($demand->id, \App\Type\DemandStatus::DONE);
+    }
+
+
+
+    public function testDoneNotAuth()
+    {
+        $this->post('/api/demands/done')
+            ->assertStatus(401);
+    }
+
+    public function testDoneNotOwnDemand()
+    {
+        $company = factory(\App\Company::class)->create();
+        $demand = $this->createDemandForStatus(
+            $company, \App\Type\DemandStatus::ACTIVE, 1
+        );
+        $response = $this->createResponseWithItems(1, [
+            'demand_id' => $demand->id
+        ]);
+        $invoice = factory(\App\Demand\Invoice::class)->create([
+            'response_id' => $response->id,
+            'status' => \App\Type\InvoiceStatus::RESPONSED
+        ]);
+
+        $this->post(sprintf('api/demands/done?token=%s', $this->token), ['id' => $demand->id])
+            ->assertStatus(403);
+    }
+
+    public function testDoneFromActive()
+    {
+        $demand = $this->createDemandForStatus(
+            $this->company, \App\Type\DemandStatus::DONE, 1
+        );
+
+        $this->post(sprintf('api/demands/cancel?token=%s', $this->token), ['id' => $demand->id])
+            ->assertStatus(403);
+    }
+
+
+
+
+    public function testDoneFromDeleted()
+    {
+        $demand = $this->createDemandForStatus(
+            $this->company, \App\Type\DemandStatus::DELETED, 1
+        );
+        $response = $this->createResponseWithItems(1, [
+            'demand_id' => $demand->id
+        ]);
+        $invoice = factory(\App\Demand\Invoice::class)->create([
+            'response_id' => $response->id,
+            'status' => \App\Type\InvoiceStatus::RESPONSED
+        ]);
+
+        $this->post(sprintf('api/demands/done?token=%s', $this->token), ['id' => $demand->id])
             ->assertStatus(403);
     }
 

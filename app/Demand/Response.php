@@ -22,8 +22,8 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @property Company $company
  * @property Demand $demand
- * @property \Illuminate\Database\Eloquent\Collection; $responseItems
- * @property Invoice[] $invoices
+ * @property \Illuminate\Database\Eloquent\Collection|ResponseItem[] $responseItems
+ * @property \Illuminate\Database\Eloquent\Collection|Invoice[] $invoices
  *
  */
 class Response extends Model

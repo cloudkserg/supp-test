@@ -13,6 +13,7 @@ namespace App\Services;
 use App\Events\Demand\ArchiveDemandEvent;
 use App\Events\Demand\CancelDemandEvent;
 use App\Events\Demand\DeleteDemandEvent;
+use App\Events\Demand\DoneDemandEvent;
 use App\Helpers\ModelHelper;
 use App\Http\Requests\UpdateDemandRequest;
 use Carbon\Carbon;
@@ -107,6 +108,13 @@ class DemandService
         event(new CancelDemandEvent($demand));
     }
 
+    public function doneItem(Demand $demand)
+    {
+        $demand->status = DemandStatus::DONE;
+        $demand->saveOrFail();
+
+        event(new DoneDemandEvent($demand));
+    }
 
     /**
      * @param $id

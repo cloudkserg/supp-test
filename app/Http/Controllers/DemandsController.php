@@ -115,6 +115,46 @@ class DemandsController extends Controller
 
     /**
      * @SWG\Post(
+     *     path="/demands/done",
+     *     summary="Done demand",
+     *     tags={"demand"},
+     *     description="",
+     *     operationId="doneDemands",
+     *     @SWG\Parameter(
+     *          name="Demand",
+     *          in="body",
+     *          @SWG\Schema(ref="#/definitions/StatusDemandRequest")
+     *      ),
+     *     @SWG\Response(
+     *         response=202,
+     *         description="successful operation",
+     *     ),
+     *     @SWG\Response(
+     *         response=404,
+     *         ref="#/responses/NotFoundResponse"
+     *     ),
+     *     @SWG\Response(
+     *         response=401,
+     *         ref="#/responses/NotAuthResponse"
+     *     ),
+     *     @SWG\Response(
+     *         response="default",
+     *         ref="#/responses/DefaultErrorResponse"
+     *     ),
+     *
+     *     security={{ "token": {} }}
+     * )
+     */
+    public function storeDone(Requests\Demand\DoneDemandRequest $request)
+    {
+        $demand = $request->getDemand();
+        $this->demandService->doneItem($demand);
+
+        return $this->response->accepted();
+    }
+
+    /**
+     * @SWG\Post(
      *     path="/demands/cancel",
      *     summary="Cancel demand",
      *     tags={"demand"},

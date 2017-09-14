@@ -9,6 +9,7 @@ use App\Type\Region;
 use App\Type\ResponseStatus;
 use App\Type\Sphere;
 use App\User;
+use Doctrine\Common\Collections\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 
@@ -79,8 +80,7 @@ class Demand extends Model
     public function activeResponses()
     {
         return $this->hasMany(Response::class)->whereIn('responses.status', [
-            ResponseStatus::ACTIVE,
-            ResponseStatus::ARCHIVED
+            ResponseStatus::ACTIVE
         ]);
     }
 
@@ -91,6 +91,8 @@ class Demand extends Model
     {
         return $this->hasMany(Response::class);
     }
+
+
 
 
 
@@ -151,6 +153,38 @@ class Demand extends Model
     public function isOwner(User $user)
     {
         return ($this->company_id == $user->company_id);
+    }
+
+
+    /**
+     * @return \Illuminate\Support\Collection $invoices
+     */
+    public function getInvoices()
+    {
+        return $this->responses->reduce(function (\Illuminate\Support\Collection $invoices, Response $response) {
+            return $invoices->merge($response->invoices);
+        }, collect([]));
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasResponsedInvoices()
+    {
+        return $this->getInvoices()->filter(function (Invoice $invoice) {
+            return $invoice->isResponsed();
+        })->isNotEmpty();
+    }
+
+
+    /**
+     * @return bool
+     */
+    public function hasNotRequestedInvoices()
+    {
+        return $this->getInvoices()->filter(function (Invoice $invoice) {
+            return $invoice->isRequested();
+        })->isEmpty();
     }
 
 

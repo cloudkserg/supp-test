@@ -4,6 +4,7 @@ namespace App\Policies;
 
 use App\Company;
 use App\Demand\Demand;
+use App\Demand\Invoice;
 use App\Demand\Response;
 use App\Type\DemandStatus;
 use App\User;
@@ -35,6 +36,16 @@ class DemandPolicy
         return (
             $demand->isOwner($user) and
             $demand->isCancelled()
+        );
+    }
+
+    public function done(User $user, Demand $demand)
+    {
+        return (
+            $demand->isOwner($user) and
+            $demand->isActive() and
+            $demand->hasResponsedInvoices() and
+            $demand->hasNotRequestedInvoices()
         );
     }
 
