@@ -34,7 +34,7 @@
                     <div style="height: 20px; line-height: 20px; font-size: 18px;">&nbsp;</div>
                     <span style="font-family: Helvetica, Arial, sans-serif; color: #000000; font-size: 16px; line-height: 22px; font-weight: bold;">Доставить {% if item.address %}по адресу{% endif %}</span>
                     <div style="height: 3px; line-height: 3px; font-size: 1px;">&nbsp;</div>
-                    <span style="font-family: Helvetica, Arial, sans-serif; color: #000000; font-size: 16px; line-height: 22px;">{% if item.address %}{{ item.address }}{% endif %} {% if item.delivery_date %}{% if (item.address and item.delivery_date) %}, {% endif %}<span style="font-style: italic; white-space: nowrap;">до {{ item.delivery_date|date("d F Y") }}</span>{% endif %}</span>
+                    <span style="font-family: Helvetica, Arial, sans-serif; color: #000000; font-size: 16px; line-height: 22px;">{% if item.address %}{{ item.address }}{% endif %}{% if item.delivery_date %}{% if (item.address and item.delivery_date) %}, {% endif %}<span style="font-style: italic; white-space: nowrap;">до {{ item.delivery_date|date("j F Y") }}</span>{% endif %}</span>
                   {% endif %}
                   <div style="height: 25px; line-height: 25px; font-size: 23px;">&nbsp;</div>
                   <table cellpadding="0" cellspacing="0" border="0" width="200" style="width: 200px !important; max-width: 200px; min-width: 200px; background: #ffd717; border-radius: 4px;">
