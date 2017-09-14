@@ -27,6 +27,7 @@ class ConfirmationsTest extends TestCase
 
     public function testCreate()
     {
+        $this->expectsJobs(\App\Jobs\CreateDraftResponseForCompanyJob::class);
         $r = $this->post(
             'api/users/confirmations',
             [

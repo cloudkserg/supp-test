@@ -10,7 +10,7 @@ class UsersTest extends TestCase
 
     public function testCreate()
     {
-        $this->expectsJobs(CreateDraftResponseForCompanyJob::class);
+
 
         $this->expectsEvents(RegisterUserEvent::class);
 

@@ -64,7 +64,6 @@ class UsersController extends Controller
     public function store(CreateUserRequest $request)
     {
         $user = $this->userService->createUser($request);
-        dispatch(new CreateDraftResponseForCompanyJob($user->company));
         return $this->response->created('/users/' . $user->id);
     }
 

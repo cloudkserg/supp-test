@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\CreateDraftResponseForCompanyJob;
 use App\Services\UserService;
 use App\Http\Requests\User\ConfirmationRequest;
 use Dingo\Api\Routing\Helpers;
@@ -59,6 +60,7 @@ class ConfirmationsController extends Controller
     public function store(ConfirmationRequest $request)
     {
         $user = $this->userService->confirmUser($request->get('confirmationCode'));
+        dispatch(new CreateDraftResponseForCompanyJob($user->company));
         return $this->response->created('/users/' . $user->id);
     }
 
