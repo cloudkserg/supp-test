@@ -6,7 +6,7 @@ class TwigFilters extends \Twig_Extension
     {
         return [
             new \Twig_SimpleFunction('get_env', [$this, 'getEnv']),
-            new \Twig_SimpleFunction('assets_path', [$this, 'getAssetPath']),
+            new \Twig_SimpleFunction('assets_path', [$this, 'getAssetsPath']),
         ];
     }
     public function getEnv($variable)
@@ -14,8 +14,9 @@ class TwigFilters extends \Twig_Extension
         return env($variable);
     }
 
-    public function assetPath($variable)
+    public function getAssetsPath($variable)
     {
         return resource_path('assets/' . $variable);
     }
+
 }
