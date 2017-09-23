@@ -43,9 +43,9 @@ class DemandPolicy
     {
         return (
             $demand->isOwner($user) and
-            $demand->isActive() and
-            $demand->hasResponsedInvoices() and
-            $demand->hasNotRequestedInvoices()
+            $demand->isActive() // and
+           // $demand->hasResponsedInvoices() and
+           // $demand->hasNotRequestedInvoices()
         );
     }
 
