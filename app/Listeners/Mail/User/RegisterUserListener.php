@@ -4,6 +4,7 @@ namespace App\Listeners\Mail\User;
 
 use App\Demand\ResponseItem;
 use App\Events\RegisterUserEvent;
+use App\Mail\AdminMailer;
 use App\Mail\RegisterUser;
 use App\Mail\RegisterUserForAdmin;
 use Illuminate\Queue\InteractsWithQueue;
@@ -32,7 +33,7 @@ class RegisterUserListener implements ShouldQueue
         $user = $event->getUser();
         \Mail::to($user->email)->send(new RegisterUser($user));
 
-        \Mail::to(config('mail.adminEmails'))->send(new RegisterUserForAdmin($user));
+        (new AdminMailer())->sendMails(new RegisterUserForAdmin($user));
 
     }
 }
