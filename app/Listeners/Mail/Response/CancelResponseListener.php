@@ -7,7 +7,7 @@ use App\Mail\Response\CancelResponseMail;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class CancelResponseListener
+class CancelResponseListener implements ShouldQueue
 {
     /**
      * Create the event listener.

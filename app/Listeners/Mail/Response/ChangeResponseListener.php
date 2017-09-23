@@ -7,7 +7,7 @@ use App\Mail\Response\ChangeResponseMail;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class ChangeResponseListener
+class ChangeResponseListener implements ShouldQueue
 {
     /**
      * Create the event listener.

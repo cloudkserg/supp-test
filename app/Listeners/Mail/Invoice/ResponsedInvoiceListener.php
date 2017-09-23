@@ -7,7 +7,7 @@ use App\Mail\Invoice\ResponsedInvoiceMail;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class ResponsedInvoiceListener
+class ResponsedInvoiceListener implements ShouldQueue
 {
     /**
      * Create the event listener.

@@ -31,7 +31,7 @@ class ResponseItemService
         $this->deleteNonExistantItems($oldResponseItems, $newResponseItems);
         return  $newResponseItems->map(function ($newItemData) use ($response) {
             return $this->createNewItem($newItemData, $response);
-        });
+        })->toArray();
     }
 
     /**

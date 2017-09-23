@@ -7,7 +7,7 @@ use App\Mail\RegisterUser;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class RegisterUserListener
+class RegisterUserListener implements ShouldQueue
 {
     /**
      * Create the event listener.

@@ -7,7 +7,7 @@ use App\Mail\Invoice\DeleteInvoiceMail;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class DeleteInvoiceListener
+class DeleteInvoiceListener implements ShouldQueue
 {
     /**
      * Create the event listener.

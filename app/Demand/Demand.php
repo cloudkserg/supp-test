@@ -10,6 +10,7 @@ use App\Type\ResponseStatus;
 use App\Type\Sphere;
 use App\User;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Query\QueryBuilder;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 
@@ -83,6 +84,7 @@ class Demand extends Model
             ResponseStatus::ACTIVE
         ]);
     }
+
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

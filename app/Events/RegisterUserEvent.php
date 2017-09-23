@@ -8,9 +8,12 @@
 
 namespace App\Events;
 use App\User;
+use Illuminate\Queue\SerializesModels;
 
 class RegisterUserEvent
 {
+    use SerializesModels;
+
     /**
      * @var User
      */

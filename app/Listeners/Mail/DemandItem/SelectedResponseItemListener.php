@@ -7,7 +7,7 @@ use App\Mail\DemandItem\SelectedResponseItemMail;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class SelectedResponseItemListener
+class SelectedResponseItemListener implements ShouldQueue
 {
     /**
      * Create the event listener.

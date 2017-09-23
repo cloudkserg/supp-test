@@ -7,7 +7,7 @@ use App\Mail\Response\ActiveResponseMail;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class ActiveResponseListener
+class ActiveResponseListener implements ShouldQueue
 {
     /**
      * Create the event listener.

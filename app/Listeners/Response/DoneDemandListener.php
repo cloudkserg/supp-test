@@ -15,7 +15,7 @@ use App\Services\ResponseService;
 use App\Type\ResponseStatus;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class CancelDemandListener implements ShouldQueue
+class DoneDemandListener implements ShouldQueue
 {
 
     /**

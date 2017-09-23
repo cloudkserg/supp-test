@@ -7,7 +7,7 @@ use App\Mail\ResponseItem\DeleteResponseItemMail;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class DeleteResponseItemListener
+class DeleteResponseItemListener implements ShouldQueue
 {
     /**
      * Create the event listener.
