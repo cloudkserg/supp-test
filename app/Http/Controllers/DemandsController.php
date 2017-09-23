@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\Demand\CreateDemandEvent;
 use App\Jobs\CreateDraftResponseForDemandJob;
 use App\Services\DemandItemService;
 use App\Services\DemandService;
@@ -230,6 +231,7 @@ class DemandsController extends Controller
         $demand = $activeRequest->getDemand();
         $this->demandService->activeItem($demand);
 
+        event(new ActiveDemandEvent($demand));
         dispatch(new CreateDraftResponseForDemandJob($demand));
         return $this->response->accepted();
     }
@@ -272,6 +274,7 @@ class DemandsController extends Controller
         $demand = $this->demandService->addItem($this->getCompany()->id, $createRequest);
         $this->demandItemService->addItems($demand, $createRequest);
 
+        event(new CreateDemandEvent($demand));
         dispatch(new CreateDraftResponseForDemandJob($demand));
         return $this->response->created('/demands/' . $demand->id);
     }

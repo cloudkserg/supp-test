@@ -3,6 +3,8 @@
 namespace App\Listeners\Mail\Response;
 
 use App\Events\Response\ActiveResponseEvent;
+use App\Mail\AdminMailer;
+use App\Mail\Response\ActiveResponseForAdminMail;
 use App\Mail\Response\ActiveResponseMail;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -31,5 +33,7 @@ class ActiveResponseListener implements ShouldQueue
         $admin = $item->demand->company->getAdmin();
         \Mail::to($admin)
             ->send(new ActiveResponseMail($item));
+
+        (new AdminMailer())->sendMails(new ActiveResponseForAdminMail($item));
     }
 }
