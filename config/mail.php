@@ -109,12 +109,6 @@ return [
 
     'sendmail' => '/usr/sbin/sendmail -bs',
 
-    'to' => [
-        'address' => env('MAIL_ADMIN'),
-        'name' => env('MAIL_FROM_NAME')
-    ],
-
-
 
     'stream' => [
         'ssl' => [
