@@ -67,6 +67,7 @@ class MailCommand extends Command
      */
     public function handle()
     {
+
         $to = $this->input->getArgument('to');
         $mail = $this->input->getArgument('mail');
         $item = $this->input->getArgument('item');
